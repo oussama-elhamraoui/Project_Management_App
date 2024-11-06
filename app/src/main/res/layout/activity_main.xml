@@ -6,21 +6,59 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="30dp"
-    android:layout_margin="30dp"
+    android:padding="20dp"
+    android:layout_margin="20dp"
     tools:context=".MainActivity">
+
+    <Button
+        android:id="@+id/continue_with_google_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/rounded_background"
+        android:elevation="12dp"
+        android:translationZ="4dp"
+        android:fontFamily="@font/work_sans_regular"
+        android:padding="10dp"
+        android:text="Continue with Google"
+        android:textSize="24dp"
+        app:backgroundTint="@color/white"
+        android:textColor="@color/black"
+        android:drawableLeft="@drawable/google_icon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/signup_button"/>
+    <Button
+        android:id="@+id/signup_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/rounded_background"
+        android:elevation="12dp"
+        android:translationZ="4dp"
+        android:fontFamily="@font/work_sans_regular"
+        android:padding="10dp"
+        android:text="Sign Up"
+        android:textSize="24dp"
+        app:backgroundTint="@color/white"
+        android:textColor="@color/primary_color"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/login_button"/>
 
     <Button
         android:id="@+id/login_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="10dp"
         android:background="@drawable/rounded_background"
-        android:elevation="4dp"
+        android:elevation="12dp"
+        android:translationZ="4dp"
         android:fontFamily="@font/work_sans_regular"
-        android:padding="8dp"
+        android:padding="10dp"
         android:text="Login"
         android:textSize="24dp"
+        app:backgroundTint="@color/primary_color"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/forgot_password_text_view" />
@@ -42,7 +80,7 @@
         android:id="@+id/password_edit_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="10dp"
         android:background="@drawable/rounded_background"
         android:hint="Password"
         android:fontFamily="@font/work_sans_regular"
@@ -60,7 +98,7 @@
         android:id="@+id/email_edit_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="10dp"
         android:background="@drawable/rounded_background"
         android:hint="Enter Email"
         android:fontFamily="@font/work_sans_regular"
@@ -91,11 +129,10 @@
         android:layout_width="195dp"
         android:layout_height="194dp"
         android:src="@drawable/login_image_view"
-        app:layout_constraintBottom_toBottomOf="parent"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.012" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
