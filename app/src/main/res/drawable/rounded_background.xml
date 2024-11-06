@@ -1,0 +1,18 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Shadow layer -->
+    <item android:left="4dp" android:right="4dp" android:top="4dp" android:bottom="4dp">
+        <shape android:shape="rectangle">
+            <solid android:color="#80000000" /> <!-- Shadow color -->
+            <corners android:radius="200dp" /> <!-- Rounded corners for the shadow -->
+        </shape>
+    </item>
+
+    <!-- Background layer -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="#FFFFFF" /> <!-- Background color of the input box -->
+            <corners android:radius="200dp" /> <!-- Rounded corners for the input box -->
+            <padding android:left="12dp" android:right="12dp" /> <!-- Inner padding for input text -->
+        </shape>
+    </item>
+</layer-list>
