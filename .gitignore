@@ -13,3 +13,60 @@
 .externalNativeBuild
 .cxx
 local.properties
+**/gradle/
+**/gradlew
+**/gradlew.bat
+**/gradle-wrapper.properties
+*.gradle
+# Gradle
+.gradle/
+.gradle.kts/
+build/
+.gradle-wrapper/
+gradle-wrapper.properties
+gradle-wrapper.jar
+
+# Gradle wrapper files
+gradlew
+gradlew.bat
+
+# Android Studio and IntelliJ IDEA specific files
+.idea/
+*.iml
+
+# Local properties
+local.properties
+
+# Android build directories
+*/build/
+
+# IntelliJ IDE files
+*.ipr
+*.iws
+*.idea/
+*.idea/
+
+# Android-specific configuration files
+captures/
+output/
+
+# Android Studio specific files
+*.hprof
+*.apk
+*.ap_ 
+
+# .DS_Store (for macOS)
+.DS_Store
+
+# Thumbnails for Linux
+.thumbnail
+
+# Android Jetifier files
+jetifier/
+
+# User-specific files
+*.swp
+*.swo
+
+# Temporary build files
+*.log
