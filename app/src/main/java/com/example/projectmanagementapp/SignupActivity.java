@@ -2,11 +2,8 @@ package com.example.projectmanagementapp;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.InputType;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,32 +15,34 @@ import android.text.InputType;
 import android.view.MotionEvent;
 import android.widget.EditText;
 
-public class MainActivity extends AppCompatActivity {
-    private Button signupButton;
-    private EditText passwordEditText;
 
+public class SignupActivity extends AppCompatActivity {
+
+    private Button loginButton;
+    private EditText passwordEditText;
+    private EditText confirmPasswordEditText;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_main);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
-        signupButton = findViewById(R.id.signup_button);
+        setContentView(R.layout.signup_page_acitivity);
+
+        loginButton = findViewById(R.id.login_button);
         passwordEditText = findViewById(R.id.password_edit_text);
-        signupButton.setOnClickListener(new View.OnClickListener() {
+        confirmPasswordEditText = findViewById(R.id.confirm_password_edit_text);
+        loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent signupIntent = new Intent(MainActivity.this,SignupActivity.class);
-                startActivity(signupIntent);
-
+                Intent loginIntent = new Intent(SignupActivity.this,MainActivity.class);
+                startActivity(loginIntent);
             }
         });
         setupPasswordVisibilityToggle(passwordEditText);
+        setupPasswordVisibilityToggle(confirmPasswordEditText);
+        
+
     }
+
     public void setupPasswordVisibilityToggle(final EditText passwordEditText) {
         // Initial state of password visibility
         final boolean[] isPasswordVisible = {false};
@@ -66,8 +65,8 @@ public class MainActivity extends AppCompatActivity {
                         passwordEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
                         passwordEditText.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.baseline_visibility_off_24, 0); // Use open-eye icon
                     }
-                    passwordEditText.setTypeface(ResourcesCompat.getFont(this, R.font.work_sans_regular));
 
+                    passwordEditText.setTypeface(ResourcesCompat.getFont(this, R.font.work_sans_regular));
                     // Reset cursor to end of text
                     passwordEditText.setSelection(passwordEditText.getText().length());
 
@@ -79,4 +78,5 @@ public class MainActivity extends AppCompatActivity {
             return false;
         });
     }
+
 }
