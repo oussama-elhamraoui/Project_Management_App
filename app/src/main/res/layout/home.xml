@@ -10,11 +10,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-        <ImageView
-        android:src="@drawable/images/fake_person.png"
 
+        <ImageView
             android:layout_width="50dp"
-            android:layout_height="50dp"/>
+
+            android:layout_height="50dp"
+
+            android:src="@drawable/fake_person" />
+
         <Space
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -24,9 +27,9 @@
             android:id="@+id/helloText2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
             android:text="Hello, World!"
-            android:textSize="24sp"
-            android:layout_centerInParent="true"/>
+            android:textSize="24sp" />
     </LinearLayout>
 
 </LinearLayout>
