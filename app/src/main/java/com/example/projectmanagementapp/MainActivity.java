@@ -20,22 +20,29 @@ import android.widget.EditText;
 import androidx.core.content.res.ResourcesCompat;
 
 public class MainActivity extends AppCompatActivity {
-    private Button signupButton;
+    private Button signUpButton;
     private EditText passwordEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_login);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        signupButton = findViewById(R.id.signup_button);
+        signUpButton = findViewById(R.id.sign_up_button);
         passwordEditText = findViewById(R.id.password_edit_text);
-        signupButton.setOnClickListener(new View.OnClickListener() {
+        final Button loginButton = findViewById(R.id.login_button);
+        loginButton.setOnClickListener(new View.OnClickListener(){
+            public void onClick(final View v) {
+                final Intent homeIntent = new Intent(MainActivity.this, HomeActivity.class);
+                startActivity(homeIntent);
+            }
+        });
+        signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent signupIntent = new Intent(MainActivity.this,SignUpActivity.class);
