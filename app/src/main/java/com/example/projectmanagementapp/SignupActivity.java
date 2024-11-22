@@ -24,7 +24,7 @@ public class SignUpActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.sign_up);
+        setContentView(R.layout.activity_sign_up);
 
         loginButton = findViewById(R.id.login_button);
         passwordEditText = findViewById(R.id.password_edit_text);

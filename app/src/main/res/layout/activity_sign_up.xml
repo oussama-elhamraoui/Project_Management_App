@@ -102,7 +102,7 @@
             android:drawableEnd="@drawable/baseline_visibility_24" />
 
         <Button
-            android:id="@+id/signup_button"
+            android:id="@+id/sign_up_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
