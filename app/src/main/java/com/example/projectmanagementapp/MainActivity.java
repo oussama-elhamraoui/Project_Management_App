@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -11,45 +12,107 @@ import androidx.core.view.WindowInsetsCompat;
 
 import android.content.Intent;
 import android.text.InputType;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 
 import androidx.core.content.res.ResourcesCompat;
 
+import com.example.projectmanagementapp.data.model.LoginResponse;
+import com.example.projectmanagementapp.data.repository.AuthRepository;
+import com.example.projectmanagementapp.ui.auth.SignUpActivity;
+import com.example.projectmanagementapp.ui.home.HomeActivity;
+import com.example.projectmanagementapp.util.TokenManager;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class MainActivity extends AppCompatActivity {
-    private Button signUpButton;
-    private EditText passwordEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_login);
+
+        AuthRepository authRepistory = new AuthRepository();
+        TokenManager tokenManager = new TokenManager(this);
+
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        signUpButton = findViewById(R.id.sign_up_button);
-        passwordEditText = findViewById(R.id.password_edit_text);
+
+        //Retrieving the email and password from the UI
+        //Also Retrieving when the signUpButton is clicked
+        //Also Routing to signUp page when the signUp button is clicked
+        EditText EmailEditText =  findViewById(R.id.email_edit_text);
+        EditText passwordEditText = findViewById(R.id.password_edit_text);
         final Button loginButton = findViewById(R.id.login_button);
+        Button signUpButton = findViewById(R.id.sign_up_button);
+
+
         loginButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(final View v) {
-                final Intent homeIntent = new Intent(MainActivity.this, HomeActivity.class);
-                startActivity(homeIntent);
+                String email = EmailEditText.getText().toString().trim();
+                String password = passwordEditText.getText().toString().trim();
+
+
+                authRepistory.login(email,password).enqueue(new Callback<LoginResponse>() {
+                    @Override
+                    public void onResponse(@NonNull Call<LoginResponse> call, @NonNull Response<LoginResponse> response) {
+                        if (response.isSuccessful() && response.body() != null) {
+                            String token = response.body().getToken();
+                            if (token != null && !token.isEmpty()) {
+                                tokenManager.saveToken(token);
+                                Toast.makeText(MainActivity.this, "Login Successful!", Toast.LENGTH_SHORT).show();
+                                Log.d("LoginActivity", "Login Success: " + response.body());
+                                final Intent homeIntent = new Intent(MainActivity.this, HomeActivity.class);
+                                startActivity(homeIntent);
+                            } else {
+                                Log.e("LoginActivity", "Token missing in successful response");
+                                Toast.makeText(MainActivity.this, "Unexpected server response", Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            try {
+                                assert response.errorBody() != null;
+                                String errorBody = response.errorBody().string();
+                                Log.e("LoginActivity", "Login Failed - Error Body: " + errorBody);
+                            } catch (Exception e) {
+                                Log.e("LoginActivity", "Login Failed - Error Reading Error Body", e);
+                            }
+                            Toast.makeText(MainActivity.this, "Login Failed!", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<LoginResponse> call, @NonNull Throwable t) {
+                        Log.e("LoginActivity", "Network error: " + t.getMessage(), t);
+                        Toast.makeText(MainActivity.this, "Network error occurred. Please check your connection.", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
             }
         });
+
+        //Routing to sign Up page when this one is clicked
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent signupIntent = new Intent(MainActivity.this,SignUpActivity.class);
+                Intent signupIntent = new Intent(MainActivity.this, SignUpActivity.class);
                 startActivity(signupIntent);
 
             }
         });
+
+        //for showing an hiding the password in the UI
         setupPasswordVisibilityToggle(passwordEditText);
     }
 
@@ -90,10 +153,7 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                 }
             }
-
             return false;
         });
-
     }
-
 }

@@ -1,8 +1,10 @@
-package com.example.projectmanagementapp;
+package com.example.projectmanagementapp.ui.home;
 
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.projectmanagementapp.R;
 
 
 public class HomeActivity extends AppCompatActivity{
