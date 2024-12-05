@@ -14,7 +14,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.res.ResourcesCompat;
 
 
-public class SignUpActivity extends AppCompatActivity {
+
+public class SignupActivity extends AppCompatActivity {
 
     private Button loginButton;
     private EditText passwordEditText;
@@ -32,7 +33,7 @@ public class SignUpActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent loginIntent = new Intent(SignUpActivity.this, MainActivity.class);
+                Intent loginIntent = new Intent(SignupActivity.this, MainActivity.class);
                 startActivity(loginIntent);
             }
         });
