@@ -16,7 +16,7 @@ public interface ApiService {
     public Call<LoginResponse> login(@Body LoginRequest loginRequest);
 
     //we are using Query Params when signing up
-    @POST("auth/signup")
+    @POST("api/v1/auth/register")
     public Call<SignUpResponse> signUp(@Query("first_name") String firstname ,
                                        @Query("last_name") String lastname,
                                        @Query("email") String email,

@@ -4,20 +4,36 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.res.ResourcesCompat;
 
 import com.example.projectmanagementapp.MainActivity;
 import com.example.projectmanagementapp.R;
+import com.example.projectmanagementapp.data.model.SignUpResponse;
+import com.example.projectmanagementapp.data.repository.AuthRepository;
+import com.example.projectmanagementapp.data.repository.AuthRepository;
+import com.example.projectmanagementapp.ui.home.HomeActivity;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class SignUpActivity extends AppCompatActivity {
+
+    private EditText firstNameEditText;
+    private EditText lastNameEditText;
+    private EditText emailEditText;
+    private EditText passwordEditText;
+    private EditText confirmPasswordEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,49 +41,77 @@ public class SignUpActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_sign_up);
 
-        Button loginButton = findViewById(R.id.login_button);
-        EditText passwordEditText = findViewById(R.id.password_edit_text);
-        EditText confirmPasswordEditText = findViewById(R.id.confirm_password_edit_text);
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent loginIntent = new Intent(SignUpActivity.this, MainActivity.class);
-                startActivity(loginIntent);
-            }
-        });
+
+        AuthRepository authRepository = new AuthRepository();
+
+
+        //we are just collecting the first last and email and password for the UI and when the button is clicked we send the post request to the backend
+        Button signUpButton = findViewById(R.id.sign_up_button);
+        firstNameEditText = findViewById(R.id.first_name_edit_text);
+        lastNameEditText = findViewById(R.id.last_name_edit_text);
+        emailEditText = findViewById(R.id.email_edit_text);
+        passwordEditText = findViewById(R.id.password_edit_text);
+        confirmPasswordEditText = findViewById(R.id.confirm_password_edit_text);
+
+        //just for the password visibility
         setupPasswordVisibilityToggle(passwordEditText);
         setupPasswordVisibilityToggle(confirmPasswordEditText);
+
+        signUpButton.setOnClickListener(v -> {
+            String firstName = firstNameEditText.getText().toString().trim();
+            String lastName = lastNameEditText.getText().toString().trim();
+            String email = emailEditText.getText().toString().trim();
+            String password = passwordEditText.getText().toString();
+            String confirmPassword = confirmPasswordEditText.getText().toString();
+
+            if (password.equals(confirmPassword)) {
+                authRepository.signUp( firstName, lastName , email , password ).enqueue(new Callback<SignUpResponse>() {
+                    @Override
+                    public void onResponse(@NonNull Call<SignUpResponse> call, @NonNull Response<SignUpResponse> response) {
+                        if (response.body() != null) {
+                            // Success: Retrieve and display the success message from the API response
+                            Toast.makeText(SignUpActivity.this, "Registration successful.", Toast.LENGTH_SHORT).show();
+                            final Intent MainActivity = new Intent(SignUpActivity.this, MainActivity.class);
+                            startActivity(MainActivity);
+                        } else {
+                            // Failure: Display an error message based on the response
+                            String errorMessage = "Failed to register. Error: " + response.message();
+                            Toast.makeText(SignUpActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<SignUpResponse> call, @NonNull Throwable t) {
+                        String failureMessage = "Registration failed: " + t.getMessage();
+                        Log.e("LoginActivity", "Login Failed - Error Body: " + t.getMessage());
+                        Toast.makeText(SignUpActivity.this, failureMessage, Toast.LENGTH_SHORT).show();
+                    }
+                });
+            } else {
+                Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @SuppressLint("ClickableViewAccessibility")
     public void setupPasswordVisibilityToggle(final EditText passwordEditText) {
-        // Initial state of password visibility
         final boolean[] isPasswordVisible = {false};
-
-        // Set a touch listener on the drawableEnd (eye icon)
         passwordEditText.setOnTouchListener((v, event) -> {
-            final int DRAWABLE_END = 2; // Index for right drawable
+            final int DRAWABLE_END = 2;
 
-            // Check if touch event is on the drawable
             if (event.getAction() == MotionEvent.ACTION_UP) {
                 if (event.getRawX() >= (passwordEditText.getRight() - passwordEditText.getCompoundDrawables()[DRAWABLE_END].getBounds().width())) {
-
-                    // Toggle password visibility
                     if (isPasswordVisible[0]) {
-                        // Hide password
                         passwordEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                        passwordEditText.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.baseline_visibility_24, 0); // Use closed-eye icon
+                        passwordEditText.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.baseline_visibility_24, 0);
                     } else {
-                        // Show password
                         passwordEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
-                        passwordEditText.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.baseline_visibility_off_24, 0); // Use open-eye icon
+                        passwordEditText.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.baseline_visibility_off_24, 0);
                     }
 
                     passwordEditText.setTypeface(ResourcesCompat.getFont(this, R.font.work_sans_regular));
-                    // Reset cursor to end of text
                     passwordEditText.setSelection(passwordEditText.getText().length());
 
-                    // Toggle visibility flag
                     isPasswordVisible[0] = !isPasswordVisible[0];
                     return true;
                 }
@@ -75,5 +119,6 @@ public class SignUpActivity extends AppCompatActivity {
             return false;
         });
     }
+
 
 }

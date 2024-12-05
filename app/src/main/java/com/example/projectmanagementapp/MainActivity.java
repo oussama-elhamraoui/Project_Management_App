@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_login);
 
-        AuthRepository authRepistory = new AuthRepository();
+        AuthRepository authRepository = new AuthRepository();
         TokenManager tokenManager = new TokenManager(this);
 
 
@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
                 String password = passwordEditText.getText().toString().trim();
 
 
-                authRepistory.login(email,password).enqueue(new Callback<LoginResponse>() {
+                authRepository.login(email,password).enqueue(new Callback<LoginResponse>() {
                     @Override
                     public void onResponse(@NonNull Call<LoginResponse> call, @NonNull Response<LoginResponse> response) {
                         if (response.isSuccessful() && response.body() != null) {

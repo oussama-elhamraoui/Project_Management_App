@@ -19,7 +19,7 @@ public class AuthRepository {
     public Call<LoginResponse> login(String email , String password) {
         return apiService.login(new LoginRequest(email, password));
     }
-
+    // firstname, lastname , email , password
     public Call<SignUpResponse> signUp(String email , String password , String firstname , String lastname  ) {
         return apiService.signUp(email ,password , firstname , lastname);
     }
