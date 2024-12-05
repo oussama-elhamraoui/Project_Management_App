@@ -1,4 +1,4 @@
-package com.example.projectmanagementapp;
+package com.example.projectmanagementapp.ui.auth;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -13,12 +13,11 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.res.ResourcesCompat;
 
+import com.example.projectmanagementapp.MainActivity;
+import com.example.projectmanagementapp.R;
+
 
 public class SignUpActivity extends AppCompatActivity {
-
-    private Button loginButton;
-    private EditText passwordEditText;
-    private EditText confirmPasswordEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,9 +25,9 @@ public class SignUpActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_sign_up);
 
-        loginButton = findViewById(R.id.login_button);
-        passwordEditText = findViewById(R.id.password_edit_text);
-        confirmPasswordEditText = findViewById(R.id.confirm_password_edit_text);
+        Button loginButton = findViewById(R.id.login_button);
+        EditText passwordEditText = findViewById(R.id.password_edit_text);
+        EditText confirmPasswordEditText = findViewById(R.id.confirm_password_edit_text);
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -38,8 +37,6 @@ public class SignUpActivity extends AppCompatActivity {
         });
         setupPasswordVisibilityToggle(passwordEditText);
         setupPasswordVisibilityToggle(confirmPasswordEditText);
-
-
     }
 
     @SuppressLint("ClickableViewAccessibility")
