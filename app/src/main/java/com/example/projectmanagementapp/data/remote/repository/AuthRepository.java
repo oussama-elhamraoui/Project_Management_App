@@ -1,11 +1,10 @@
-package com.example.projectmanagementapp.data.repository;
+package com.example.projectmanagementapp.data.remote.repository;
 
-import com.example.projectmanagementapp.data.api.ApiClient;
-import com.example.projectmanagementapp.data.api.ApiService;
-import com.example.projectmanagementapp.data.model.LoginRequest;
-import com.example.projectmanagementapp.data.model.LoginResponse;
-import com.example.projectmanagementapp.data.model.SignUpRequest;
-import com.example.projectmanagementapp.data.model.SignUpResponse;
+import com.example.projectmanagementapp.data.remote.api.ApiClient;
+import com.example.projectmanagementapp.data.remote.api.ApiService;
+import com.example.projectmanagementapp.data.remote.model.LoginRequest;
+import com.example.projectmanagementapp.data.remote.model.LoginResponse;
+import com.example.projectmanagementapp.data.remote.model.SignUpResponse;
 
 import retrofit2.Call;
 

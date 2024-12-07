@@ -1,4 +1,4 @@
-package com.example.projectmanagementapp.data.api;
+package com.example.projectmanagementapp.data.remote.api;
 
 import com.example.projectmanagementapp.util.Constants;
 

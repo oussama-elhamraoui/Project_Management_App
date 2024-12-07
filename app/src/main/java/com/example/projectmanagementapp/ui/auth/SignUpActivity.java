@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
 import android.view.MotionEvent;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -18,17 +17,14 @@ import androidx.core.content.res.ResourcesCompat;
 
 import com.example.projectmanagementapp.MainActivity;
 import com.example.projectmanagementapp.R;
-import com.example.projectmanagementapp.data.model.SignUpResponse;
-import com.example.projectmanagementapp.data.repository.AuthRepository;
-import com.example.projectmanagementapp.data.repository.AuthRepository;
-import com.example.projectmanagementapp.ui.home.HomeActivity;
+import com.example.projectmanagementapp.data.remote.model.SignUpResponse;
+import com.example.projectmanagementapp.data.remote.repository.AuthRepository;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class SignUpActivity extends AppCompatActivity {
-
     private EditText firstNameEditText;
     private EditText lastNameEditText;
     private EditText emailEditText;
@@ -119,6 +115,4 @@ public class SignUpActivity extends AppCompatActivity {
             return false;
         });
     }
-
-
 }
