@@ -1,11 +1,11 @@
-package com.example.projectmanagementapp;
+package com.example.projectmanagementapp.ui;
 
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
+
+import com.example.projectmanagementapp.R;
 import com.example.projectmanagementapp.databinding.ActivityMainBinding;
 
 public class NavigationActivity extends AppCompatActivity {

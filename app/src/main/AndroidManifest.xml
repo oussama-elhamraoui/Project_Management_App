@@ -29,7 +29,7 @@
 
         <activity android:name=".ui.auth.SignUpActivity" />
         <activity android:name=".ui.home.HomeActivity" />
-        <activity android:name=".NavigationActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".ui.NavigationActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
 
 
