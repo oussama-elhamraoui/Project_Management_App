@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Dark Theme Colors -->
+    <color name="primary_green">#4CAF50</color>
+    <color name="background_dark">#121212</color>
+    <color name="surface_dark">#1E1E1E</color>
+
+    <!-- Custom Spinner Background -->
+    <style name="SpinnerStyle" parent="Widget.AppCompat.Spinner">
+        <item name="android:background">@drawable/spinner_background</item>
+    </style>
     <style name="CircularShape">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">52%</item>
