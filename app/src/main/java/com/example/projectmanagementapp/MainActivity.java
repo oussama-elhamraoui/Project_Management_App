@@ -38,14 +38,14 @@ public class MainActivity extends AppCompatActivity {
         final Button loginButton = findViewById(R.id.login_button);
         loginButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(final View v) {
-                final Intent homeIntent = new Intent(MainActivity.this, HomeActivity.class);
+                final Intent homeIntent = new Intent(MainActivity.this, NavigationActivity.class);
                 startActivity(homeIntent);
             }
         });
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent signupIntent = new Intent(MainActivity.this,SignupActivity.class);
+                Intent signupIntent = new Intent(MainActivity.this, SignUpActivity.class);
                 startActivity(signupIntent);
 
             }
@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
 
     @SuppressLint("ClickableViewAccessibility")
     public void setupPasswordVisibilityToggle(final EditText passwordEditText) {
-        boolean[] isPasswordVisible = { false };
+        final boolean[] isPasswordVisible = { false };
 
         // Set a touch listener on the drawableEnd (eye icon)
         passwordEditText.setOnTouchListener((v, event) -> {
