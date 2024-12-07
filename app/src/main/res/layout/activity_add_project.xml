@@ -1,267 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F5F5"
-    android:orientation="vertical"
-    android:padding="20dp">
-    <!--First Row-->
-    <EditText
-        android:id="@+id/project_name_edit_text"
+    android:background="@color/background_dark">
+
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/rounded_background"
-        android:hint="Project Name"
-        android:fontFamily="@font/work_sans_regular"
-        android:padding="20dp"
-        android:paddingStart="25dp"
-        android:paddingEnd="25dp"
-        android:elevation="7.5dp"
-        android:translationZ="2dp"
-        android:textSize="20sp" />
-
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="20dp" />
-    <!--Seconde Row-->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/members"
-            android:layout_width="wrap_content"
-            android:layout_height="23sp"
-            android:text="Members"
-            android:textSize="20sp"
-            android:textColor="#B2B2B2"
-            android:fontFamily="@font/work_sans_medium" />
-        <Space
-            android:layout_width="5dp"
-            android:layout_height="10dp" />
-
-        <HorizontalScrollView
-            android:layout_width="match_parent"
-            android:layout_height="50dp">
-
-            <LinearLayout
-                android:id="@+id/memberList"
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:orientation="horizontal">
-
-                <androidx.cardview.widget.CardView
-                    android:layout_width="50dp"
-                    android:elevation="0dp"
-                    app:cardElevation="0dp"
-                    android:layout_height="50dp"
-                    app:cardBackgroundColor="@color/light_silver"
-                    app:cardCornerRadius="40dp"
-                    android:padding="9dp">
-
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:src="@drawable/ic_vector"
-                    android:scaleType="centerInside" />
-
-                </androidx.cardview.widget.CardView>
-
-                <Space
-                    android:layout_width="8dp"
-                    android:layout_height="0dp" />
-
-                <com.google.android.material.imageview.ShapeableImageView
-                    android:layout_width="50dp"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/fake_person"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:shapeAppearanceOverlay="@style/CircularShape" />
-
-            </LinearLayout>
-
-        </HorizontalScrollView>
-
-
-    </LinearLayout>
-
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="20dp" />
-    <!--Third Row-->
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        tools:ignore="ScrollViewCount">
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="400dp"
-            android:layout_weight="1"
-            android:background="@color/white"
-             />
-
-    </ScrollView>
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="20dp"/>
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="15dp" />
-    <!--Forth Row-->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="120dp"
-        android:orientation="vertical"
-        android:padding="10dp"
-        android:background="@drawable/rounded_corner">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:gravity="top|center_horizontal">
+            android:padding="16dp">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Theme"
-                android:textSize="20sp"
-                android:fontFamily="@font/work_sans_bold"
-                android:textColor="@color/black"
-                android:gravity="center_horizontal"/>
-            <LinearLayout
-                android:layout_width="352dp"
-                android:layout_height="63dp"
-                android:orientation="horizontal" >
-                <LinearLayout
-                    android:layout_width="62.4dp"
-                    android:layout_height="63dp"
-                    android:orientation="vertical">
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="62.4dp"
-                        android:layout_height="45dp"
-                        android:layout_gravity="center"
-                        app:cardCornerRadius="40dp"
-                        android:padding="9dp"
-                        app:cardBackgroundColor="#00D47C"
-                        android:elevation="2dp"/>
+                android:text="Create New Project"
+                android:textColor="@color/primary_green"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="16dp"/>
 
-                    <Space
-                        android:layout_width="match_parent"
-                        android:layout_height="3dp" />
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_project_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:hint="Project Name"
+                app:startIconDrawable="@drawable/ic_title"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="14dp"
-                        android:layout_height="13dp"
-                        android:layout_gravity="center"
-                        app:cardCornerRadius="40dp"
-                        android:padding="9dp"
-                        app:cardBackgroundColor="#00D47C"
-                        android:elevation="2dp"/>
-                </LinearLayout>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
-                <Space
-                    android:layout_width="10dp"
-                    android:layout_height="0dp" />
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_project_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:hint="Project Description"
+                app:startIconDrawable="@drawable/ic_description"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
-                <LinearLayout
-                    android:layout_width="62.4dp"
-                    android:layout_height="63dp"
-                    android:orientation="vertical">
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="62.4dp"
-                        android:layout_height="45dp"
-                        android:layout_gravity="center"
-                        app:cardCornerRadius="40dp"
-                        android:padding="9dp"
-                        app:cardBackgroundColor="#0087FF"
-                        android:elevation="2dp"/>
-                </LinearLayout>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textMultiLine"
+                    android:minLines="3"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
-                <Space
-                    android:layout_width="10dp"
-                    android:layout_height="0dp" />
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card_advanced_options"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:cardBackgroundColor="@color/surface_dark"
+                app:cardCornerRadius="8dp">
 
                 <LinearLayout
-                    android:layout_width="62.4dp"
-                    android:layout_height="63dp"
-                    android:orientation="vertical">
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="62.4dp"
-                        android:layout_height="45dp"
-                        android:layout_gravity="center"
-                        app:cardCornerRadius="40dp"
-                        android:padding="9dp"
-                        app:cardBackgroundColor="#F478B8"
-                        android:elevation="2dp"/>
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="12dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Advanced Options"
+                        android:textColor="@android:color/white"/>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_expand_more"
+                        android:contentDescription="Expand Advanced Options"/>
                 </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
-                <Space
-                    android:layout_width="10dp"
-                    android:layout_height="0dp" />
+            <Spinner
+                android:id="@+id/spinner_project_category"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/spinner_background"/>
 
-                <LinearLayout
-                    android:layout_width="62.4dp"
-                    android:layout_height="63dp"
-                    android:orientation="vertical">
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="62.4dp"
-                        android:layout_height="45dp"
-                        android:layout_gravity="center"
-                        app:cardCornerRadius="40dp"
-                        android:padding="9dp"
-                        app:cardBackgroundColor="#FF7D53"
-                        android:elevation="2dp"/>
-                </LinearLayout>
-
-
-                <Space
-                    android:layout_width="10dp"
-                    android:layout_height="0dp" />
-
-                <LinearLayout
-                    android:layout_width="62.4dp"
-                    android:layout_height="63dp"
-                    android:orientation="vertical">
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="62.4dp"
-                        android:layout_height="45dp"
-                        android:layout_gravity="center"
-                        app:cardCornerRadius="40dp"
-                        android:padding="9dp"
-                        app:cardBackgroundColor="#FF5353"
-                        android:elevation="2dp"/>
-                </LinearLayout>
-
-            </LinearLayout>
-
-
-
+            <Button
+                android:id="@+id/btn_create_project"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginTop="16dp"
+                android:text="Create Project"
+                android:textAllCaps="false"
+                style="@style/Widget.MaterialComponents.Button.UnelevatedButton"/>
         </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
-    </LinearLayout>
-    <!--Fifth Row (Next Button)-->
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="20dp"/>
-    <Button
-        android:id="@+id/next_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/rounded_background"
-        android:elevation="31dp"
-        android:translationZ="2dp"
-        android:fontFamily="@font/work_sans_bold"
-        android:padding="10dp"
-        android:text="Next"
-        android:textSize="20sp"
-        android:textColor="@color/black"
-        app:backgroundTint="@android:color/white" />
-</LinearLayout>
+    <!-- Bottom Sheet for Advanced Options -->
+    <include
+        android:id="@+id/bottom_sheet_advanced_options"
+        layout="@layout/bottom_sheet_advanced_options"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"/>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
