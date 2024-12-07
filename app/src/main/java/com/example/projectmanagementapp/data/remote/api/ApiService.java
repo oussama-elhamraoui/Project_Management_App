@@ -1,9 +1,10 @@
-package com.example.projectmanagementapp.data.api;
+package com.example.projectmanagementapp.data.remote.api;
 
-import com.example.projectmanagementapp.data.model.LoginRequest;
-import com.example.projectmanagementapp.data.model.LoginResponse;
-import com.example.projectmanagementapp.data.model.SignUpRequest;
-import com.example.projectmanagementapp.data.model.SignUpResponse;
+import com.example.projectmanagementapp.data.remote.model.LoginRequest;
+import com.example.projectmanagementapp.data.remote.model.LoginResponse;
+import com.example.projectmanagementapp.data.remote.model.ProjectRequest;
+import com.example.projectmanagementapp.data.remote.model.ProjectsResponse;
+import com.example.projectmanagementapp.data.remote.model.SignUpResponse;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -21,5 +22,11 @@ public interface ApiService {
                                        @Query("last_name") String lastname,
                                        @Query("email") String email,
                                        @Query("password") String password
+    );
+
+    @POST("/api/projects")
+    Call<ProjectsResponse> addProject(
+            @Header("Authorization") String token,
+            @Body ProjectRequest projectRequest
     );
 }

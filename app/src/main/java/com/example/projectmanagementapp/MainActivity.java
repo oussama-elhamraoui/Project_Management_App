@@ -22,8 +22,8 @@ import android.widget.Toast;
 
 import androidx.core.content.res.ResourcesCompat;
 
-import com.example.projectmanagementapp.data.model.LoginResponse;
-import com.example.projectmanagementapp.data.repository.AuthRepository;
+import com.example.projectmanagementapp.data.remote.model.LoginResponse;
+import com.example.projectmanagementapp.data.remote.repository.AuthRepository;
 import com.example.projectmanagementapp.ui.auth.SignUpActivity;
 import com.example.projectmanagementapp.ui.home.HomeActivity;
 import com.example.projectmanagementapp.util.TokenManager;
