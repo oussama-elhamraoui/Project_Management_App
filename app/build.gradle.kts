@@ -4,14 +4,13 @@ plugins {
 
 android {
     namespace = "com.example.projectmanagementapp"
-    compileSdk = 34
+    compileSdk = 35
 
 
     defaultConfig {
         vectorDrawables.useSupportLibrary = true
         applicationId = "com.example.projectmanagementapp"
         minSdk = 24
-        //noinspection OldTargetApi
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -33,9 +32,14 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
+    dependenciesInfo {
+        includeInApk = true
+        includeInBundle = true
+    }
+    buildToolsVersion = "35.0.0"
     buildFeatures {
         viewBinding = true
     }
