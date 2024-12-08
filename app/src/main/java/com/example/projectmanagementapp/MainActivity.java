@@ -1,11 +1,13 @@
 package com.example.projectmanagementapp;
 
 import android.annotation.SuppressLint;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -41,6 +43,11 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //this line is added to force light mode on the app Not to use dark mode to make simpler to develop just for light mode
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
+
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_login);
@@ -69,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(final View v) {
                 final String email = EmailEditText.getText().toString().trim();
                 final String password = passwordEditText.getText().toString().trim();
-                final Intent homeIntent = new Intent(MainActivity.this, TasksActivity.class);
+                final Intent homeIntent = new Intent(MainActivity.this, NavigationActivity.class);
                 homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(homeIntent);
                 finish();
