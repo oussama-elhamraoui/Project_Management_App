@@ -18,8 +18,6 @@ public class NavigationActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_main);
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -40,4 +38,10 @@ public class NavigationActivity extends AppCompatActivity {
 
     }
 
+//    private void replaceFragment(@NonNull Fragment fragment) {
+//        getSupportFragmentManager()
+//                .beginTransaction()
+//                .replace(R.id.frame_layout, fragment)
+//                .commit();
+//    }
 }

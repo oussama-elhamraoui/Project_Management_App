@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".ui.NavigationActivity">
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/main_activity_nav_host"
@@ -28,7 +28,7 @@
         app:fabCradleMargin="15dp"
         app:fabCradleRoundedCornerRadius="50dp"
         app:fabCradleVerticalOffset="10dp"
-        tools:ignore="UnusedAttribute">
+        >
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottomNavigationView"
