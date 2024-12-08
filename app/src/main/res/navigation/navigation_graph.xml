@@ -1,0 +1,29 @@
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_graph_home"
+    app:startDestination="@id/home">
+
+    <fragment
+        android:id="@+id/home"
+        android:name="com.example.projectmanagementapp.ui.home.HomeFragment"
+        android:label="Home"
+        tools:layout="@layout/fragment_home" >
+    </fragment>
+    <fragment
+        android:id="@+id/tasks"
+        android:name="com.example.projectmanagementapp.ui.tasks.TasksFragment"
+        android:label="Home"
+        tools:layout="@layout/fragment_tasks" />
+
+    <fragment
+        android:id="@+id/profile"
+        android:name="com.example.projectmanagementapp.ui.profile.ProfileFragment"
+        android:label="Home"
+        tools:layout="@layout/fragment_profile" />
+
+
+
+
+
+</navigation>

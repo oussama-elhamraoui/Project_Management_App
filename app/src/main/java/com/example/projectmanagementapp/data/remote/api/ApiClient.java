@@ -1,6 +1,6 @@
 package com.example.projectmanagementapp.data.remote.api;
 
-import com.example.projectmanagementapp.util.Constants;
+import com.example.projectmanagementapp.utils.Constants;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;

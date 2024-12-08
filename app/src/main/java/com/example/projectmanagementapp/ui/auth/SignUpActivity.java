@@ -67,6 +67,7 @@ public class SignUpActivity extends AppCompatActivity {
                         if (response.body() != null) {
                             // Success: Retrieve and display the success message from the API response
                             Toast.makeText(SignUpActivity.this, "Registration successful.", Toast.LENGTH_SHORT).show();
+                            //! why not just throw him in the home screen
                             final Intent MainActivity = new Intent(SignUpActivity.this, MainActivity.class);
                             startActivity(MainActivity);
                         } else {

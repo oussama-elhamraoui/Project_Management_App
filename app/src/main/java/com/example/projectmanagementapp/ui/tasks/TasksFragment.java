@@ -1,4 +1,4 @@
-package com.example.projectmanagementapp.ui;
+package com.example.projectmanagementapp.ui.tasks;
 
 import android.os.Bundle;
 
