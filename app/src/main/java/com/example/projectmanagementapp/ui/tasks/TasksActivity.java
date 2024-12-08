@@ -31,6 +31,7 @@ public class TasksActivity extends AppCompatActivity {
     private Button addTaskButton;
     private ImageButton datePickerButton;
     private TextView datePickerTextView;
+    private Button addTaskButtonDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +40,7 @@ public class TasksActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_tasks);
 //        Adding task Pop Up
-        addTaskDialog = new Dialog(getApplicationContext());
+        addTaskDialog = new Dialog(TasksActivity.this);
         addTaskDialog.setContentView(R.layout.add_task_dialog_box);
         addTaskDialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
         addTaskDialog.getWindow().setBackgroundDrawable(getDrawable(R.drawable.dialog_box_background));
@@ -54,6 +55,7 @@ public class TasksActivity extends AppCompatActivity {
         });
         datePickerButton = addTaskDialog.findViewById(R.id.date_picker_image_button);
         datePickerTextView = addTaskDialog.findViewById(R.id.date_picker_text_view);
+        addTaskButtonDialog=addTaskDialog.findViewById(R.id.add_task_button);
 
         datePickerButton.setOnClickListener(v -> {
             Calendar calendar = Calendar.getInstance();
@@ -62,7 +64,7 @@ public class TasksActivity extends AppCompatActivity {
             int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
 
             DatePickerDialog datePickerDialog = new DatePickerDialog(
-                    getApplicationContext(),
+                    TasksActivity.this,
                     (view, year1, month1, dayOfMonth1) -> {
                         // Format and display the selected date in the TextView
                         String formattedDate = year1 + "/" + (month1 + 1) + "/" + dayOfMonth1;
@@ -71,6 +73,12 @@ public class TasksActivity extends AppCompatActivity {
                     year, month, dayOfMonth
             );
             datePickerDialog.show();
+        });
+        addTaskButtonDialog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addTaskDialog.dismiss();
+            }
         });
 
 
