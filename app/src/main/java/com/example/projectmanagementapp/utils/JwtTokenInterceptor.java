@@ -1,4 +1,4 @@
-package com.example.projectmanagementapp.util;
+package com.example.projectmanagementapp.utils;
 
 import androidx.annotation.NonNull;
 

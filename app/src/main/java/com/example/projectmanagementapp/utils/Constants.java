@@ -1,4 +1,4 @@
-package com.example.projectmanagementapp.util;
+package com.example.projectmanagementapp.utils;
 
 public class Constants {
     // Base URL for your API

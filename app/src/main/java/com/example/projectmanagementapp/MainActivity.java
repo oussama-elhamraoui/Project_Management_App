@@ -24,9 +24,10 @@ import androidx.core.content.res.ResourcesCompat;
 
 import com.example.projectmanagementapp.data.remote.model.LoginResponse;
 import com.example.projectmanagementapp.data.remote.repository.AuthRepository;
+import com.example.projectmanagementapp.ui.NavigationActivity;
 import com.example.projectmanagementapp.ui.auth.SignUpActivity;
-import com.example.projectmanagementapp.ui.home.HomeActivity;
-import com.example.projectmanagementapp.util.TokenManager;
+import com.example.projectmanagementapp.utils.TokenManager;
+
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -34,14 +35,20 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
+    // Declare variables for binding and navigation controller
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_login);
 
-        AuthRepository authRepository = new AuthRepository();
-        TokenManager tokenManager = new TokenManager(this);
+
+
+
+        final AuthRepository authRepository = new AuthRepository();
+        final TokenManager tokenManager = new TokenManager(this);
 
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
@@ -50,19 +57,17 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        //Retrieving the email and password from the UI
-        //Also Retrieving when the signUpButton is clicked
-        //Also Routing to signUp page when the signUp button is clicked
-        EditText EmailEditText =  findViewById(R.id.email_edit_text);
-        EditText passwordEditText = findViewById(R.id.password_edit_text);
+        // Retrieving the email, password, loginButton and signUpButton from the UI
+        final EditText EmailEditText =  findViewById(R.id.email_edit_text);
+        final EditText passwordEditText = findViewById(R.id.password_edit_text);
         final Button loginButton = findViewById(R.id.login_button);
-        Button signUpButton = findViewById(R.id.sign_up_button);
+        final Button signUpButton = findViewById(R.id.sign_up_button);
 
 
         loginButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(final View v) {
-                String email = EmailEditText.getText().toString().trim();
-                String password = passwordEditText.getText().toString().trim();
+                final String email = EmailEditText.getText().toString().trim();
+                final String password = passwordEditText.getText().toString().trim();
 
 
                 authRepository.login(email,password).enqueue(new Callback<LoginResponse>() {
@@ -74,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
                                 tokenManager.saveToken(token);
                                 Toast.makeText(MainActivity.this, "Login Successful!", Toast.LENGTH_SHORT).show();
                                 Log.d("LoginActivity", "Login Success: " + response.body());
-                                final Intent homeIntent = new Intent(MainActivity.this, HomeActivity.class);
+                                final Intent homeIntent = new Intent(MainActivity.this, NavigationActivity.class);
                                 startActivity(homeIntent);
                             } else {
                                 Log.e("LoginActivity", "Token missing in successful response");
@@ -102,23 +107,23 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //Routing to sign Up page when this one is clicked
+        // Routing to sign Up page on click
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent signupIntent = new Intent(MainActivity.this, SignUpActivity.class);
+                final Intent signupIntent = new Intent(MainActivity.this, SignUpActivity.class);
                 startActivity(signupIntent);
 
             }
         });
 
-        //for showing an hiding the password in the UI
+        // For showing an hiding the password in the UI
         setupPasswordVisibilityToggle(passwordEditText);
     }
 
     @SuppressLint("ClickableViewAccessibility")
     public void setupPasswordVisibilityToggle(final EditText passwordEditText) {
-        boolean[] isPasswordVisible = { false };
+        final boolean[] isPasswordVisible = { false };
 
         // Set a touch listener on the drawableEnd (eye icon)
         passwordEditText.setOnTouchListener((v, event) -> {
