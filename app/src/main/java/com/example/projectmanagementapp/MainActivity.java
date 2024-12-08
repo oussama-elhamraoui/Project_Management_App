@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(final View v) {
                 final String email = EmailEditText.getText().toString().trim();
                 final String password = passwordEditText.getText().toString().trim();
-                final Intent homeIntent = new Intent(MainActivity.this, NavigationActivity.class);
+                final Intent homeIntent = new Intent(MainActivity.this, TasksActivity.class);
                 homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(homeIntent);
                 finish();
