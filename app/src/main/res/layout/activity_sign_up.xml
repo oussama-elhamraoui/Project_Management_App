@@ -47,7 +47,7 @@
             android:fontFamily="@font/work_sans_regular"
             android:padding="12dp"
             android:elevation="6dp"
-            android:textSize="24sp" />
+            android:textSize="20sp" />
         <EditText
             android:id="@+id/last_name_edit_text"
             android:layout_width="match_parent"
@@ -58,7 +58,7 @@
             android:fontFamily="@font/work_sans_regular"
             android:padding="12dp"
             android:elevation="6dp"
-            android:textSize="24sp" />
+            android:textSize="20sp" />
 
 
         <EditText
@@ -71,7 +71,7 @@
             android:fontFamily="@font/work_sans_regular"
             android:padding="12dp"
             android:elevation="6dp"
-            android:textSize="24sp" />
+            android:textSize="20sp" />
 
         <EditText
             android:id="@+id/password_edit_text"
@@ -83,7 +83,7 @@
             android:fontFamily="@font/work_sans_regular"
             android:padding="12dp"
             android:elevation="6dp"
-            android:textSize="24sp"
+            android:textSize="20sp"
             android:inputType="textPassword"
             android:drawableEnd="@drawable/baseline_visibility_24" />
 
@@ -97,7 +97,7 @@
             android:fontFamily="@font/work_sans_regular"
             android:padding="12dp"
             android:elevation="6dp"
-            android:textSize="24sp"
+            android:textSize="20sp"
             android:inputType="textPassword"
             android:drawableEnd="@drawable/baseline_visibility_24" />
 
@@ -112,7 +112,7 @@
             android:fontFamily="@font/work_sans_regular"
             android:padding="10dp"
             android:text="Sign Up"
-            android:textSize="24sp"
+            android:textSize="20sp"
             android:textColor="@android:color/white"
             app:backgroundTint="@color/primary_color" />
 
@@ -127,7 +127,7 @@
             android:fontFamily="@font/work_sans_regular"
             android:padding="10dp"
             android:text="Login"
-            android:textSize="24sp"
+            android:textSize="20sp"
             android:textColor="@color/primary_color"
             app:backgroundTint="@android:color/white" />
 
@@ -142,7 +142,7 @@
             android:fontFamily="@font/work_sans_regular"
             android:padding="10dp"
             android:text="Continue with Google"
-            android:textSize="24sp"
+            android:textSize="20sp"
             android:textColor="@color/black"
             android:drawableLeft="@drawable/google_icon"
             app:backgroundTint="@android:color/white" />
