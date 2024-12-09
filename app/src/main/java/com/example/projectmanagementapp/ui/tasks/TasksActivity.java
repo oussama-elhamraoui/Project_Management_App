@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.projectmanagementapp.R;
+import com.example.projectmanagementapp.models.Task;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -41,7 +42,7 @@ public class TasksActivity extends AppCompatActivity {
         setContentView(R.layout.activity_tasks);
 //        Adding task Pop Up
         addTaskDialog = new Dialog(TasksActivity.this);
-        addTaskDialog.setContentView(R.layout.add_task_dialog_box);
+        addTaskDialog.setContentView(R.layout.dialog_add_task);
         addTaskDialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
         addTaskDialog.getWindow().setBackgroundDrawable(getDrawable(R.drawable.dialog_box_background));
         addTaskDialog.setCancelable(false);
