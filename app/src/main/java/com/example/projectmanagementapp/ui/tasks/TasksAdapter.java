@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.projectmanagementapp.R;
+import com.example.projectmanagementapp.models.Task;
 
 import java.util.List;
 
@@ -23,7 +24,7 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TasksViewHol
     @NonNull
     @Override
     public TasksViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.task_card_item_layout,parent,false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_task_card,parent,false);
         return new TasksViewHolder(itemView);
     }
 
