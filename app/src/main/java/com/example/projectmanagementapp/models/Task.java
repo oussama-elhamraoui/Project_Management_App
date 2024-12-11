@@ -3,7 +3,7 @@ package com.example.projectmanagementapp.models;
 import java.time.Duration;
 
 public class Task {
-    String name;
+    public String name;
     Duration timeLeft; // this is should be calculated by the task timestamp so in the future you will remove this attribute
     public Task(String taskName, Duration timeLeft) {
         this.name = taskName;
@@ -16,7 +16,7 @@ public class Task {
 
     public Duration getTimeLeft() {
         return timeLeft;
-    } //need to calculated from timestamp
+    } // need to calculated from timestamp
 
 
 }

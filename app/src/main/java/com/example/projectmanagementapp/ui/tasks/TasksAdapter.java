@@ -1,5 +1,6 @@
 package com.example.projectmanagementapp.ui.tasks;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +16,7 @@ import java.util.List;
 
 public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TasksViewHolder> {
 
-    private List<Task> tasksList;
+    private final List<Task> tasksList;
 
     public TasksAdapter(List<Task> tasksList) {
         this.tasksList = tasksList;
@@ -28,11 +29,12 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TasksViewHol
         return new TasksViewHolder(itemView);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull TasksViewHolder holder, int position) {
         Task task= tasksList.get(position);
-        holder.taskNameTextView.setText(task.taskName);
-        holder.durationLeftTextView.setText(task.timeLeft+" Left");
+        holder.taskNameTextView.setText(task.name);
+        holder.durationLeftTextView.setText(task.getTimeLeft()+" Left");
     }
 
     @Override

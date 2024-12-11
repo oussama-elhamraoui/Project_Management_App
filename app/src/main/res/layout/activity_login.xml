@@ -23,7 +23,7 @@
             android:layout_height="174dp"
             android:src="@drawable/login_image_view"
             android:layout_gravity="center_horizontal" />
-    <Space
+    <View
         android:layout_width="match_parent"
         android:layout_height="20dp"
         />
@@ -36,7 +36,7 @@
             android:text="Welcome Back!"
             android:textAlignment="center"
             android:textSize="40sp" />
-    <Space
+    <View
         android:layout_width="match_parent"
         android:layout_height="10dp"
         />
@@ -52,7 +52,7 @@
             android:padding="12dp"
             android:elevation="6dp"
             android:textSize="20sp" />
-    <Space
+    <View
         android:layout_width="match_parent"
         android:layout_height="10dp"
         />
@@ -80,7 +80,7 @@
             android:textSize="16sp"
             android:clickable="true"
             android:layout_gravity="center_horizontal" />
-    <Space
+    <View
         android:layout_width="match_parent"
         android:layout_height="10dp"
         android:layout_weight="1"
@@ -100,7 +100,7 @@
             android:textSize="20sp"
             android:textColor="@android:color/white"
             app:backgroundTint="@color/primary_color" />
-    <Space
+    <View
         android:layout_width="match_parent"
         android:layout_height="10dp"
         />
@@ -117,7 +117,7 @@
             android:textSize="20sp"
             android:textColor="@color/primary_color"
             app:backgroundTint="@color/white" />
-    <Space
+    <View
         android:layout_width="match_parent"
         android:layout_height="10dp"
         />
