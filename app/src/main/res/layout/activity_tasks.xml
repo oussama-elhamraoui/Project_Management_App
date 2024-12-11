@@ -29,7 +29,7 @@
             android:textColor="#FFFFFF"
             android:textSize="20sp" />
 
-        <Space
+        <View
             android:layout_width="180dp"
             android:layout_height="10dp" />
 
@@ -76,7 +76,7 @@
             android:textColor="#000000"
             android:textSize="20sp" />
 
-        <Space
+        <View
             android:layout_width="8dp"
             android:layout_height="10dp" />
 

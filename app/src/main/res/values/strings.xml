@@ -23,4 +23,14 @@
     <string name="email">Email</string>
     <string name="axxxxxxa_gmail_com">axxxxxxa@gmail.com</string>
     <string name="social_media">Social Media</string>
+    <string name="members">Members</string>
+    <string name="description">Description</string>
+    <string name="continue_with_google">Continue with Google</string>
+    <string name="login">Login</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="password">Password</string>
+    <string name="project_name">Project Name</string>
+    <string name="themes">Themes</string>
+    <string name="next">Next</string>
 </resources>
