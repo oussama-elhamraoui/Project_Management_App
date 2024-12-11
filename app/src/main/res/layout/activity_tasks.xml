@@ -31,7 +31,7 @@
 
         <View
             android:layout_width="180dp"
-            android:layout_height="wrap_content" />
+            android:layout_height="10dp" />
 
         <ImageButton
             android:id="@+id/more_vert_image_button"
@@ -78,7 +78,7 @@
 
         <View
             android:layout_width="8dp"
-            android:layout_height="wrap_content" />
+            android:layout_height="10dp" />
 
         <TextView
             android:id="@+id/tasks_number_text_view"

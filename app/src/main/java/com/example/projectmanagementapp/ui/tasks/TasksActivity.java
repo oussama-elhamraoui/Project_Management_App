@@ -6,6 +6,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -43,9 +44,12 @@ public class TasksActivity extends AppCompatActivity {
 //        Adding task Pop Up
         addTaskDialog = new Dialog(TasksActivity.this);
         addTaskDialog.setContentView(R.layout.dialog_add_task);
-        addTaskDialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        Window window = addTaskDialog.getWindow();
+        if (window != null) {
+            window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        }
         addTaskDialog.getWindow().setBackgroundDrawable(getDrawable(R.drawable.dialog_box_background));
-        addTaskDialog.setCancelable(false);
+//        addTaskDialog.setCancelable(false);
 
         addTaskButton = findViewById(R.id.add_task_button);
         addTaskButton.setOnClickListener(new View.OnClickListener() {
