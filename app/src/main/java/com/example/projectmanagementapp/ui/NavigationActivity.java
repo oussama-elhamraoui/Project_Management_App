@@ -1,6 +1,9 @@
 package com.example.projectmanagementapp.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,7 +12,9 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.projectmanagementapp.R;
 import com.example.projectmanagementapp.databinding.ActivityMainBinding;
+import com.example.projectmanagementapp.ui.addProject.AddProjectActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class NavigationActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
@@ -36,12 +41,17 @@ public class NavigationActivity extends AppCompatActivity {
         androidx.navigation.ui.NavigationUI.setupWithNavController(navView, navController);
 
 
+        final FloatingActionButton addButton = findViewById(R.id.bt_add_project);
+
+        addButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                final Intent intent = new Intent(NavigationActivity.this, AddProjectActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
     }
 
-//    private void replaceFragment(@NonNull Fragment fragment) {
-//        getSupportFragmentManager()
-//                .beginTransaction()
-//                .replace(R.id.frame_layout, fragment)
-//                .commit();
-//    }
 }

@@ -34,6 +34,7 @@
             android:name=".ui.tasks.TasksActivity"
             android:exported="false" />
         <activity android:name=".ui.auth.SignUpActivity" />
+        <activity android:name=".ui.addProject.AddProjectActivity" />
         <activity android:name=".ui.NavigationActivity" />
 
     </application>
