@@ -76,7 +76,7 @@
             android:background="@drawable/rounded_background"
             android:elevation="6dp"
             android:fontFamily="@font/work_sans_regular"
-            android:hint="Email"
+            android:hint="@string/email"
             android:padding="12dp"
             android:textSize="20sp" />
     <View
@@ -92,7 +92,7 @@
             android:drawableEnd="@drawable/baseline_visibility_24"
             android:elevation="6dp"
             android:fontFamily="@font/work_sans_regular"
-            android:hint="Password"
+            android:hint="@string/password"
             android:inputType="textPassword"
             android:padding="12dp"
             android:textSize="20sp" />
@@ -109,7 +109,7 @@
             android:drawableEnd="@drawable/baseline_visibility_24"
             android:elevation="6dp"
             android:fontFamily="@font/work_sans_regular"
-            android:hint="Confirm Password"
+            android:hint="@string/confirm_password"
             android:inputType="textPassword"
             android:padding="12dp"
             android:textSize="20sp" />
@@ -125,12 +125,13 @@
             android:layout_height="wrap_content"
             android:background="@drawable/rounded_background"
             android:elevation="12dp"
-            android:fontFamily="@font/work_sans_regular"
+            android:fontFamily="@font/work_sans_medium"
             android:padding="10dp"
-            android:text="Sign Up"
+            android:text="@string/sign_up"
             android:textColor="@android:color/white"
-            android:textSize="20sp"
+            android:textSize="21sp"
             android:translationZ="12dp"
+            android:textAllCaps="false"
             app:backgroundTint="@color/primary_color" />
     <View
         android:layout_width="match_parent"
@@ -143,11 +144,13 @@
             android:layout_height="wrap_content"
             android:background="@drawable/rounded_background"
             android:elevation="12dp"
-            android:fontFamily="@font/work_sans_regular"
             android:padding="10dp"
-            android:text="Login"
+            android:text="@string/login"
             android:textColor="@color/primary_color"
-            android:textSize="20sp"
+            android:textSize="21sp"
+            android:fontFamily="@font/work_sans_medium"
+
+            android:textAllCaps="false"
             android:translationZ="12dp"
             app:backgroundTint="@android:color/white" />
     <View
@@ -164,11 +167,12 @@
             android:drawableLeft="@drawable/google_icon"
             android:elevation="12dp"
             android:layout_gravity=""
-            android:fontFamily="@font/work_sans_regular"
+            android:fontFamily="@font/work_sans_medium"
             android:padding="10dp"
-            android:text="Continue with Google"
+            android:text="@string/continue_with_google"
             android:textColor="@color/black"
-            android:textSize="20sp"
+            android:textSize="21sp"
+            android:textAllCaps="false"
             android:translationZ="12dp"
             app:backgroundTint="@android:color/white" />
 
