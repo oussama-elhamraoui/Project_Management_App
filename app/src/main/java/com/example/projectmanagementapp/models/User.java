@@ -6,12 +6,14 @@ public class User {
 
     final UserTheme theme;
 
-    private User(final String firstName, final String lastName, final UserTheme theme) {
+    public User(final String firstName, final String lastName, final UserTheme theme) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.theme = theme;
     }
-
+    public final int getColor(){
+        return theme.color;
+    }
     public final String getProfile() {
         if (this.firstName == null || this.lastName == null ||
                 this.firstName.isEmpty() || this.lastName.isEmpty()) {
