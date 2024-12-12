@@ -23,7 +23,7 @@ import java.util.Arrays;
 public class FragmentProjects extends Fragment {
     private RecyclerView recyclerView;
     private ProjectsAdapter projectsAdapter;
-    private TextView projectCount;
+    private TextView projectsCount;
 
     // Sample data
     private final ArrayList<Project> projects = new ArrayList<>(Arrays.asList(
@@ -49,10 +49,10 @@ public class FragmentProjects extends Fragment {
 
         // Initialize RecyclerView and TextView
         recyclerView = view.findViewById(R.id.rv_project_card);
-        projectCount = view.findViewById(R.id.tv_project_count);
+        projectsCount = view.findViewById(R.id.tv_project_count);
 
         // Display the number of projects
-        projectCount.setText(String.valueOf(projects.size()));
+        projectsCount.setText(String.valueOf(projects.size()));
 
         // Set LayoutManager for RecyclerView
         LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
