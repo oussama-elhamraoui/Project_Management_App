@@ -1,4 +1,4 @@
-package com.example.projectmanagementapp.ui.addProject.projectTheme;
+package com.example.projectmanagementapp.ui.addProject.ProjectTheme;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
