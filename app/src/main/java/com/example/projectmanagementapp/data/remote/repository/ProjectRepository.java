@@ -17,7 +17,8 @@ public class ProjectRepository {
     }
 
     public void addProject(String token , ProjectRequest projectRequest, Callback<ProjectsResponse> callback) {
-        Call<ProjectsResponse> call = apiService.addProject("Bearer" + token , projectRequest);
-        call.enqueue(callback);
+        // TODO: fix .addProjects error
+//        Call<ProjectsResponse> call = apiService.addProjects("Bearer" + token , projectRequest);
+//        call.enqueue(callback);
     }
 }
