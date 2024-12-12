@@ -1,7 +1,12 @@
 package com.example.projectmanagementapp.ui.addProject.members;
 
+
+
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.os.Bundle;
 
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -9,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 
 import com.example.projectmanagementapp.R;
 import com.example.projectmanagementapp.models.User;
@@ -25,19 +31,40 @@ public class MembersFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_members, container, false);
+        final View view = inflater.inflate(R.layout.fragment_members, container, false);
 
-        RecyclerView recyclerView = view.findViewById(R.id.rv_members);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+
+        final CardView addButton = view.findViewById(R.id.cv_add_member);
+        addButton.setOnClickListener(v -> {
+            // Inflate the custom layout
+            Dialog dialogView = new Dialog(getContext());
+            dialogView.setContentView(R.layout.dialog_add_member);
+            Window window = dialogView.getWindow();
+            if (window != null) {
+                window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            }
+            dialogView.getWindow().setBackgroundDrawable(getContext().getDrawable(R.drawable.dialog_box_background));
+            // Build the dialog
+
+
+
+            // Show the dialog
+            dialogView.show();
+        });
+
+
+        final RecyclerView recyclerView = view.findViewById(R.id.rv_members);
+        final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(layoutManager);
 
         // Example data
-        List<User> members = new ArrayList<>();
+        final List<User> members = new ArrayList<>();
         members.add(new User("Alice", "Project Manager", UserTheme.values[0]));
         members.add(new User("Bob", "Developer", UserTheme.values[1]));
         members.add(new User("Carol", "Designer", UserTheme.values[2]));
 
-        MembersAdapter adapter = new MembersAdapter(members);
+        final MembersAdapter adapter = new MembersAdapter(members);
         recyclerView.setAdapter(adapter);
 
         return view;
