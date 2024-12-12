@@ -39,9 +39,9 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.Projec
     public void onBindViewHolder(@NonNull ProjectViewHolder holder, int position) {
         // Get the current project
         final Project project = projects.get(position);
-
         // Bind data to the layout
         holder.tvProjectName.setText(project.name);
+
         holder.tvTasksLeft.setText(project.getTasksLeft() + " tasks left");
 
         holder.progressBar.setProgress(project.getProgress());
