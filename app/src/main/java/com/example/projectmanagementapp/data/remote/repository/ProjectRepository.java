@@ -3,6 +3,8 @@ package com.example.projectmanagementapp.data.remote.repository;
 
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -45,11 +47,11 @@ public class ProjectRepository {
         return appDatabase.projectDao().getAllProjects();
     }
 
-
-    public void syncProjects(){
-        executor.execute(()->{
+// TODO : add the Project state !!!!!
+    public void syncProjects(String token, SyncProjectsCallback callback) {
+        executor.execute(() -> {
             try {
-                List<ProjectsResponse> remoteProjects = apiService.getAllProjects("bearer" ).execute().body();
+                List<ProjectsResponse> remoteProjects = apiService.getAllProjects("Bearer " + token).execute().body();
                 if (remoteProjects != null) {
                     for (ProjectsResponse project : remoteProjects) {
                         Project localProject = new Project();
@@ -58,13 +60,31 @@ public class ProjectRepository {
                         localProject.setName(project.getTitle());
                         appDatabase.projectDao().insertProject(localProject); // Save project to local DB
                     }
+                    // Run callback on main thread
+                    new Handler(Looper.getMainLooper()).post(() -> {
+                        if (callback != null) {
+                            callback.onSyncCompleted(remoteProjects);
+                        }
+                    });
                 }
             } catch (Exception e) {
                 Log.e(TAG, "Error syncing projects: ", e);
+                new Handler(Looper.getMainLooper()).post(() -> {
+                    if (callback != null) {
+                        callback.onSyncFailed(e);
+                    }
+                });
             }
-
         });
     }
+
+    // Callback interface for project sync
+    public interface SyncProjectsCallback {
+        void onSyncCompleted(List<ProjectsResponse> projects);
+        void onSyncFailed(Exception e);
+    }
+
+
     // Add a new project through the API and save it locally
     public void addProject(String token, ProjectRequest projectRequest, Callback<ProjectsResponse> callback) {
         apiService.createProject("Bearer " + token, projectRequest).enqueue(new Callback<ProjectsResponse>() {
