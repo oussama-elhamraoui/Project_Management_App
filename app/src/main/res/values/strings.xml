@@ -33,4 +33,8 @@
     <string name="project_name">Project Name</string>
     <string name="themes">Themes</string>
     <string name="next">Next</string>
+    <string name="member_name">Member Name</string>
+    <string name="member_email">Member Email</string>
+    <string name="invite">Invite</string>
+    <string name="add_as_admin">Add as admin</string>
 </resources>
