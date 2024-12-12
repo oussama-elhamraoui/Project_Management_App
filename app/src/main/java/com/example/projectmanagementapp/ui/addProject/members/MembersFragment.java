@@ -15,10 +15,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.LinearLayout;
 
 import com.example.projectmanagementapp.R;
 import com.example.projectmanagementapp.models.User;
 import com.example.projectmanagementapp.models.UserTheme;
+import com.example.projectmanagementapp.state.MemberState;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +38,7 @@ public class MembersFragment extends Fragment {
         final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
         final CardView addButton = view.findViewById(R.id.cv_add_member);
-        addButton.setOnClickListener(v -> {
+        addButton.setOnClickListener( v -> {
             // Inflate the custom layout
             Dialog dialogView = new Dialog(getContext());
             dialogView.setContentView(R.layout.dialog_add_member);
@@ -46,7 +48,14 @@ public class MembersFragment extends Fragment {
             }
             dialogView.getWindow().setBackgroundDrawable(getContext().getDrawable(R.drawable.dialog_box_background));
             // Build the dialog
-
+            final LinearLayout checkBox = dialogView.findViewById(R.id.cb_add_as_admin);
+            checkBox.setOnClickListener( v1 -> {
+                MemberState.getInstance().toggle();
+            });
+            final CardView cardView = dialogView.findViewById(R.id.cv_checkbox_on);
+            MemberState.getInstance().isAdmin.observe(getViewLifecycleOwner(), isAdmin -> {
+                cardView.setVisibility(isAdmin ? View.VISIBLE : View.INVISIBLE);
+            });
 
 
             // Show the dialog

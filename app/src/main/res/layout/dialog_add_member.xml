@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardCornerRadius="20dp"
     android:elevation="0dp"
-    android:layout_margin="20dp"
+    android:layout_margin="30dp"
     app:cardElevation="0dp"
     xmlns:android="http://schemas.android.com/apk/res/android">
 <LinearLayout
@@ -33,6 +33,7 @@
         android:hint="@string/member_name"
         android:textColorHint="#B2B2B2"
         android:textSize="17sp"
+
         tools:ignore="LabelFor" />
     <LinearLayout
         android:paddingHorizontal="20dp"
@@ -94,16 +95,46 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="10dp"/>
-    <CheckBox
-        android:id="@+id/customCheckBox"
+
+    <LinearLayout
+        android:id="@+id/cb_add_as_admin"
         android:layout_width="wrap_content"
-        android:layout_height="20dp"
-        android:text="@string/add_as_admin"
-        android:textSize="14sp"
+        android:layout_height="26dp"
+        android:paddingHorizontal="10dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+    <androidx.cardview.widget.CardView
+        android:layout_height="15dp"
+        app:cardCornerRadius="3dp"
+        app:cardBackgroundColor="#E8E8E8"
+        android:elevation="0dp"
+        app:cardElevation="0dp"
+        android:layout_width="15dp">
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv_checkbox_on"
+            android:layout_height="11dp"
+            android:elevation="0dp"
+            app:cardElevation="0dp"
+            android:layout_gravity="center"
+            app:cardBackgroundColor="#0E88F4"
 
-        android:fontFamily="@font/work_sans_medium"
+            android:layout_width="11dp">
 
-         />
+        </androidx.cardview.widget.CardView>
+
+    </androidx.cardview.widget.CardView>
+        <View
+            android:layout_width="5dp"
+            android:layout_height="match_parent"/>
+        <TextView
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/add_as_admin"
+            android:textSize="14sp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/work_sans_medium"/>
+    </LinearLayout>
     <View
         android:layout_width="match_parent"
         android:layout_height="10dp"/>
