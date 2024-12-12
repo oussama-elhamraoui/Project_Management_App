@@ -8,7 +8,7 @@
     android:layout_height="wrap_content"
     android:clipToPadding="false"
     android:orientation="horizontal"
-    tools:context=".ui.addProject.projectTheme.ProjectThemeFragment">
+    tools:context=".ui.addProject.ProjectTheme.ProjectThemeFragment">
 
 
 </androidx.recyclerview.widget.RecyclerView>
