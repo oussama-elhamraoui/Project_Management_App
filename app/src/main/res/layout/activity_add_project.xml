@@ -55,7 +55,7 @@
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/fragment_members"
-            android:name="com.example.projectmanagementapp.ui.addProject.FragmentMembers"
+            android:name="com.example.projectmanagementapp.ui.addProject.MembersFragment"
             android:layout_width="match_parent"
 
             android:layout_height="wrap_content" />
@@ -107,7 +107,7 @@
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/fragment_project_themes"
 
-            android:name="com.example.projectmanagementapp.ui.addProject.FragmentProjectThemes"
+            android:name="com.example.projectmanagementapp.ui.addProject.ProjectThemesFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </LinearLayout>
