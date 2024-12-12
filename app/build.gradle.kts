@@ -59,6 +59,7 @@ dependencies {
 
 
     testImplementation(libs.junit)
+    testImplementation(libs.ext.junit)
     androidTestImplementation(libs.ext.junit)
 
     androidTestImplementation(libs.espresso.core)
@@ -70,11 +71,6 @@ dependencies {
     implementation(libs.logging.interceptor)
 
 
-
-    // Jetpack Compose dependencies
-    val composeBom = platform("androidx.compose:compose-bom:2024.10.01")
-    implementation(composeBom)
-    androidTestImplementation(composeBom)
 
     // Choose one of the following:
     // Material Design 3
@@ -114,4 +110,33 @@ dependencies {
     implementation(libs.androidx.runtime.rxjava2)
 
 
+    //Room ORM
+    implementation(libs.androidx.room.runtime)
+
+    // If this project only uses Java source, use the Java annotationProcessor
+    // No additional plugins are necessary
+    annotationProcessor(libs.androidx.room.compiler)
+
+    // optional - Kotlin Extensions and Coroutines support for Room
+    implementation(libs.androidx.room.ktx)
+
+    // optional - RxJava2 support for Room
+    implementation(libs.androidx.room.rxjava2)
+
+    // optional - RxJava3 support for Room
+    implementation(libs.androidx.room.rxjava3)
+
+    // optional - Guava support for Room, including Optional and ListenableFuture
+    implementation(libs.androidx.room.guava)
+
+    // optional - Paging 3 Integration
+    implementation(libs.androidx.room.paging)
+
+    //JUnit test for the database
+    // Testing
+    testImplementation(libs.junit.jupiter.api)
+    testRuntimeOnly(libs.junit.jupiter.engine)
+
+    // Room Testing
+    testImplementation(libs.androidx.room.testing)
 }

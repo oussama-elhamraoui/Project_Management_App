@@ -36,7 +36,7 @@
         <activity android:name=".ui.auth.SignUpActivity" />
         <activity android:name=".ui.addProject.AddProjectActivity" />
         <activity android:name=".ui.NavigationActivity" />
-
+        <activity android:name=".MainTestActivity" />
     </application>
 
 </manifest>
