@@ -4,8 +4,10 @@ import java.time.Duration;
 
 public class Task {
     public String name;
+    public int id;
     Duration timeLeft; // this is should be calculated by the task timestamp so in the future you will remove this attribute
-    public Task(String taskName, Duration timeLeft) {
+    public Task(int id, String taskName, Duration timeLeft) {
+        this.id = id;
         this.name = taskName;
         this.timeLeft = timeLeft;
     }
