@@ -37,7 +37,7 @@ public class Project {
     }
 
     public List<User> getMembers(){
-        return members
+        return members;
     }
 
     public int getProgress() {
