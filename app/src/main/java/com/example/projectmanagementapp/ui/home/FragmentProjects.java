@@ -15,6 +15,7 @@ import com.example.projectmanagementapp.R;
 import com.example.projectmanagementapp.models.Project;
 import com.example.projectmanagementapp.models.ProjectTheme;
 import com.example.projectmanagementapp.models.Task;
+import com.example.projectmanagementapp.models.User;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -27,19 +28,19 @@ public class FragmentProjects extends Fragment {
 
     // Sample data
     private final ArrayList<Project> projects = new ArrayList<>(Arrays.asList(
-            new Project(-1, "First Project", "", new Task[]{
-                    new Task("Task 1", Duration.ZERO),
-                    new Task("Task 2", Duration.ZERO),
-                    new Task("Task 3", Duration.ZERO)
-            }, ProjectTheme.RED),
-            new Project(-1,"Second Project", "",new Task[]{
-                    new Task("Task A", Duration.ZERO),
-                    new Task("Task B", Duration.ZERO),
-                    new Task("Task C", Duration.ZERO)
-            },  ProjectTheme.BLUE),
-            new Project(-1,"Third Project", "", new Task[]{
-                    new Task("Task X", Duration.ZERO)
-            },  ProjectTheme.ORANGE)
+            new Project(-1, "First Project", "", new ArrayList<>(Arrays.asList(
+                    new Task(1,"Task 1", Duration.ZERO),
+                    new Task(2,"Task 2", Duration.ZERO),
+                    new Task(3,"Task 3", Duration.ZERO)
+            )), ProjectTheme.RED, new ArrayList<>()),
+            new Project(-1,"Second Project", "",new ArrayList<>(Arrays.asList(
+                    new Task(4,"Task A", Duration.ZERO),
+                    new Task(5,"Task B", Duration.ZERO),
+                    new Task(6,"Task C", Duration.ZERO)
+            )),  ProjectTheme.BLUE, new ArrayList<User>()),
+            new Project(-1,"Third Project", "",new ArrayList<>(Arrays.asList(
+                    new Task(7,"Task X", Duration.ZERO )
+            )),  ProjectTheme.ORANGE, new ArrayList<User>())
     ));
 
     @Override

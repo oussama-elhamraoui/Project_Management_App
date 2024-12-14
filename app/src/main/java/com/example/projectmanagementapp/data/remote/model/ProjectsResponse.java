@@ -12,7 +12,7 @@ public class ProjectsResponse {
     private String title;
     private String description;
 
-    private Task[] tasks;
+    private List<Task> tasks;
     private int color;
 
     private List<User> members;

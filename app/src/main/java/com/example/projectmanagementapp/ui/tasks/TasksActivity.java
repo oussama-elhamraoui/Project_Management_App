@@ -89,11 +89,12 @@ public class TasksActivity extends AppCompatActivity {
 
 
 
-
+        int id = 0; // this is a temp solution plz delete it you need to get the id from the backend
         recyclerView = findViewById(R.id.task_recycler_view);
         tasksList = new ArrayList<>();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            Task task1 = new Task("task 1", Duration.between(LocalDateTime.now(), LocalDateTime.now().plusDays(1)));
+            Task task1 = new Task(id, "task 1", Duration.between(LocalDateTime.now(), LocalDateTime.now().plusDays(1)));
+            id++;
             tasksList.add(task1);
         }
         tasksAdapter = new TasksAdapter(tasksList);

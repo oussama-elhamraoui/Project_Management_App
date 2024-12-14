@@ -19,8 +19,7 @@ public class ProjectState {
     private ProjectState() {
         members = new MutableLiveData<>();
         members.setValue(new ArrayList<>()); // Initialize with an empty list
-        final Task[] defaultTasks ={};
-        project = new Project(-1, "", "", defaultTasks, ProjectTheme.BLUE);
+        project = new Project(-1, "", "", new ArrayList<Task>(), ProjectTheme.BLUE, new ArrayList<User>());
 
     }
 
@@ -61,5 +60,19 @@ public class ProjectState {
         members.setValue(updatedMembers);
     }
 
+    public void addTask(Task task){
+        project.tasks.add(task);
+    }
+    public void deleteTask(Task task){
+        project.tasks.remove(task);
+    }
+    public void updateTask(Task task) {
+        for (int i = 0; i < project.tasks.size(); i++) {
+            if (project.tasks.get(i).id == task.id) {
+                project.tasks.set(i, task);
+                return;
+            }
+        }
+    }
 
 }
