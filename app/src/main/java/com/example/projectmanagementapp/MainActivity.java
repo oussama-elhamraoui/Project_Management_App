@@ -24,12 +24,20 @@ import android.widget.Toast;
 
 import androidx.core.content.res.ResourcesCompat;
 
+import com.example.projectmanagementapp.data.remote.api.ApiService;
 import com.example.projectmanagementapp.data.remote.model.LoginResponse;
 import com.example.projectmanagementapp.data.remote.repository.AuthRepository;
 import com.example.projectmanagementapp.ui.NavigationActivity;
 import com.example.projectmanagementapp.ui.auth.SignUpActivity;
 import com.example.projectmanagementapp.ui.tasks.TasksActivity;
 import com.example.projectmanagementapp.utils.TokenManager;
+import com.example.projectmanagementapp.data.remote.repository.ProjectRepository;
+
+
+import android.os.Handler;
+import android.os.Looper;
+import com.example.projectmanagementapp.data.remote.model.ProjectsResponse;
+import java.util.List;
 
 
 import retrofit2.Call;
@@ -67,49 +75,75 @@ public class MainActivity extends AppCompatActivity {
         final Button signUpButton = findViewById(R.id.sign_up_button);
 
 
+        final ProjectRepository projectRepository = new ProjectRepository(this, ""); // You might want to pass the context appropriately
+
+
         loginButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(final View v) {
                 final String email = EmailEditText.getText().toString().trim();
                 final String password = passwordEditText.getText().toString().trim();
 
                 // plz just comment this code don't remove it
-                final Intent homeIntent = new Intent(MainActivity.this, NavigationActivity.class);
-                startActivity(homeIntent);
+//                final Intent homeIntent = new Intent(MainActivity.this, NavigationActivity.class);
+//                startActivity(homeIntent);
 
-//                authRepository.login(email,password).enqueue(new Callback<LoginResponse>() {
-//                    @Override
-//                    public void onResponse(@NonNull Call<LoginResponse> call, @NonNull Response<LoginResponse> response) {
-//                        if (response.isSuccessful() && response.body() != null) {
-//                            String token = response.body().getToken();
-//                            if (token != null && !token.isEmpty()) {
-//                                tokenManager.saveToken(token,response.body());
-//                                Toast.makeText(MainActivity.this, "Login Successful!", Toast.LENGTH_SHORT).show();
-//                                Log.d(token, "Login Success: " + token);
-//                                Log.d("LoginActivity", "Login Success: " + response.body());
-//                                final Intent homeIntent = new Intent(MainActivity.this, NavigationActivity.class);
-//                                startActivity(homeIntent);
-//                            } else {
-//                                Log.e("LoginActivity", "Token missing in successful response");
-//                                Toast.makeText(MainActivity.this, "Unexpected server response", Toast.LENGTH_SHORT).show();
-//                            }
-//                        } else {
-//                            try {
-//                                assert response.errorBody() != null;
-//                                String errorBody = response.errorBody().string();
-//                                Log.e("LoginActivity", "Login Failed - Error Body: " + errorBody);
-//                            } catch (Exception e) {
-//                                Log.e("LoginActivity", "Login Failed - Error Reading Error Body", e);
-//                            }
-//                            Toast.makeText(MainActivity.this, "Login Failed!", Toast.LENGTH_SHORT).show();
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onFailure(@NonNull Call<LoginResponse> call, @NonNull Throwable t) {
-//                        Log.e("LoginActivity", "Network error: " + t.getMessage(), t);
-//                        Toast.makeText(MainActivity.this, "Network error occurred. Please check your connection.", Toast.LENGTH_SHORT).show();
-//                    }
-//                });
+                authRepository.login(email,password).enqueue(new Callback<LoginResponse>() {
+                    @Override
+                    public void onResponse(@NonNull Call<LoginResponse> call, @NonNull Response<LoginResponse> response) {
+                        if (response.isSuccessful() && response.body() != null) {
+                            String token = response.body().getToken();
+                            if (token != null && !token.isEmpty()) {
+                                tokenManager.saveToken(token,response.raw());
+                                Toast.makeText(MainActivity.this, "Login Successful!", Toast.LENGTH_SHORT).show();
+                                Log.d(token, "Login Success: " + token);
+                                Log.d("LoginActivity", "Login Success: " + response.body());
+                                // Sync projects after successful login
+                                projectRepository.syncProjects(token, new ProjectRepository.SyncProjectsCallback() {
+                                    @Override
+                                    public void onSyncCompleted(List<ProjectsResponse> projects) {
+                                        Toast.makeText(MainActivity.this,
+                                                "Synced " + projects.size() + " projects",
+                                                Toast.LENGTH_SHORT).show();
+
+                                        // Navigate to NavigationActivity
+                                        final Intent homeIntent = new Intent(MainActivity.this, NavigationActivity.class);
+                                        startActivity(homeIntent);
+                                        finish(); // Close the login activity
+                                    }
+                                    @Override
+                                    public void onSyncFailed(Exception e) {
+                                        Toast.makeText(MainActivity.this,
+                                                "Failed to sync projects: " + e.getMessage(),
+                                                Toast.LENGTH_SHORT).show();
+
+                                        // Navigate to NavigationActivity even if sync fails
+                                        final Intent homeIntent = new Intent(MainActivity.this, NavigationActivity.class);
+                                        startActivity(homeIntent);
+                                        finish(); // Close the login activity
+                                    }
+                                });
+                            } else {
+                                Log.e("LoginActivity", "Token missing in successful response");
+                                Toast.makeText(MainActivity.this, "Unexpected server response", Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            try {
+                                assert response.errorBody() != null;
+                                String errorBody = response.errorBody().string();
+                                Log.e("LoginActivity", "Login Failed - Error Body: " + errorBody);
+                            } catch (Exception e) {
+                                Log.e("LoginActivity", "Login Failed - Error Reading Error Body", e);
+                            }
+                            Toast.makeText(MainActivity.this, "Login Failed!", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<LoginResponse> call, @NonNull Throwable t) {
+                        Log.e("LoginActivity", "Network error: " + t.getMessage(), t);
+                        Toast.makeText(MainActivity.this, "Network error occurred. Please check your connection.", Toast.LENGTH_SHORT).show();
+                    }
+                });
 
             }
         });

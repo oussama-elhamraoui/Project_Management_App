@@ -7,13 +7,14 @@ import android.util.Base64;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.example.projectmanagementapp.data.remote.model.LoginResponse;
 import com.example.projectmanagementapp.data.remote.model.UserProfile;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.nio.charset.StandardCharsets;
+
+import okhttp3.Response;
 
 public class TokenManager {
     private static final String PREF_NAME = "app_prefs";
@@ -29,18 +30,22 @@ public class TokenManager {
         preferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
     }
 
+    public static SharedPreferences getPreferences() {
+        return preferences;
+    }
+
     /**
      * Save the authentication token
      * @param token JWT token to be saved
      */
-    public void saveToken(String token,LoginResponse loginResponse) {
+    public void saveToken(String token, Response RawBody) {
         if (!TextUtils.isEmpty(token)) {
             preferences.edit().putString(TOKEN_KEY, token).apply();
 
             // Extract and save additional user info from token
             try {
-                UserProfile userInfo = parseTokenPayload(token,loginResponse);
-                Log.d("GetEmailFromString ",userInfo.getEmail()+token+"  "+loginResponse);
+                UserProfile userInfo = parseTokenPayload(token,RawBody);
+                Log.d("GetEmailFromString ",userInfo.getEmail()+token+"  "+RawBody);
                 saveUserInfo(userInfo);
             } catch (Exception e) {
                 // Log the error or handle token parsing failure
@@ -138,7 +143,7 @@ public class TokenManager {
      * @return Parsed user information
      * @throws Exception if token parsing fails
      */
-    public UserProfile parseTokenPayload(String token,LoginResponse loginResponse) throws Exception {
+    public UserProfile parseTokenPayload(String token, Response loginResponse) throws Exception {
         // Parse the entire token response JSON
         JSONObject responseJson = new JSONObject(String.valueOf(loginResponse));
         String tokenN = responseJson.getString("token");
