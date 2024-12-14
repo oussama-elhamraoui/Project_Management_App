@@ -15,10 +15,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.res.ResourcesCompat;
 
-import com.example.projectmanagementapp.MainActivity;
 import com.example.projectmanagementapp.R;
 import com.example.projectmanagementapp.data.remote.model.AuthResponse;
-import com.example.projectmanagementapp.data.remote.model.SignUpResponse;
 import com.example.projectmanagementapp.data.remote.repository.AuthRepository;
 import com.example.projectmanagementapp.models.UserTheme;
 import com.example.projectmanagementapp.state.UserState;

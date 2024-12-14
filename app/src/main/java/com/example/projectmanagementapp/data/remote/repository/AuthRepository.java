@@ -4,7 +4,6 @@ import com.example.projectmanagementapp.data.remote.api.ApiClient;
 import com.example.projectmanagementapp.data.remote.api.ApiService;
 import com.example.projectmanagementapp.data.remote.model.AuthResponse;
 import com.example.projectmanagementapp.data.remote.model.LoginRequest;
-import com.example.projectmanagementapp.data.remote.model.SignUpResponse;
 import com.example.projectmanagementapp.utils.TokenManager;
 
 import retrofit2.Call;
