@@ -3,6 +3,8 @@ package com.example.projectmanagementapp.models;
 import kotlin.NotImplementedError;
 
 public class Project {
+
+
     public int id;
     public String name;
     public Task[] tasks;
@@ -25,7 +27,9 @@ public class Project {
         throw new NotImplementedError("Implement Tasks");
         //return Arrays.stream(this.tasks).filter((task) -> {return task.status == status;});
     }
-
+    public String getName() {
+        return name;
+    }
     //
     public int getProgress() {
         return 80; // (int)(getTasksByStatus(Status.Done).length / tasks.length * 100);
