@@ -3,7 +3,7 @@ package com.example.projectmanagementapp.data.remote.model;
 import com.example.projectmanagementapp.models.User;
 import com.example.projectmanagementapp.models.UserTheme;
 
-public class LoginResponse {
+public class AuthResponse {
     private String token;
     private int userId;
     private String firstName;

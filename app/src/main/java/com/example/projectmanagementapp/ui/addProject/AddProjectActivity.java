@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowInsets;
 import android.view.WindowInsetsController;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import androidx.activity.EdgeToEdge;
@@ -29,17 +30,22 @@ public class AddProjectActivity  extends AppCompatActivity {
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Handle the click event here
+                final EditText projectName = findViewById(R.id.et_project_name);
+                final EditText projectDescription = findViewById(R.id.et_project_description);
+
+
+
                 final Intent homeIntent = new Intent(AddProjectActivity.this, TasksActivity.class);
                 startActivity(homeIntent);
             }
         });
         final View rootView = findViewById(android.R.id.content);
+        //* this code is for the ui to not touch the battery connection
         ViewCompat.setOnApplyWindowInsetsListener(rootView, (view, windowInsets) -> {
             // Get insets for system bars
             final Insets systemBars = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
 
-            // Adjust view padding based on system bar insets
+            // Adjust view padding based on system bar insets to
             view.setPadding(
                     systemBars.left,
                     systemBars.top,

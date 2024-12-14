@@ -1,5 +1,7 @@
 package com.example.projectmanagementapp.models;
 
+import androidx.annotation.NonNull;
+
 public class User {
     private final int userId;
     String firstName;
@@ -32,6 +34,7 @@ public class User {
         return this.firstName + " "+  this.lastName;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "User{" +

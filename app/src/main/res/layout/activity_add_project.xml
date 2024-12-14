@@ -10,7 +10,7 @@
 
 
     <EditText
-        android:id="@+id/text_input_project_name"
+        android:id="@+id/et_project_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -62,7 +62,7 @@
 
 
     <EditText
-        android:id="@+id/text_input_project_description"
+        android:id="@+id/et_project_description"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_gravity="center"

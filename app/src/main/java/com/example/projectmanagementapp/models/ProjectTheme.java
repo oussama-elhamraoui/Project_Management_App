@@ -22,4 +22,13 @@ public class ProjectTheme {
             PINK,
     };
 
+    public static ProjectTheme getColor(int color) {
+        for (ProjectTheme theme : values) {
+            if (theme.primaryColor == color) {
+                return theme;
+            }
+        }
+        return values[0];
+    }
+
 }

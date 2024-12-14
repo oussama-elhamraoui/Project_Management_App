@@ -27,17 +27,17 @@ public class FragmentProjects extends Fragment {
 
     // Sample data
     private final ArrayList<Project> projects = new ArrayList<>(Arrays.asList(
-            new Project("First Project", new Task[]{
+            new Project(-1, "First Project", "", new Task[]{
                     new Task("Task 1", Duration.ZERO),
                     new Task("Task 2", Duration.ZERO),
                     new Task("Task 3", Duration.ZERO)
             }, ProjectTheme.RED),
-            new Project("Second Project", new Task[]{
+            new Project(-1,"Second Project", "",new Task[]{
                     new Task("Task A", Duration.ZERO),
                     new Task("Task B", Duration.ZERO),
                     new Task("Task C", Duration.ZERO)
             },  ProjectTheme.BLUE),
-            new Project("Third Project", new Task[]{
+            new Project(-1,"Third Project", "", new Task[]{
                     new Task("Task X", Duration.ZERO)
             },  ProjectTheme.ORANGE)
     ));

@@ -35,10 +35,9 @@ public class ProjectRepository {
     private final ExecutorService executor;
 
 
-    // TODO: fix this shit
-    private final String TOKEN = "";
+    private final String TOKEN = TokenManager.getToken();
 
-    public ProjectRepository(Context context, String token) {
+    public ProjectRepository(Context context) {
         this.apiService = ApiClient.getInstance().create(ApiService.class);
         this.appDatabase = AppDatabase.getInstance(context);
         this.executor = Executors.newSingleThreadExecutor();

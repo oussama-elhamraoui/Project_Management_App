@@ -3,13 +3,17 @@ package com.example.projectmanagementapp.models;
 import kotlin.NotImplementedError;
 
 public class Project {
+    public int id;
     public String name;
     public Task[] tasks;
     public ProjectTheme theme;
+    public String description;
 
-    public Project(String name, Task[] tasks, ProjectTheme theme){
+    public Project(int id, String name, String description, Task[] tasks, ProjectTheme theme){
+        this.id = id;
         this.tasks = tasks;
         this.name = name;
+        this.description = description;
         this.theme = theme;
     }
 
