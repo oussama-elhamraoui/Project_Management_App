@@ -2,28 +2,23 @@ package com.example.projectmanagementapp.data.remote.model;
 
 public class ProjectRequest {
 
-    private String title;
-    private String description;
+    final private String title;
+    final private String description;
+    final private int color;
 
-    public ProjectRequest(String title, String description) {
+    public ProjectRequest(String title, String description, int color) {
         this.title = title;
         this.description = description;
+        this.color = color;
     }
 
     public String getDescription() {
         return description;
     }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public String getTitle() {
         return title;
     }
+    public int getColor() { return color; }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
 
 }

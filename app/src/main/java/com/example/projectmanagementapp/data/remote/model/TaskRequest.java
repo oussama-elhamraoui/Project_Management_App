@@ -5,7 +5,7 @@ import java.util.Date;
 public class TaskRequest {
     private String title;
     private String description;
-    private String priority; //set a default value if not to be used
+    private String priority; // set a default value if not to be used
     private String status;
     private Date dueDate;
 

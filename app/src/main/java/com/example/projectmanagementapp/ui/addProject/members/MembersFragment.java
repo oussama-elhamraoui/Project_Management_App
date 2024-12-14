@@ -69,9 +69,9 @@ public class MembersFragment extends Fragment {
 
         // Example data
         final List<User> members = new ArrayList<>();
-        members.add(new User("Alice", "Project Manager", UserTheme.values[0]));
-        members.add(new User("Bob", "Developer", UserTheme.values[1]));
-        members.add(new User("Carol", "Designer", UserTheme.values[2]));
+        members.add(new User(1, "Alice", "Project Manager","", UserTheme.values[0]));
+        members.add(new User(1, "Bob", "Developer","", UserTheme.values[1]));
+        members.add(new User(1, "Carol", "Designer","", UserTheme.values[2]));
 
         final MembersAdapter adapter = new MembersAdapter(members);
         recyclerView.setAdapter(adapter);

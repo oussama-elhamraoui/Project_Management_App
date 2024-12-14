@@ -18,18 +18,8 @@
             android:layout_height="65dp"
             android:orientation="horizontal"
             android:gravity="center_vertical">
+            <include  layout="@layout/fragment_member"/>
 
-            <androidx.cardview.widget.CardView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:cardCornerRadius="100dp">
-
-                <ImageView
-                    android:layout_width="55dp"
-                    android:layout_height="55dp"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/fake_person" />
-            </androidx.cardview.widget.CardView>
 
             <View
                 android:layout_width="15dp"
@@ -50,6 +40,7 @@
                     android:textSize="15sp" />
 
                 <TextView
+                    android:id="@+id/tv_username"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/work_sans_bold"
