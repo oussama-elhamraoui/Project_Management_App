@@ -33,7 +33,7 @@ public class TokenManager {
      * Save the authentication token
      * @param token JWT token to be saved
      */
-    public void saveToken(String token,LoginResponse loginResponse) {
+    public void saveToken(String token, LoginResponse loginResponse) {
         if (!TextUtils.isEmpty(token)) {
             preferences.edit().putString(TOKEN_KEY, token).apply();
 

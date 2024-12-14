@@ -26,6 +26,7 @@ import androidx.core.content.res.ResourcesCompat;
 
 import com.example.projectmanagementapp.data.remote.model.LoginResponse;
 import com.example.projectmanagementapp.data.remote.repository.AuthRepository;
+import com.example.projectmanagementapp.state.UserState;
 import com.example.projectmanagementapp.ui.NavigationActivity;
 import com.example.projectmanagementapp.ui.auth.SignUpActivity;
 import com.example.projectmanagementapp.ui.tasks.TasksActivity;
@@ -53,18 +54,17 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
 
-
-
-        final AuthRepository authRepository = new AuthRepository();
-        final TokenManager tokenManager = new TokenManager(this);
-
-
-
         // Retrieving the email, password, loginButton and signUpButton from the UI
         final EditText EmailEditText =  findViewById(R.id.email_edit_text);
         final EditText passwordEditText = findViewById(R.id.password_edit_text);
         final Button loginButton = findViewById(R.id.login_button);
         final Button signUpButton = findViewById(R.id.sign_up_button);
+
+        final TokenManager tokenManager = new TokenManager(this);
+        final AuthRepository authRepository = new AuthRepository();
+
+
+
 
 
         loginButton.setOnClickListener(new View.OnClickListener(){
@@ -73,43 +73,47 @@ public class MainActivity extends AppCompatActivity {
                 final String password = passwordEditText.getText().toString().trim();
 
                 // plz just comment this code don't remove it
-                final Intent homeIntent = new Intent(MainActivity.this, NavigationActivity.class);
-                startActivity(homeIntent);
+//                final Intent homeIntent = new Intent(MainActivity.this, NavigationActivity.class);
+//                startActivity(homeIntent);
 
-//                authRepository.login(email,password).enqueue(new Callback<LoginResponse>() {
-//                    @Override
-//                    public void onResponse(@NonNull Call<LoginResponse> call, @NonNull Response<LoginResponse> response) {
-//                        if (response.isSuccessful() && response.body() != null) {
-//                            String token = response.body().getToken();
-//                            if (token != null && !token.isEmpty()) {
-//                                tokenManager.saveToken(token,response.body());
-//                                Toast.makeText(MainActivity.this, "Login Successful!", Toast.LENGTH_SHORT).show();
-//                                Log.d(token, "Login Success: " + token);
-//                                Log.d("LoginActivity", "Login Success: " + response.body());
-//                                final Intent homeIntent = new Intent(MainActivity.this, NavigationActivity.class);
-//                                startActivity(homeIntent);
-//                            } else {
-//                                Log.e("LoginActivity", "Token missing in successful response");
-//                                Toast.makeText(MainActivity.this, "Unexpected server response", Toast.LENGTH_SHORT).show();
-//                            }
-//                        } else {
-//                            try {
-//                                assert response.errorBody() != null;
-//                                String errorBody = response.errorBody().string();
-//                                Log.e("LoginActivity", "Login Failed - Error Body: " + errorBody);
-//                            } catch (Exception e) {
-//                                Log.e("LoginActivity", "Login Failed - Error Reading Error Body", e);
-//                            }
-//                            Toast.makeText(MainActivity.this, "Login Failed!", Toast.LENGTH_SHORT).show();
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onFailure(@NonNull Call<LoginResponse> call, @NonNull Throwable t) {
-//                        Log.e("LoginActivity", "Network error: " + t.getMessage(), t);
-//                        Toast.makeText(MainActivity.this, "Network error occurred. Please check your connection.", Toast.LENGTH_SHORT).show();
-//                    }
-//                });
+
+                authRepository.login(email, password).enqueue(new Callback<LoginResponse>() {
+                    @Override
+                    public void onResponse(@NonNull Call<LoginResponse> call, @NonNull Response<LoginResponse> response) {
+                        if (response.isSuccessful() && response.body() != null) {
+
+                            String token = response.body().getToken();
+                            if (token != null && !token.isEmpty()) {
+                                tokenManager.saveToken(token,response.body());
+                                Toast.makeText(MainActivity.this, "Login Successful!", Toast.LENGTH_SHORT).show();
+                                Log.d(token, "Login Success: " + token);
+                                Log.d("LoginActivity", "Login Success: " + response.body());
+                                UserState.getInstance().setUser(response.body().getUser());
+                                final Intent homeIntent = new Intent(MainActivity.this, NavigationActivity.class);
+                                startActivity(homeIntent);
+
+                            } else {
+                                Log.e("LoginActivity", "Token missing in successful response");
+                                Toast.makeText(MainActivity.this, "Unexpected server response", Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            try {
+                                assert response.errorBody() != null;
+                                String errorBody = response.errorBody().string();
+                                Log.e("LoginActivity", "Login Failed - Error Body: " + errorBody);
+                            } catch (Exception e) {
+                                Log.e("LoginActivity", "Login Failed - Error Reading Error Body", e);
+                            }
+                            Toast.makeText(MainActivity.this, "Login Failed!", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<LoginResponse> call, @NonNull Throwable t) {
+                        Log.e("LoginActivity", "Network error: " + t.getMessage(), t);
+                        Toast.makeText(MainActivity.this, "Network error occurred. Please check your connection.", Toast.LENGTH_SHORT).show();
+                    }
+                });
 
             }
         });

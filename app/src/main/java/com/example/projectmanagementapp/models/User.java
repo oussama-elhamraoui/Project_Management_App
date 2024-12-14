@@ -1,19 +1,24 @@
 package com.example.projectmanagementapp.models;
 
 public class User {
-    final String firstName;
-    final String lastName;
-
+    private final int userId;
+    String firstName;
+    String lastName;
+    final private String email;
     final UserTheme theme;
 
-    public User(final String firstName, final String lastName, final UserTheme theme) {
+    public User(final int id, final String firstName, final String lastName, final String email, final UserTheme theme) {
+        this.userId = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.theme = theme;
+        this.email = email;
     }
-    public final int getColor(){
+
+    public final int getColor() {
         return theme.color;
     }
+
     public final String getProfile() {
         if (this.firstName == null || this.lastName == null ||
                 this.firstName.isEmpty() || this.lastName.isEmpty()) {
@@ -21,7 +26,20 @@ public class User {
         }
         return String.valueOf(this.firstName.toUpperCase().charAt(0))
                 + this.lastName.toUpperCase().charAt(0);
-
     }
 
+    public final String getUsername(){
+        return this.firstName + " "+  this.lastName;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId=" + userId +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", theme=" + theme +
+                '}';
+    }
 }

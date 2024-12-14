@@ -35,7 +35,8 @@ public class ProjectRepository {
     private final ExecutorService executor;
 
 
-    private final String TOKEN = TokenManager.getPreferences().toString();
+    // TODO: fix this shit
+    private final String TOKEN = "";
 
     public ProjectRepository(Context context, String token) {
         this.apiService = ApiClient.getInstance().create(ApiService.class);

@@ -24,4 +24,5 @@ public class MemberState {
     public void toggle(){
         isAdmin.setValue(Boolean.FALSE.equals(isAdmin.getValue())); // isAdmin.setValue(!(isAdmin.getValue()))
     }
+
 }

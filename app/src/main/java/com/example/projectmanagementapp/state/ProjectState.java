@@ -26,16 +26,20 @@ public class ProjectState {
     }
 
     public void addMember(final User member) {
-        // Get the current list of members or initialize an empty list if null
         List<User> updatedMembers = members.getValue();
-        if (updatedMembers == null) {
-            updatedMembers = new ArrayList<>();
-        }
 
-        // Add the new member to the list
+        assert updatedMembers != null;
         updatedMembers.add(member);
 
-        // Update the original members list
+        members.setValue(updatedMembers);
+    }
+
+    public void deleteMember(final User member){
+        List<User> updatedMembers = members.getValue();
+
+        assert updatedMembers != null;
+        updatedMembers.remove(member);
+
         members.setValue(updatedMembers);
     }
 
