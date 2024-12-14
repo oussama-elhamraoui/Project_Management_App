@@ -18,6 +18,7 @@ public class AuthResponse {
     }
 
     public User getUser() {
+        System.out.println("Added User");
         return new User(
                 userId,
                 firstName,

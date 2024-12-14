@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.projectmanagementapp.models.Project;
 import com.example.projectmanagementapp.models.ProjectTheme;
+import com.example.projectmanagementapp.models.Task;
 import com.example.projectmanagementapp.models.User;
 import com.example.projectmanagementapp.models.UserTheme;
 
@@ -16,8 +17,11 @@ public class ProjectState {
     private final MutableLiveData<List<User>> members;
 
     private ProjectState() {
-        this.members = new MutableLiveData<>();
-        this.members.setValue(new ArrayList<>()); // Initialize with an empty list
+        members = new MutableLiveData<>();
+        members.setValue(new ArrayList<>()); // Initialize with an empty list
+        final Task[] defaultTasks ={};
+        project = new Project(-1, "", "", defaultTasks, ProjectTheme.BLUE);
+
     }
 
     public static ProjectState getInstance(){
@@ -41,6 +45,7 @@ public class ProjectState {
     }
 
     public void setTheme(ProjectTheme theme){
+
         project.theme = theme;
     }
 

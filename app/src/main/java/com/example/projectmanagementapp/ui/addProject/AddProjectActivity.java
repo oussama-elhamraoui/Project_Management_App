@@ -1,6 +1,5 @@
 package com.example.projectmanagementapp.ui.addProject;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,13 +17,29 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.projectmanagementapp.R;
+import com.example.projectmanagementapp.data.remote.model.ProjectRequest;
+import com.example.projectmanagementapp.data.remote.model.ProjectsResponse;
+import com.example.projectmanagementapp.data.remote.repository.ProjectRepository;
+import com.example.projectmanagementapp.models.ProjectTheme;
+import com.example.projectmanagementapp.models.User;
+import com.example.projectmanagementapp.state.ProjectState;
+import com.example.projectmanagementapp.state.UserProjectsState;
 import com.example.projectmanagementapp.ui.tasks.TasksActivity;
+
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class AddProjectActivity  extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_add_project);
+
+        final ProjectRepository projectRepository = new ProjectRepository(this);
+
 
         final LinearLayout btnNext = findViewById(R.id.btn_next);
         btnNext.setOnClickListener(new View.OnClickListener() {
@@ -33,10 +48,30 @@ public class AddProjectActivity  extends AppCompatActivity {
                 final EditText projectName = findViewById(R.id.et_project_name);
                 final EditText projectDescription = findViewById(R.id.et_project_description);
 
+                final String name = projectName.getText().toString().trim();
+                final String description = projectDescription.getText().toString().trim();
+                final ProjectTheme theme = ProjectState.getInstance().getTheme();
+                final List<User> members = ProjectState.getInstance().getProject().getMembers();
+
+                final ProjectRequest projectRequest = new ProjectRequest(name, description, theme.primaryColor, members);
+
+                projectRepository.addProject(projectRequest, new Callback<ProjectsResponse>() {
+                    @Override
+                    public void onResponse(Call<ProjectsResponse> call, Response<ProjectsResponse> response) {
+                        UserProjectsState.getInstance().addProject(response.body().getProject());
+                        final Intent homeIntent = new Intent(AddProjectActivity.this, TasksActivity.class);
+                        startActivity(homeIntent);
+                    }
+
+                    @Override
+                    public void onFailure(Call<ProjectsResponse> call, Throwable t) {
+
+                    }
+                });
 
 
-                final Intent homeIntent = new Intent(AddProjectActivity.this, TasksActivity.class);
-                startActivity(homeIntent);
+
+
             }
         });
         final View rootView = findViewById(android.R.id.content);

@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserProjectsState {
-    private UserProjectsState instance;
+    private static UserProjectsState instance;
 
     public final MutableLiveData<List<Project>> projects;
 
@@ -16,7 +16,7 @@ public class UserProjectsState {
         projects = new MutableLiveData<>(new ArrayList<Project>());
     }
 
-    public UserProjectsState getInstance(){
+    public static UserProjectsState getInstance(){
         if(instance == null){
             instance = new UserProjectsState();
         }

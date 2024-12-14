@@ -3,6 +3,7 @@ package com.example.projectmanagementapp.data.remote.model;
 import com.example.projectmanagementapp.models.Project;
 import com.example.projectmanagementapp.models.ProjectTheme;
 import com.example.projectmanagementapp.models.Task;
+import com.example.projectmanagementapp.models.User;
 
 import java.util.List;
 
@@ -12,18 +13,20 @@ public class ProjectsResponse {
     private String description;
 
     private Task[] tasks;
-
-
     private int color;
 
+    private List<User> members;
+
     public Project getProject(){
-        return new Project(
+        Project project = new Project(
                 id,
                 title,
                 description,
                 tasks,
-                ProjectTheme.getColor(color)
+                ProjectTheme.getColor(color),
+                members
         );
+        return project;
     }
 
     public int getId() {
