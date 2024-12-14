@@ -7,7 +7,7 @@ import android.util.Base64;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.example.projectmanagementapp.data.remote.model.LoginResponse;
+import com.example.projectmanagementapp.data.remote.model.AuthResponse;
 import com.example.projectmanagementapp.data.remote.model.UserProfile;
 
 import org.json.JSONException;
@@ -33,7 +33,7 @@ public class TokenManager {
      * Save the authentication token
      * @param token JWT token to be saved
      */
-    public void saveToken(String token, LoginResponse loginResponse) {
+    public void saveToken(String token, AuthResponse loginResponse) {
         if (!TextUtils.isEmpty(token)) {
             preferences.edit().putString(TOKEN_KEY, token).apply();
 
@@ -52,7 +52,7 @@ public class TokenManager {
      * Get the saved authentication token
      * @return Stored token or null
      */
-    public String getToken() {
+    public static String getToken() {
         return preferences.getString(TOKEN_KEY, null);
     }
 
@@ -138,7 +138,7 @@ public class TokenManager {
      * @return Parsed user information
      * @throws Exception if token parsing fails
      */
-    public UserProfile parseTokenPayload(String token,LoginResponse loginResponse) throws Exception {
+    public UserProfile parseTokenPayload(String token, AuthResponse loginResponse) throws Exception {
         // Parse the entire token response JSON
         JSONObject responseJson = new JSONObject(String.valueOf(loginResponse));
         String tokenN = responseJson.getString("token");
@@ -202,5 +202,5 @@ public class TokenManager {
         }
         return null;
     }
-    
+
 }

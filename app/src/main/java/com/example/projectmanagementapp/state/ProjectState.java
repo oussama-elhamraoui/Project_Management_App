@@ -3,7 +3,9 @@ package com.example.projectmanagementapp.state;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.projectmanagementapp.models.Project;
+import com.example.projectmanagementapp.models.ProjectTheme;
 import com.example.projectmanagementapp.models.User;
+import com.example.projectmanagementapp.models.UserTheme;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +27,10 @@ public class ProjectState {
         return instance;
     }
 
+    public Project getProject(){
+        return project;
+    }
+
     public void addMember(final User member) {
         List<User> updatedMembers = members.getValue();
 
@@ -34,6 +40,13 @@ public class ProjectState {
         members.setValue(updatedMembers);
     }
 
+    public void setTheme(ProjectTheme theme){
+        project.theme = theme;
+    }
+
+    public ProjectTheme getTheme(){
+        return project.theme;
+    }
     public void deleteMember(final User member){
         List<User> updatedMembers = members.getValue();
 

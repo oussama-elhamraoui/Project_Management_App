@@ -17,9 +17,13 @@ import androidx.core.content.res.ResourcesCompat;
 
 import com.example.projectmanagementapp.MainActivity;
 import com.example.projectmanagementapp.R;
+import com.example.projectmanagementapp.data.remote.model.AuthResponse;
 import com.example.projectmanagementapp.data.remote.model.SignUpResponse;
 import com.example.projectmanagementapp.data.remote.repository.AuthRepository;
 import com.example.projectmanagementapp.models.UserTheme;
+import com.example.projectmanagementapp.state.UserState;
+import com.example.projectmanagementapp.ui.NavigationActivity;
+import com.example.projectmanagementapp.utils.TokenManager;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -40,6 +44,7 @@ public class SignUpActivity extends AppCompatActivity {
 
 
         AuthRepository authRepository = new AuthRepository();
+        final TokenManager tokenManager = new TokenManager(this);
 
 
         //we are just collecting the first last and email and password for the UI and when the button is clicked we send the post request to the backend
@@ -55,22 +60,29 @@ public class SignUpActivity extends AppCompatActivity {
         setupPasswordVisibilityToggle(confirmPasswordEditText);
 
         signUpButton.setOnClickListener(v -> {
-            String firstName = firstNameEditText.getText().toString().trim();
-            String lastName = lastNameEditText.getText().toString().trim();
-            String email = emailEditText.getText().toString().trim();
-            String password = passwordEditText.getText().toString();
-            String confirmPassword = confirmPasswordEditText.getText().toString();
+            final String firstName = firstNameEditText.getText().toString().trim();
+            final String lastName = lastNameEditText.getText().toString().trim();
+            final String email = emailEditText.getText().toString().trim();
+            final String password = passwordEditText.getText().toString();
+            final String confirmPassword = confirmPasswordEditText.getText().toString();
+            final int color = UserTheme.randomColor();
 
             if (password.equals(confirmPassword)) {
-                authRepository.signUp( firstName, lastName , email , password, UserTheme.randomColor()).enqueue(new Callback<SignUpResponse>() {
+                authRepository.signUp(firstName, lastName, email, password, color).enqueue(new Callback<AuthResponse>() {
                     @Override
-                    public void onResponse(@NonNull Call<SignUpResponse> call, @NonNull Response<SignUpResponse> response) {
+                    public void onResponse(@NonNull Call<AuthResponse> call, @NonNull Response<AuthResponse> response) {
                         if (response.body() != null) {
-                            // Success: Retrieve and display the success message from the API response
+                            String token = response.body().getToken();
+
+                            tokenManager.saveToken(token,response.body());
+                            Log.d(token, "Login Success: " + token);
+                            Log.d("LoginActivity", "Login Success: " + response.body());
+                            UserState.getInstance().setUser(response.body().getUser());
+                            final Intent homeIntent = new Intent(SignUpActivity.this, NavigationActivity.class);
+                            startActivity(homeIntent);
                             Toast.makeText(SignUpActivity.this, "Registration successful.", Toast.LENGTH_SHORT).show();
                             //! why not just throw him in the home screen
-                            final Intent MainActivity = new Intent(SignUpActivity.this, MainActivity.class);
-                            startActivity(MainActivity);
+
                         } else {
                             // Failure: Display an error message based on the response
                             String errorMessage = "Failed to register. Error: " + response.message();
@@ -79,7 +91,7 @@ public class SignUpActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onFailure(@NonNull Call<SignUpResponse> call, @NonNull Throwable t) {
+                    public void onFailure(@NonNull Call<AuthResponse> call, @NonNull Throwable t) {
                         String failureMessage = "Registration failed: " + t.getMessage();
                         Log.e("LoginActivity", "Login Failed - Error Body: " + t.getMessage());
                         Toast.makeText(SignUpActivity.this, failureMessage, Toast.LENGTH_SHORT).show();

@@ -10,6 +10,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.projectmanagementapp.R;
 import com.example.projectmanagementapp.models.ProjectTheme;
+import com.example.projectmanagementapp.models.UserTheme;
+import com.example.projectmanagementapp.state.ProjectState;
+
 public class ProjectThemeAdapter extends RecyclerView.Adapter<ProjectThemeAdapter.ProjectThemeViewHolder> {
 
     private final ProjectTheme[] projectThemes;
@@ -41,6 +44,8 @@ public class ProjectThemeAdapter extends RecyclerView.Adapter<ProjectThemeAdapte
             if (selectedIndex != index) {
                 int previousIndex = selectedIndex;
                 selectedIndex = index;
+
+                ProjectState.getInstance().setTheme(projectThemes[selectedIndex]);
 
                 // Notify the adapter that the previously selected and newly selected items should be updated
                 notifyItemChanged(previousIndex);

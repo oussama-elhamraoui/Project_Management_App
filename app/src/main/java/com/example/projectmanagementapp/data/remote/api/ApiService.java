@@ -14,10 +14,10 @@ public interface ApiService {
     /**
      * Logs in a user with email and password.
      * @param loginRequest Contains the user's email and password.
-     * @return A LoginResponse containing the token and user details.
+     * @return A AuthResponse containing the token and user details.
      */
     @POST("api/v1/auth/login")
-    Call<LoginResponse> login(@Body LoginRequest loginRequest);
+    Call<AuthResponse> login(@Body LoginRequest loginRequest);
 
     /**
      * Registers a new user with the provided details.
@@ -28,7 +28,7 @@ public interface ApiService {
      * @return A SignUpResponse containing the created user details.
      */
     @POST("api/v1/auth/register")
-    Call<SignUpResponse> signUp(@Query("first_name") String firstname,
+    Call<AuthResponse> signUp(@Query("first_name") String firstname,
                                 @Query("last_name") String lastname,
                                 @Query("email") String email,
                                 @Query("password") String password,

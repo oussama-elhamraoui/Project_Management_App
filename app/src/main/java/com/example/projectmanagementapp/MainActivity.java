@@ -8,9 +8,6 @@ import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import android.content.Intent;
 import android.text.InputType;
@@ -24,12 +21,11 @@ import android.widget.Toast;
 
 import androidx.core.content.res.ResourcesCompat;
 
-import com.example.projectmanagementapp.data.remote.model.LoginResponse;
+import com.example.projectmanagementapp.data.remote.model.AuthResponse;
 import com.example.projectmanagementapp.data.remote.repository.AuthRepository;
 import com.example.projectmanagementapp.state.UserState;
 import com.example.projectmanagementapp.ui.NavigationActivity;
 import com.example.projectmanagementapp.ui.auth.SignUpActivity;
-import com.example.projectmanagementapp.ui.tasks.TasksActivity;
 import com.example.projectmanagementapp.utils.TokenManager;
 
 
@@ -73,25 +69,24 @@ public class MainActivity extends AppCompatActivity {
                 final String password = passwordEditText.getText().toString().trim();
 
                 // plz just comment this code don't remove it
-//                final Intent homeIntent = new Intent(MainActivity.this, NavigationActivity.class);
-//                startActivity(homeIntent);
+                // final Intent homeIntent = new Intent(MainActivity.this, NavigationActivity.class);
+                // startActivity(homeIntent);
 
 
-                authRepository.login(email, password).enqueue(new Callback<LoginResponse>() {
+                authRepository.login(email, password).enqueue(new Callback<AuthResponse>() {
                     @Override
-                    public void onResponse(@NonNull Call<LoginResponse> call, @NonNull Response<LoginResponse> response) {
+                    public void onResponse(@NonNull Call<AuthResponse> call, @NonNull Response<AuthResponse> response) {
                         if (response.isSuccessful() && response.body() != null) {
 
                             String token = response.body().getToken();
                             if (token != null && !token.isEmpty()) {
                                 tokenManager.saveToken(token,response.body());
-                                Toast.makeText(MainActivity.this, "Login Successful!", Toast.LENGTH_SHORT).show();
                                 Log.d(token, "Login Success: " + token);
                                 Log.d("LoginActivity", "Login Success: " + response.body());
                                 UserState.getInstance().setUser(response.body().getUser());
                                 final Intent homeIntent = new Intent(MainActivity.this, NavigationActivity.class);
                                 startActivity(homeIntent);
-
+                                Toast.makeText(MainActivity.this, "Login Successful!", Toast.LENGTH_SHORT).show();
                             } else {
                                 Log.e("LoginActivity", "Token missing in successful response");
                                 Toast.makeText(MainActivity.this, "Unexpected server response", Toast.LENGTH_SHORT).show();
@@ -109,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onFailure(@NonNull Call<LoginResponse> call, @NonNull Throwable t) {
+                    public void onFailure(@NonNull Call<AuthResponse> call, @NonNull Throwable t) {
                         Log.e("LoginActivity", "Network error: " + t.getMessage(), t);
                         Toast.makeText(MainActivity.this, "Network error occurred. Please check your connection.", Toast.LENGTH_SHORT).show();
                     }
