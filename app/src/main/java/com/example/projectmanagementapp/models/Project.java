@@ -3,6 +3,10 @@ package com.example.projectmanagementapp.models;
 import kotlin.NotImplementedError;
 
 public class Project {
+    public String getName() {
+        return name;
+    }
+
     public String name;
     public Task[] tasks;
     public ProjectTheme theme;
