@@ -31,7 +31,10 @@ public interface ApiService {
     Call<SignUpResponse> signUp(@Query("first_name") String firstname,
                                 @Query("last_name") String lastname,
                                 @Query("email") String email,
-                                @Query("password") String password);
+                                @Query("password") String password,
+                                @Query("color") int color);
+
+                                                ;
 
     // Project API
 

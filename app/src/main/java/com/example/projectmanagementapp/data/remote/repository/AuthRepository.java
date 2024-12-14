@@ -25,7 +25,7 @@ public class AuthRepository {
     }
 
     // firstname, lastname , email , password
-    public Call<SignUpResponse> signUp(String email , String password , String firstname , String lastname  ) {
-        return apiService.signUp(email ,password , firstname , lastname);
+    public Call<SignUpResponse> signUp(String email , String password , String firstname , String lastname, int color  ) {
+        return apiService.signUp(email ,password , firstname , lastname, color);
     }
 }

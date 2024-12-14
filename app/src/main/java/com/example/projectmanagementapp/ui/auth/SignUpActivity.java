@@ -19,6 +19,7 @@ import com.example.projectmanagementapp.MainActivity;
 import com.example.projectmanagementapp.R;
 import com.example.projectmanagementapp.data.remote.model.SignUpResponse;
 import com.example.projectmanagementapp.data.remote.repository.AuthRepository;
+import com.example.projectmanagementapp.models.UserTheme;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -61,7 +62,7 @@ public class SignUpActivity extends AppCompatActivity {
             String confirmPassword = confirmPasswordEditText.getText().toString();
 
             if (password.equals(confirmPassword)) {
-                authRepository.signUp( firstName, lastName , email , password ).enqueue(new Callback<SignUpResponse>() {
+                authRepository.signUp( firstName, lastName , email , password, UserTheme.randomColor()).enqueue(new Callback<SignUpResponse>() {
                     @Override
                     public void onResponse(@NonNull Call<SignUpResponse> call, @NonNull Response<SignUpResponse> response) {
                         if (response.body() != null) {
