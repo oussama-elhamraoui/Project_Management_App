@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.projectmanagementapp.R;
+import com.example.projectmanagementapp.data.remote.model.TaskResponse;
 import com.example.projectmanagementapp.models.Task;
 
 import java.time.Duration;
@@ -22,7 +23,7 @@ import java.util.List;
 
 public class TasksFragment extends Fragment {
     private RecyclerView recyclerView;
-    private List<Task> tasksList;
+    private List<TaskResponse> tasksList;
     private TasksAdapter tasksAdapter;
 
     @Override

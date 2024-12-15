@@ -36,4 +36,41 @@ public class TaskResponse {
         this.priority = priority;
         this.dueDate = dueDate;
     }
+
+    public TaskResponse(int id, String name, String description, Date dueDate) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.status = "TO_DO";
+        this.priority = "HIGH";
+        this.dueDate = dueDate;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public Project getProject() {
+        return project;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public String getPriority() {
+        return priority;
+    }
+
+    public Date getDueDate() {
+        return dueDate;
+    }
 }

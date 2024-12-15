@@ -3,6 +3,8 @@ package com.example.projectmanagementapp.ui.tasks;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -11,6 +13,7 @@ import android.view.Window;
 import android.view.WindowInsets;
 import android.view.WindowInsetsController;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,6 +22,7 @@ import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -39,24 +43,32 @@ import com.example.projectmanagementapp.utils.TokenManager;
 
 import org.w3c.dom.Text;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.http.Header;
+import retrofit2.http.Path;
 
 public class TasksActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
-    private List<Task> tasksList;
+    private List<TaskResponse> taskList;
     private TasksAdapter tasksAdapter;
     private Dialog addTaskDialog;
     private Button addTaskButton;
     private ImageButton datePickerButton;
     private TextView datePickerTextView;
     private Button addTaskButtonDialog;
+
+    private static final String STATUS_TODO = "TO_DO";
+    private static final String PRIORITY_HIGH = "HIGH";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,6 +138,11 @@ public class TasksActivity extends AppCompatActivity {
         });
 
         datePickerButton = addTaskDialog.findViewById(R.id.date_picker_image_button);
+        Drawable drawable = datePickerButton.getDrawable();
+//        set the date picker color
+        if (drawable != null) {
+            drawable.setColorFilter(ContextCompat.getColor(this, primaryColor), PorterDuff.Mode.SRC_IN);
+        }
         datePickerTextView = addTaskDialog.findViewById(R.id.date_picker_text_view);
         addTaskButtonDialog = addTaskDialog.findViewById(R.id.add_task_button);
         addTaskButtonDialog.setBackgroundColor(primaryColor);
@@ -153,7 +170,11 @@ public class TasksActivity extends AppCompatActivity {
         addTaskButtonDialog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addTaskDialog.dismiss();
+                TaskRequest taskRequest = createTaskRequest();
+                if (taskRequest != null) {
+                    addTaskToProject(taskRequest);
+                    addTaskDialog.dismiss();
+                }
             }
         });
 
@@ -162,22 +183,43 @@ public class TasksActivity extends AppCompatActivity {
 
         int id = 0; // this is a temp solution plz delete it you need to get the id from the backend
         recyclerView = findViewById(R.id.task_recycler_view);
-        tasksList = new ArrayList<>();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//            Task task1 = new Task(id, "task 1", Duration.between(LocalDateTime.now(), LocalDateTime.now().plusDays(1)));
-            id++;
-//            tasksList.add(task1);
-        }
-        tasksAdapter = new TasksAdapter(tasksList);
+        tasksAdapter = new TasksAdapter(new ArrayList<>()); // Initialize adapter with empty list
+        fetchTasksFromBackend();
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(tasksAdapter);
 
 
     }
+    private TaskRequest createTaskRequest() {
+        EditText taskNameEditText = addTaskDialog.findViewById(R.id.task_name_edit_text);
+        EditText taskDescriptionEditText = addTaskDialog.findViewById(R.id.task_description_edit_text);
+
+        String title = taskNameEditText.getText().toString().trim();
+        String description = taskDescriptionEditText.getText().toString().trim();
+        String dateString = datePickerTextView.getText().toString().trim();
+
+        if (title.isEmpty() || description.isEmpty() || dateString.isEmpty()) {
+            Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
+            return null;
+        }
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+        try {
+            Date dueDate = dateFormat.parse(dateString);
+            return new TaskRequest(title, description, PRIORITY_HIGH, STATUS_TODO, dueDate);
+        } catch (ParseException e) {
+            Toast.makeText(this, "Invalid date format", Toast.LENGTH_SHORT).show();
+            return null;
+        }
+    }
     private void addTaskToProject(TaskRequest task) {
         ApiService taskApi = ApiClient.getInstance().create(ApiService.class);
         Project project = ProjectState.getInstance().getProject();
         User user= UserState.getInstance().getUser();
+        if (project == null || user == null) {
+            Toast.makeText(this, "Project or User not available", Toast.LENGTH_SHORT).show();
+            return;
+        }
         int projectId = project.id;
         int userId = user.getUserId();
         String token = TokenManager.getToken();
@@ -189,7 +231,8 @@ public class TasksActivity extends AppCompatActivity {
             public void onResponse(@NonNull Call<TaskResponse> call, @NonNull Response<TaskResponse> response) {
                 if (response.isSuccessful()) {
                     Toast.makeText(TasksActivity.this, "Task added successfully", Toast.LENGTH_SHORT).show();
-//                    tasksList.add(response.body()); // Add the new task to the list
+//                    taskList.add(response.body()); // Add the new task to the list
+                    tasksAdapter.addTask(response.body());
                     tasksAdapter.notifyDataSetChanged();
                 } else {
                     Toast.makeText(TasksActivity.this, "Failed to add task", Toast.LENGTH_SHORT).show();
@@ -201,5 +244,38 @@ public class TasksActivity extends AppCompatActivity {
                 Toast.makeText(TasksActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+
+    }
+    private void fetchTasksFromBackend() {
+        ApiService taskApi = ApiClient.getInstance().create(ApiService.class);
+        Project project = ProjectState.getInstance().getProject();
+        int projectId = project.id;
+        String token = TokenManager.getToken();
+        Call<List<TaskResponse>> call = taskApi.getTasksByProject(token,projectId);
+
+        call.enqueue(new Callback<List<TaskResponse>>() {
+            @Override
+            public void onResponse(Call<List<TaskResponse>> call, Response<List<TaskResponse>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    taskList = response.body();
+                    updateTasksAdapter(taskList);
+                } else {
+                    Toast.makeText(TasksActivity.this, "Failed to fetch tasks", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<TaskResponse>> call, Throwable t) {
+                Toast.makeText(TasksActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+    private void updateTasksAdapter(List<TaskResponse> tasks) {
+        List<TaskResponse> taskModels = new ArrayList<>();
+        for (TaskResponse response : tasks) {
+            TaskResponse task = new TaskResponse(response.getId(), response.getName(), response.getDescription(), response.getDueDate());
+            taskModels.add(task);
+        }
+        tasksAdapter.updateTasks(taskModels); // Use a method in adapter to update data
     }
 }

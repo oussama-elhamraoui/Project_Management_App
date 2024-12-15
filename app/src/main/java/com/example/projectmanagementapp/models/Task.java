@@ -11,14 +11,23 @@ public class Task {
     public String description;
     public String status;
     public String priority;
-    public LocalDateTime dueDate;
+    public Date dueDate;
 
-    public Task(int id, String name, String description, String status, String priority, LocalDateTime dueDate) {
+    public Task(int id, String name, String description, String status, String priority, Date dueDate) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.status = status;
         this.priority = priority;
+        this.dueDate = dueDate;
+    }
+
+    public Task(int id, String name, String description, Date dueDate) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.status = "TO_DO";
+        this.priority = "HIGH";
         this.dueDate = dueDate;
     }
 

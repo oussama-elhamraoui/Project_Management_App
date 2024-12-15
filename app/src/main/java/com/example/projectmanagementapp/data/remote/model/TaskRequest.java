@@ -24,6 +24,10 @@ public class TaskRequest {
         this.dueDate = dueDate;
     }
 
+    public TaskRequest() {
+
+    }
+
     public String getTitle() {
         return title;
     }
