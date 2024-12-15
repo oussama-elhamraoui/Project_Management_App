@@ -9,6 +9,7 @@ import android.view.WindowInsets;
 import android.view.WindowInsetsController;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +17,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.projectmanagementapp.MainActivity;
 import com.example.projectmanagementapp.R;
 import com.example.projectmanagementapp.data.remote.model.ProjectRequest;
 import com.example.projectmanagementapp.data.remote.model.ProjectsResponse;
@@ -65,6 +67,8 @@ public class AddProjectActivity  extends AppCompatActivity {
 
                     @Override
                     public void onFailure(Call<ProjectsResponse> call, Throwable t) {
+                        Log.d("AddProjectActivity onFailure", "Something went wrong"+t.toString());
+                        Toast.makeText(AddProjectActivity.this, "Unexpected server response", Toast.LENGTH_SHORT).show();
 
                     }
                 });

@@ -36,4 +36,8 @@ public class UserProjectsState {
         projects.setValue(updatedProjects);
     }
 
+    public void setProjects(List<Project> projects){
+        this.projects.setValue(projects);
+    }
+
 }
