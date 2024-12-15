@@ -35,8 +35,8 @@ public class TasksFragment extends Fragment {
         int id = 0; // this is a temp solution plz delete it you need to get the id from the backend
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            Task task1 = new Task(id,"task 1", Duration.between(LocalDateTime.now(), LocalDateTime.now().plusDays(1)));
-            tasksList.add(task1);
+//            Task task1 = new Task(id,"task 1", Duration.between(LocalDateTime.now(), LocalDateTime.now().plusDays(1)));
+//            tasksList.add(task1);
         }
         id++;
         tasksAdapter = new TasksAdapter(tasksList);
