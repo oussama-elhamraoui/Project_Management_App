@@ -30,6 +30,10 @@ public class User {
                 + this.lastName.toUpperCase().charAt(0);
     }
 
+    public int getUserId() {
+        return userId;
+    }
+
     public final String getUsername(){
         return this.firstName + " "+  this.lastName;
     }
