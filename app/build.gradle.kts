@@ -55,6 +55,7 @@ dependencies {
     implementation(libs.recyclerview)
     implementation(libs.androidx.navigation.fragment)
     implementation(libs.androidx.navigation.ui)
+    implementation(libs.androidx.room.common)
 
 
 

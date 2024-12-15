@@ -56,6 +56,8 @@ public class AddProjectActivity  extends AppCompatActivity {
                 final List<User> members = ProjectState.getInstance().getProject().getMembers();
 
                 final ProjectRequest projectRequest = new ProjectRequest(name, description, theme.primaryColor, members);
+                final Intent homeIntent = new Intent(AddProjectActivity.this, TasksActivity.class);
+                startActivity(homeIntent);
 
                 projectRepository.addProject(projectRequest, new Callback<ProjectsResponse>() {
                     @Override
