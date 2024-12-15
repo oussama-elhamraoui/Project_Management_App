@@ -87,6 +87,7 @@ public class ProjectRepository {
 
     // Add a new project through the API and save it locally
     public void addProject(ProjectRequest projectRequest, Callback<ProjectsResponse> callback) {
+
         apiService.createProject("Bearer " + TOKEN, projectRequest).enqueue(new Callback<ProjectsResponse>() {
             @Override
             public void onResponse(@NonNull Call<ProjectsResponse> call, @NonNull Response<ProjectsResponse> response) {
