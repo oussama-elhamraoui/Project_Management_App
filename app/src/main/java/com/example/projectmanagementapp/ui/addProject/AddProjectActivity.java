@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -56,8 +57,8 @@ public class AddProjectActivity  extends AppCompatActivity {
                 final List<User> members = ProjectState.getInstance().getProject().getMembers();
 
                 final ProjectRequest projectRequest = new ProjectRequest(name, description, theme.primaryColor, members);
-                final Intent homeIntent = new Intent(AddProjectActivity.this, TasksActivity.class);
-                startActivity(homeIntent);
+                final Intent tasksIntent = new Intent(AddProjectActivity.this, TasksActivity.class);
+                startActivity(tasksIntent);
 
                 projectRepository.addProject(projectRequest, new Callback<ProjectsResponse>() {
                     @Override
@@ -88,9 +89,9 @@ public class AddProjectActivity  extends AppCompatActivity {
 
             // Adjust view padding based on system bar insets to
             view.setPadding(
-                    systemBars.left,
+                    0,
                     systemBars.top,
-                    systemBars.right,
+                    0,
                     systemBars.bottom
             );
 

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F5F5F5"
-    android:padding="10dp">
+    android:padding="20dp">
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -16,21 +16,31 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv_project_name_bg"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="0dp"
+            android:layout_marginStart="5dp"
+            app:cardBackgroundColor="#FF5353"
+            android:layout_width="wrap_content"
+            android:layout_height="72dp">
         <TextView
             android:id="@+id/project_name_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/rounded_corner"
             android:backgroundTint="#FF5353"
-            android:fontFamily="@font/work_sans_bold"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowColor="#0F000000"
+            android:fontFamily="@font/poppins_bold"
             android:padding="20sp"
             android:text="Project Name"
             android:textColor="#FFFFFF"
             android:textSize="20sp" />
-
+    </androidx.cardview.widget.CardView>
         <View
-            android:layout_width="180dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="10dp" />
 
         <ImageButton
@@ -39,17 +49,25 @@
             android:layout_height="40dp"
             android:background="@drawable/rounded_corner"
             android:backgroundTint="#F5F5F5"
-            android:src="@drawable/baseline_more_vert" />
+            android:src="@drawable/ic_more_vert"
+            />
     </LinearLayout>
 
     <Button
         android:id="@+id/add_task_button"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="49dp"
         android:layout_marginTop="20dp"
         android:background="@drawable/rounded_background"
-        android:fontFamily="@font/work_sans_bold"
-        android:text="Add Task"
+        android:fontFamily="@font/poppins_bold"
+        android:text="@string/add_task"
+        android:elevation="1dp"
+        android:shadowColor="#1F8B0000"
+        android:shadowDy="0"
+        android:shadowDx="0"
+        android:shadowRadius="2"
+        android:textAllCaps="false"
+        android:letterSpacing="0"
         android:textColor="#FF5353"
         android:textSize="18sp"
         app:backgroundTint="@color/white"
@@ -71,25 +89,32 @@
             android:id="@+id/tasks_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/work_sans_bold"
+            android:fontFamily="@font/poppins_semi_bold"
             android:text="Tasks"
             android:textColor="#000000"
-            android:textSize="20sp" />
+            android:textSize="21sp" />
 
         <View
-            android:layout_width="8dp"
-            android:layout_height="10dp" />
-
+            android:layout_width="6dp"
+            android:layout_height="match_parent" />
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv_tasks_count_bg"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="0dp"
+            app:cardBackgroundColor="#FFE6E6"
+            android:layout_gravity="center">
         <TextView
             android:id="@+id/tasks_number_text_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/rounded_background"
-            android:backgroundTint="#FFE6E6"
-            android:fontFamily="@font/work_sans_bold"
-            android:padding="8dp"
-            android:text="5"
-            android:textColor="#FF5353" />
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="0"
+            android:textSize="12sp"
+            android:textColor="#FF5353"
+            android:fontFamily="@font/radio_canada_medium"
+            android:textAlignment="center"  />
+        </androidx.cardview.widget.CardView>
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView

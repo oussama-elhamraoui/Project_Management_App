@@ -37,4 +37,5 @@
     <string name="member_email">Member Email</string>
     <string name="invite">Invite</string>
     <string name="add_as_admin">Add as admin</string>
+    <string name="add_task">Add Task</string>
 </resources>
