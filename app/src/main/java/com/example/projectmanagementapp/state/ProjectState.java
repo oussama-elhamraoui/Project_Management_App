@@ -26,6 +26,7 @@ public class ProjectState {
     public static ProjectState getInstance(){
         if(instance == null){
             instance = new ProjectState();
+
         }
         return instance;
     }

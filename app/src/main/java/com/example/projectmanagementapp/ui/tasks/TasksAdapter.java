@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.projectmanagementapp.R;
 import com.example.projectmanagementapp.models.Task;
+import com.example.projectmanagementapp.state.ProjectState;
 
 import java.util.List;
 
@@ -59,6 +60,7 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TasksViewHol
             taskNameTextView = itemView.findViewById(R.id.task_name_text_view);
             durationLeftTextView = itemView.findViewById(R.id.duration_left_text_view);
             moreOptionsButton = itemView.findViewById(R.id.more_vert_image_button);
+            durationLeftTextView.setTextColor(ProjectState.getInstance().getTheme().primaryColor);
         }
         public void showPopupMenu(View view, Task task) {
             // Create a PopupMenu
