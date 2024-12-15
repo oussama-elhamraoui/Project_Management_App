@@ -3,7 +3,7 @@ package com.example.projectmanagementapp.data.local.entities;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "task")
+z
 public class Task {
     @PrimaryKey
     private int id;
