@@ -6,13 +6,15 @@ import java.time.LocalDateTime;
 import java.util.Date;
 
 public class Task {
+    public int id;
     public String name;
     public String description;
     public String status;
     public String priority;
     public LocalDateTime dueDate;
 
-    public Task(String name, String description, String status, String priority, LocalDateTime dueDate) {
+    public Task(int id, String name, String description, String status, String priority, LocalDateTime dueDate) {
+        this.id = id;
         this.name = name;
         this.description = description;
         this.status = status;

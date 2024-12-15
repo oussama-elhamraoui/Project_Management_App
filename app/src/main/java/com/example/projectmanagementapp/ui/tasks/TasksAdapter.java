@@ -39,7 +39,7 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TasksViewHol
     public void onBindViewHolder(@NonNull TasksViewHolder holder, int position) {
         Task task= tasksList.get(position);
         holder.taskNameTextView.setText(task.name);
-        holder.durationLeftTextView.setText(task.getTimeLeft()+" Left");
+//        holder.durationLeftTextView.setText(task.getTimeLeft()+" Left");
         holder.moreOptionsButton.setOnClickListener(view -> holder.showPopupMenu(view, task));
     }
 
