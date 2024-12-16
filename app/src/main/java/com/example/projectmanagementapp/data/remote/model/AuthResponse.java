@@ -18,12 +18,11 @@ public class AuthResponse {
     }
 
     public User getUser() {
-        System.out.println("Added User");
         return new User(
                 userId,
                 firstName,
                 lastName,
-                email, //! this is email not username change it when the api got fix
+                email,
                 UserTheme.getColor(color)
         );
     }
