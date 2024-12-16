@@ -2,8 +2,8 @@ package com.example.projectmanagementapp.utils;
 
 public class Constants {
     // Base URL for your API
-     public static final String BASE_URL = "https://backend-springboot-xx6o.onrender.com/";
-//     public static final String BASE_URL = "http://10.0.2.2:9002/";
+//     public static final String BASE_URL = "https://backend-springboot-xx6o.onrender.com/";
+     public static final String BASE_URL = "http://10.0.2.2:9002/";
 
     // API Endpoints (Optional, for better readability)
     public static final String LOGIN_ENDPOINT = "api/v1/auth/login";
