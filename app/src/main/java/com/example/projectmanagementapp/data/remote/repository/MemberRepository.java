@@ -5,20 +5,28 @@ import com.example.projectmanagementapp.data.remote.api.ApiService;
 import com.example.projectmanagementapp.data.remote.model.AuthResponse;
 import com.example.projectmanagementapp.data.remote.model.ContributorResponse;
 import com.example.projectmanagementapp.data.remote.model.LoginRequest;
+import com.example.projectmanagementapp.state.ProjectState;
 import com.example.projectmanagementapp.utils.TokenManager;
 
 import retrofit2.Call;
 
 public class MemberRepository {
-    final private String token = TokenManager.getToken();
-    private final ApiService apiService;
-    public MemberRepository() {
-        this.apiService = ApiClient.getInstance().create(ApiService.class);
+    private static MemberRepository instance;
+    final static private String token = TokenManager.getToken();
+    private static ApiService apiService;
+    private MemberRepository() {
+        apiService = ApiClient.getInstance().create(ApiService.class);
     }
 
+    public static MemberRepository getInstance(){
+        if(instance == null){
+            instance = new MemberRepository();
+        }
+        return instance;
+    }
 
-    public Call<ContributorResponse> addMember(int projectId, String email) {
-        return apiService.addContributorByEmail(token, projectId, email);
+    public Call<ContributorResponse> addMember(String email) {
+        return apiService.addContributorByEmail(token, ProjectState.getInstance().getProject().id, email);
     }
 
 }

@@ -6,21 +6,15 @@ import com.example.projectmanagementapp.models.Project;
 import com.example.projectmanagementapp.models.ProjectTheme;
 import com.example.projectmanagementapp.models.Task;
 import com.example.projectmanagementapp.models.User;
-import com.example.projectmanagementapp.models.UserTheme;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class ProjectState {
     private static ProjectState instance;
-    private Project project;
-    private final MutableLiveData<List<User>> members;
+    private MutableLiveData<Project> project;
 
     private ProjectState() {
-        members = new MutableLiveData<>();
-        members.setValue(new ArrayList<>()); // Initialize with an empty list
-        project = new Project(-1, "", "", new ArrayList<Task>(), ProjectTheme.BLUE, new ArrayList<User>());
-
+        project = new MutableLiveData<Project>(new Project(-1, "", "", new ArrayList<Task>(), ProjectTheme.BLUE, new ArrayList<User>()));
     }
 
     public static ProjectState getInstance(){
@@ -32,52 +26,47 @@ public class ProjectState {
     }
 
     public void setProject(Project project){
-        this.project=project;
+        this.project.setValue(project);
     }
 
     public Project getProject(){
-        return project;
+        return project.getValue();
     }
 
     public void addMember(final User member) {
-        List<User> updatedMembers = members.getValue();
+        final Project updatedProject= new Project(project.getValue());
+        updatedProject.addMember(member);
+        project.setValue(updatedProject);
 
-        assert updatedMembers != null;
-        updatedMembers.add(member);
-
-        members.setValue(updatedMembers);
+    }
+    public void deleteMember(final User member) {
+        final Project updatedProject= new Project(project.getValue());
+        updatedProject.deleteMember(member);
+        project.setValue(updatedProject);
     }
 
     public void setTheme(ProjectTheme theme){
-
-        project.theme = theme;
+        project.getValue();
     }
 
     public ProjectTheme getTheme(){
-        return project.theme;
-    }
-    public void deleteMember(final User member){
-        List<User> updatedMembers = members.getValue();
-
-        assert updatedMembers != null;
-        updatedMembers.remove(member);
-
-        members.setValue(updatedMembers);
+        return project.getValue().getTheme();
     }
 
     public void addTask(Task task){
-        project.tasks.add(task);
+        final Project updatedProject= new Project(project.getValue());
+        updatedProject.addTask(task);
+        project.setValue(updatedProject);
     }
     public void deleteTask(Task task){
-        project.tasks.remove(task);
+        final Project updatedProject= new Project(project.getValue());
+        updatedProject.deleteTask(task);
+        project.setValue(updatedProject);
     }
     public void updateTask(Task task) {
-        for (int i = 0; i < project.tasks.size(); i++) {
-            if (project.tasks.get(i).id == task.id) {
-                project.tasks.set(i, task);
-                return;
-            }
-        }
+        final Project updatedProject= new Project(project.getValue());
+        updatedProject.updateTask(task);
+        project.setValue(updatedProject);
     }
 
 }
