@@ -45,7 +45,6 @@ public class Project {
         throw new NotImplementedError("Implement Tasks");
         // return Arrays.stream(this.tasks).filter((task) -> {return task.status == status;});
     }
-
     public String getName() {
         return name;
     }

@@ -36,13 +36,13 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class AddProjectActivity  extends AppCompatActivity {
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_add_project);
 
-        final ProjectRepository projectRepository = new ProjectRepository(this);
-
+        final AddProjectActivity context = this;
 
         final LinearLayout btnNext = findViewById(R.id.btn_next);
         btnNext.setOnClickListener(new View.OnClickListener() {
@@ -60,7 +60,7 @@ public class AddProjectActivity  extends AppCompatActivity {
                 final Intent tasksIntent = new Intent(AddProjectActivity.this, TasksActivity.class);
                 startActivity(tasksIntent);
 
-                projectRepository.addProject(projectRequest, new Callback<ProjectsResponse>() {
+                ProjectRepository.getInstance(context).addProject(projectRequest, new Callback<ProjectsResponse>() {
                     @Override
                     public void onResponse(Call<ProjectsResponse> call, Response<ProjectsResponse> response) {
                         UserProjectsState.getInstance().addProject(response.body().getProject());

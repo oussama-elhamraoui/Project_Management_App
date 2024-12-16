@@ -6,6 +6,7 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
@@ -29,6 +30,7 @@ import retrofit2.Response;
 import com.example.projectmanagementapp.utils.TokenManager;
 
 public class ProjectRepository {
+    private static ProjectRepository instance;
     private static final String TAG = "ProjectRepository";
     private final ApiService apiService;
     private final AppDatabase appDatabase;
@@ -37,17 +39,22 @@ public class ProjectRepository {
 
     private final String TOKEN = TokenManager.getToken();
 
-    public ProjectRepository(Context context) {
+    private ProjectRepository(Context context) {
         this.apiService = ApiClient.getInstance().create(ApiService.class);
         this.appDatabase = AppDatabase.getInstance(context);
         this.executor = Executors.newSingleThreadExecutor();
     }
 
+    public static ProjectRepository getInstance(Context context){
+        if(instance == null){
+            instance = new ProjectRepository(context);
+        }
+        return instance;
+    }
     public LiveData<List<Project>> getAllProjects() {
         return appDatabase.projectDao().getAllProjects();
     }
 
-// TODO : add the Project state !!!!!
     public void syncProjects(String token, SyncProjectsCallback callback) {
         executor.execute(() -> {
             try {

@@ -252,7 +252,7 @@ public class TasksActivity extends AppCompatActivity {
         Project project = ProjectState.getInstance().getProject();
         int projectId = project.id;
         String token = TokenManager.getToken();
-        Call<List<TaskResponse>> call = taskApi.getTasksByProject(token,projectId);
+        Call<List<TaskResponse>> call = taskApi.getTasksByProject(token, projectId);
 
         call.enqueue(new Callback<List<TaskResponse>>() {
             @Override
