@@ -63,19 +63,21 @@ public class Task {
         this.priority = priority;
     }
 
-    public LocalDateTime getDueDate() {
+    public Date getDueDate() {
         return dueDate;
     }
 
-    public void setDueDate(LocalDateTime dueDate) {
+    public void setDueDate(Date dueDate) {
         this.dueDate = dueDate;
     }
-    //    public Duration getTimeLeft() {
-//
-//
-//        // Calculate the duration
-//        Duration duration = Duration.between(LocalDateTime.now(), targetInstant);
-//    } // need to calculated from timestamp
+    public Duration getTimeLeft() {
+        Instant dueDateInstant = dueDate.toInstant();
+
+        Instant now = Instant.now();
+
+        return Duration.between(now, dueDateInstant);
+    }
+
 
 
 }

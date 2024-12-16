@@ -134,14 +134,29 @@ public class TasksActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 addTaskDialog.show();
+                handleDialog(primaryColor);
+
             }
         });
 
+
+
+        int id = 0; // this is a temp solution plz delete it you need to get the id from the backend
+        recyclerView = findViewById(R.id.task_recycler_view);
+        tasksAdapter = new TasksAdapter(new ArrayList<>()); // Initialize adapter with empty list
+        fetchTasksFromBackend();
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(tasksAdapter);
+
+
+    }
+
+    private void handleDialog(int primaryColor) {
         datePickerButton = addTaskDialog.findViewById(R.id.date_picker_image_button);
         Drawable drawable = datePickerButton.getDrawable();
-//        set the date picker color
+        // set the date picker color
         if (drawable != null) {
-            drawable.setColorFilter(ContextCompat.getColor(this, primaryColor), PorterDuff.Mode.SRC_IN);
+            drawable.setColorFilter(primaryColor, PorterDuff.Mode.SRC_IN);
         }
         datePickerTextView = addTaskDialog.findViewById(R.id.date_picker_text_view);
         addTaskButtonDialog = addTaskDialog.findViewById(R.id.add_task_button);
@@ -177,19 +192,8 @@ public class TasksActivity extends AppCompatActivity {
                 }
             }
         });
-
-
-
-
-        int id = 0; // this is a temp solution plz delete it you need to get the id from the backend
-        recyclerView = findViewById(R.id.task_recycler_view);
-        tasksAdapter = new TasksAdapter(new ArrayList<>()); // Initialize adapter with empty list
-        fetchTasksFromBackend();
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(tasksAdapter);
-
-
     }
+
     private TaskRequest createTaskRequest() {
         EditText taskNameEditText = addTaskDialog.findViewById(R.id.task_name_edit_text);
         EditText taskDescriptionEditText = addTaskDialog.findViewById(R.id.task_description_edit_text);
@@ -203,7 +207,7 @@ public class TasksActivity extends AppCompatActivity {
             return null;
         }
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+        final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
         try {
             Date dueDate = dateFormat.parse(dateString);
             return new TaskRequest(title, description, PRIORITY_HIGH, STATUS_TODO, dueDate);

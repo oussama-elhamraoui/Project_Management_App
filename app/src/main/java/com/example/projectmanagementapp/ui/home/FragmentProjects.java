@@ -18,9 +18,11 @@ import com.example.projectmanagementapp.models.Task;
 import com.example.projectmanagementapp.models.User;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 
 public class FragmentProjects extends Fragment {
     private RecyclerView recyclerView;
@@ -30,17 +32,17 @@ public class FragmentProjects extends Fragment {
     // Sample data
     private final ArrayList<Project> projects = new ArrayList<>(Arrays.asList(
             new Project(-1, "First Project", "", new ArrayList<>(Arrays.asList(
-                    new Task(1,"","Task 1",  "", "", LocalDateTime.now()),
-                    new Task(2,"","Task 2",  "", "", LocalDateTime.now()),
-                    new Task(3,"","Task 3",  "", "", LocalDateTime.now())
+                    new Task(1,"","Task 1",  "", "", Date.from(Instant.now())),
+                    new Task(2,"","Task 2",  "", "", Date.from(Instant.now())),
+                    new Task(3,"","Task 3",  "", "", Date.from(Instant.now()))
             )), ProjectTheme.RED, new ArrayList<>()),
             new Project(-1,"Second Project", "",new ArrayList<>(Arrays.asList(
-                    new Task(4,"","Task A", "", "", LocalDateTime.now()),
-                    new Task(5,"","Task B", "", "", LocalDateTime.now()),
-                    new Task(6,"","Task C", "", "", LocalDateTime.now())
+                    new Task(4,"","Task A", "", "", Date.from(Instant.now())),
+                    new Task(5,"","Task B", "", "", Date.from(Instant.now())),
+                    new Task(6,"","Task C", "", "", Date.from(Instant.now()))
             )),  ProjectTheme.BLUE, new ArrayList<User>()),
             new Project(-1,"Third Project", "",new ArrayList<>(Arrays.asList(
-                    new Task(7,"","Task X", "", "", LocalDateTime.now() )
+                    new Task(7,"","Task X", "", "", Date.from(Instant.now()) )
             )),  ProjectTheme.ORANGE, new ArrayList<User>())
     ));
 
