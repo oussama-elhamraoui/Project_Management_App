@@ -22,7 +22,6 @@ import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
-import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -35,13 +34,10 @@ import com.example.projectmanagementapp.data.remote.api.ApiService;
 import com.example.projectmanagementapp.data.remote.model.TaskRequest;
 import com.example.projectmanagementapp.data.remote.model.TaskResponse;
 import com.example.projectmanagementapp.models.Project;
-import com.example.projectmanagementapp.models.Task;
 import com.example.projectmanagementapp.models.User;
 import com.example.projectmanagementapp.state.ProjectState;
 import com.example.projectmanagementapp.state.UserState;
 import com.example.projectmanagementapp.utils.TokenManager;
-
-import org.w3c.dom.Text;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -54,8 +50,6 @@ import java.util.Objects;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.http.Header;
-import retrofit2.http.Path;
 
 public class TasksActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
@@ -159,10 +153,13 @@ public class TasksActivity extends AppCompatActivity {
             drawable.setColorFilter(primaryColor, PorterDuff.Mode.SRC_IN);
         }
         datePickerTextView = addTaskDialog.findViewById(R.id.date_picker_text_view);
-        addTaskButtonDialog = addTaskDialog.findViewById(R.id.add_task_button);
+        addTaskButtonDialog = addTaskDialog.findViewById(R.id.add_task_button_dialog);
         addTaskButtonDialog.setBackgroundColor(primaryColor);
+
+
         final CardView addButtonBackground = addTaskDialog.findViewById(R.id.cv_add_button_bg);
         addButtonBackground.setCardBackgroundColor(primaryColor);
+
 
 
         datePickerButton.setOnClickListener(v -> {
