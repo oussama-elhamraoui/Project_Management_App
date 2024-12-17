@@ -3,6 +3,7 @@ package com.example.projectmanagementapp.ui.tasks;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.res.ColorStateList;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -15,6 +16,7 @@ import android.view.WindowInsetsController;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -63,6 +65,11 @@ public class TasksActivity extends AppCompatActivity {
 
     private static final String STATUS_TODO = "TO_DO";
     private static final String PRIORITY_HIGH = "HIGH";
+    private LinearLayout pendingButton, finishedButton, yourTasksButton;
+    private TextView pendingTextView, finishedTextView, yourTasksTextView;
+    private TextView countPendingTextView,countFinishedTextView,countYourTasksTextView;
+    final int primaryColor = ProjectState.getInstance().getTheme().primaryColor;
+    final int secondaryColor = ProjectState.getInstance().getTheme().secondaryColor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,8 +82,7 @@ public class TasksActivity extends AppCompatActivity {
         addTaskDialog = new Dialog(TasksActivity.this);
         addTaskDialog.setContentView(R.layout.dialog_add_task);
 
-        final int primaryColor = ProjectState.getInstance().getTheme().primaryColor;
-        final int secondaryColor = ProjectState.getInstance().getTheme().secondaryColor;
+
 
         final CardView projectNameBackground = findViewById(R.id.cv_project_name_bg);
         projectNameBackground.setCardBackgroundColor(primaryColor);
@@ -89,6 +95,26 @@ public class TasksActivity extends AppCompatActivity {
 
         final TextView textView = findViewById(R.id.tasks_number_text_view);
         textView.setTextColor(primaryColor);
+
+        pendingButton = findViewById(R.id.pending_button);
+        finishedButton = findViewById(R.id.finished_button);
+        yourTasksButton = findViewById(R.id.your_tasks_button);
+
+        pendingTextView = findViewById(R.id.pending_text_view);
+        finishedTextView = findViewById(R.id.finished_text_view);
+        yourTasksTextView = findViewById(R.id.your_tasks_text_view);
+        countPendingTextView = findViewById(R.id.count_pending_text_view);
+        countFinishedTextView = findViewById(R.id.count_finished_text_view);
+        countYourTasksTextView = findViewById(R.id.count_your_tasks_text_view);
+
+        activateButton(pendingButton, pendingTextView, countPendingTextView, primaryColor,"#FFFFFF" , "#FFFFFF");
+        resetButton(finishedButton, finishedTextView , countFinishedTextView, "#FFFFFF", "#000000" ,primaryColor); // White background, black text
+        resetButton(yourTasksButton, yourTasksTextView, countYourTasksTextView, "#FFFFFF", "#000000", primaryColor);
+
+        // Set click listeners
+        pendingButton.setOnClickListener(v -> updateButtonColors("pending"));
+        finishedButton.setOnClickListener(v -> updateButtonColors("finished"));
+        yourTasksButton.setOnClickListener(v -> updateButtonColors("your_tasks"));
 
 
 
@@ -278,5 +304,37 @@ public class TasksActivity extends AppCompatActivity {
             taskModels.add(task);
         }
         tasksAdapter.updateTasks(taskModels); // Use a method in adapter to update data
+    }
+    private void updateButtonColors(String selectedButton) {
+        // Reset all buttons to the inactive state
+        resetButton(pendingButton, pendingTextView, countPendingTextView, "#FFFFFF", "#000000",primaryColor); // Red background, white text
+        resetButton(finishedButton, finishedTextView , countFinishedTextView, "#FFFFFF", "#000000" ,primaryColor); // White background, black text
+        resetButton(yourTasksButton, yourTasksTextView, countYourTasksTextView, "#FFFFFF", "#000000", primaryColor); // White background, black text
+
+        // Activate the selected button
+        switch (selectedButton) {
+            case "pending":
+                activateButton(pendingButton, pendingTextView, countPendingTextView, primaryColor,"#FFFFFF" , "#FFFFFF"); // White background, red text
+                break;
+            case "finished":
+                activateButton(finishedButton, finishedTextView, countFinishedTextView, primaryColor,"#FFFFFF" , "#FFFFFF"); // Red background, white text
+                break;
+            case "your_tasks":
+                activateButton(yourTasksButton, yourTasksTextView, countYourTasksTextView, primaryColor,"#FFFFFF" , "#FFFFFF"); // Red background, white text
+                break;
+        }
+    }
+    private void resetButton(LinearLayout button,TextView textView, TextView countTextView, String bgColor, String textColor,int textBgColor) {
+        button.setBackgroundTintList(android.content.res.ColorStateList.valueOf(android.graphics.Color.parseColor(bgColor)));
+        textView.setTextColor(android.graphics.Color.parseColor(textColor));
+        countTextView.setBackgroundTintList(ColorStateList.valueOf(textBgColor));
+        countTextView.setTextColor(android.graphics.Color.parseColor(bgColor));
+    }
+
+    private void activateButton(LinearLayout button, TextView textView, TextView countTextView,int bgColor, String textColor ,String textBgColor) {
+        button.setBackgroundTintList(ColorStateList.valueOf(bgColor));
+        textView.setTextColor(android.graphics.Color.parseColor(textColor));
+        countTextView.setBackgroundTintList(android.content.res.ColorStateList.valueOf(android.graphics.Color.parseColor(textBgColor)));
+        countTextView.setTextColor(bgColor);
     }
 }

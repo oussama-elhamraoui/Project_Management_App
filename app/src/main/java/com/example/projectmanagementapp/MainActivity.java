@@ -26,6 +26,7 @@ import com.example.projectmanagementapp.data.remote.repository.AuthRepository;
 import com.example.projectmanagementapp.state.UserState;
 import com.example.projectmanagementapp.ui.NavigationActivity;
 import com.example.projectmanagementapp.ui.auth.SignUpActivity;
+import com.example.projectmanagementapp.ui.tasks.TasksActivity;
 import com.example.projectmanagementapp.utils.TokenManager;
 
 
@@ -117,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final Intent signupIntent = new Intent(MainActivity.this,SignUpActivity.class);//change TasksActivity with the SignUpActivity
+                final Intent signupIntent = new Intent(MainActivity.this, TasksActivity.class);//change TasksActivity with the SignUpActivity
                 startActivity(signupIntent);
 
             }
