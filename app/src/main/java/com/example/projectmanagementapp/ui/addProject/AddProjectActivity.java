@@ -12,13 +12,12 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.projectmanagementapp.MainActivity;
 import com.example.projectmanagementapp.R;
 import com.example.projectmanagementapp.data.remote.model.ProjectRequest;
 import com.example.projectmanagementapp.data.remote.model.ProjectsResponse;
@@ -57,19 +56,18 @@ public class AddProjectActivity  extends AppCompatActivity {
                 final List<User> members = ProjectState.getInstance().getProject().getMembers();
 
                 final ProjectRequest projectRequest = new ProjectRequest(name, description, theme.primaryColor, members);
-                final Intent tasksIntent = new Intent(AddProjectActivity.this, TasksActivity.class);
-                startActivity(tasksIntent);
 
                 ProjectRepository.getInstance(context).addProject(projectRequest, new Callback<ProjectsResponse>() {
                     @Override
-                    public void onResponse(Call<ProjectsResponse> call, Response<ProjectsResponse> response) {
+                    public void onResponse(@NonNull Call<ProjectsResponse> call, @NonNull Response<ProjectsResponse> response) {
+                        assert response.body() != null;
                         UserProjectsState.getInstance().addProject(response.body().getProject());
                         final Intent homeIntent = new Intent(AddProjectActivity.this, TasksActivity.class);
                         startActivity(homeIntent);
                     }
 
                     @Override
-                    public void onFailure(Call<ProjectsResponse> call, Throwable t) {
+                    public void onFailure(@NonNull Call<ProjectsResponse> call, @NonNull Throwable t) {
                         Log.d("AddProjectActivity onFailure", "Something went wrong"+t.toString());
                         Toast.makeText(AddProjectActivity.this, "Unexpected server response", Toast.LENGTH_SHORT).show();
 
