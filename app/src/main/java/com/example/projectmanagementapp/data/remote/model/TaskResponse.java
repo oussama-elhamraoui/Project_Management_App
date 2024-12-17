@@ -1,6 +1,7 @@
 package com.example.projectmanagementapp.data.remote.model;
 
 import com.example.projectmanagementapp.models.Project;
+import com.example.projectmanagementapp.models.Task;
 
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -46,7 +47,14 @@ public class TaskResponse {
         this.dueDate = dueDate;
     }
 
-
+    public Task getTask(){
+        return new Task(
+                id,
+                name,
+                description,
+                dueDate
+        );
+    }
     public int getId() {
         return id;
     }

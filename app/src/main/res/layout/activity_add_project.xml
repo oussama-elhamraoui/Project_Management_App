@@ -131,7 +131,7 @@
             android:shadowDx="0"
             android:shadowDy="0"
             android:shadowRadius="10"
-            android:text="@string/next"
+            android:text="@string/create"
             android:textColor="@color/black"
             android:textSize="20sp"
 
