@@ -22,6 +22,7 @@ import com.example.projectmanagementapp.R;
 import com.example.projectmanagementapp.data.remote.model.ProjectRequest;
 import com.example.projectmanagementapp.data.remote.model.ProjectsResponse;
 import com.example.projectmanagementapp.data.remote.repository.ProjectRepository;
+import com.example.projectmanagementapp.models.Project;
 import com.example.projectmanagementapp.models.ProjectTheme;
 import com.example.projectmanagementapp.models.User;
 import com.example.projectmanagementapp.state.ProjectState;
@@ -55,28 +56,31 @@ public class AddProjectActivity  extends AppCompatActivity {
                 final ProjectTheme theme = ProjectState.getInstance().getTheme();
                 final List<User> members = ProjectState.getInstance().getProject().getMembers();
 
-                final ProjectRequest projectRequest = new ProjectRequest(name, description, theme.primaryColor, members);
+                if (name.isEmpty()) {
+                    Toast.makeText(AddProjectActivity.this, "Project name cannot be empty. Please provide a name.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
+
+                final ProjectRequest projectRequest = new ProjectRequest(name, description, theme.primaryColor, members);
                 ProjectRepository.getInstance(context).addProject(projectRequest, new Callback<ProjectsResponse>() {
                     @Override
                     public void onResponse(@NonNull Call<ProjectsResponse> call, @NonNull Response<ProjectsResponse> response) {
                         assert response.body() != null;
-                        UserProjectsState.getInstance().addProject(response.body().getProject());
-                        final Intent homeIntent = new Intent(AddProjectActivity.this, TasksActivity.class);
-                        startActivity(homeIntent);
+                        final Project createdProject = response.body().getProject();
+                        assert (theme.primaryColor == createdProject.theme.primaryColor);
+                        UserProjectsState.getInstance().addProject(createdProject);
+                        ProjectState.getInstance().setProject(createdProject);
+                        final Intent tasksIntent = new Intent(AddProjectActivity.this, TasksActivity.class);
+                        tasksIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(tasksIntent);
                     }
-
                     @Override
                     public void onFailure(@NonNull Call<ProjectsResponse> call, @NonNull Throwable t) {
-                        Log.d("AddProjectActivity onFailure", "Something went wrong"+t.toString());
+                        Log.d("AddProjectActivity onFailure", "Something went wrong" + t.toString());
                         Toast.makeText(AddProjectActivity.this, "Unexpected server response", Toast.LENGTH_SHORT).show();
-
                     }
                 });
-
-
-
-
             }
         });
         final View rootView = findViewById(android.R.id.content);

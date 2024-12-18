@@ -23,6 +23,10 @@ public class UserProjectsState {
         return instance;
     }
 
+    public List<Project> getProjects(){
+        return projects.getValue();
+    }
+
     public void addProject(Project project){
         final List<Project> updatedProjects = projects.getValue();
         assert updatedProjects != null;

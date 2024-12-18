@@ -67,7 +67,7 @@ public class TasksActivity extends AppCompatActivity {
     private static final String PRIORITY_HIGH = "HIGH";
     private LinearLayout pendingButton, finishedButton, yourTasksButton;
     private TextView pendingTextView, finishedTextView, yourTasksTextView;
-    private TextView countPendingTextView,countFinishedTextView,countYourTasksTextView;
+    private TextView countPendingTextView, countFinishedTextView, countYourTasksTextView;
     final int primaryColor = ProjectState.getInstance().getTheme().primaryColor;
     final int secondaryColor = ProjectState.getInstance().getTheme().secondaryColor;
 
@@ -155,7 +155,6 @@ public class TasksActivity extends AppCompatActivity {
             public void onClick(View v) {
                 addTaskDialog.show();
                 handleDialog(primaryColor);
-
             }
         });
 

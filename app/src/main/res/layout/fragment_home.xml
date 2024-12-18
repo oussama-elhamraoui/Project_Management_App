@@ -162,7 +162,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
 
-            android:name="com.example.projectmanagementapp.ui.home.FragmentProjects" />
+            android:name="com.example.projectmanagementapp.ui.home.projects.FragmentProjects" />
     <View
         android:layout_width="match_parent"
         android:layout_height="20dp" />

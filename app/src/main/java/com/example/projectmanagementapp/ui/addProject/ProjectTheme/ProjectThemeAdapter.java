@@ -42,7 +42,7 @@ public class ProjectThemeAdapter extends RecyclerView.Adapter<ProjectThemeAdapte
         holder.itemView.setOnClickListener(v -> {
             // Only update if the clicked position is not the currently selected one
             if (selectedIndex != index) {
-                int previousIndex = selectedIndex;
+                final int previousIndex = selectedIndex;
                 selectedIndex = index;
 
                 ProjectState.getInstance().setTheme(projectThemes[selectedIndex]);

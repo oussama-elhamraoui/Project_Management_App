@@ -3,7 +3,6 @@ package com.example.projectmanagementapp.models;
 import java.util.ArrayList;
 import java.util.List;
 
-import kotlin.NotImplementedError;
 
 public class Project {
     public int id;
@@ -13,7 +12,14 @@ public class Project {
     public String description;
     public List<User> members;
 
-    public Project(int id, String name, String description, List<Task> tasks, ProjectTheme theme, List<User> members) {
+    public Project(
+            int id,
+            String name,
+            String description,
+            List<Task> tasks,
+            ProjectTheme theme,
+            List<User> members
+        ) {
         this.id = id;
         this.tasks = tasks;
         this.name = name;
@@ -29,22 +35,26 @@ public class Project {
         this.theme = existingProject.theme;
         this.members = new ArrayList<>(existingProject.members);
     }
-
     public void addMember(User member){
         members.add(member);
     }
     public void deleteMember(User member){
         members.remove(member);
     }
-
     public int getTasksLeft() {
-        return tasks.size() - 1; // getTasksByStatus(Status.inProgress).length
+        return getTasksByStatus("To Do").size() + getTasksByStatus("In Progress").size();
+    }
+    public List<Task> getTasksByStatus(String status) {
+         ArrayList<Task> newTasks = new ArrayList<>();
+         for(final Task task : this.tasks){
+             if(task.status.equals(status)){
+                 newTasks.add(task);
+             }
+         }
+         return newTasks;
     }
 
-    public Task[] getTasksByStatus() {
-        throw new NotImplementedError("Implement Tasks");
-        // return Arrays.stream(this.tasks).filter((task) -> {return task.status == status;});
-    }
+
     public String getName() {
         return name;
     }
@@ -52,19 +62,14 @@ public class Project {
     public void setName(String name) {
         this.name = name;
     }
-
     public List<User> getMembers() {
         return members;
     }
-
     public void setMembers(List<User> members) {
         this.members = members;
     }
-
-
-
     public int getProgress() {
-        return 80; // (int)(getTasksByStatus(Status.Done).length / tasks.length * 100);
+        return (int)(getTasksByStatus("Completed").size() / tasks.size() * 100);
     }
 
     public int getId() {

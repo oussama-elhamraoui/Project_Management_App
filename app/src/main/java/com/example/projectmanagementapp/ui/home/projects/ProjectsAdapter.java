@@ -1,4 +1,4 @@
-package com.example.projectmanagementapp.ui.home;
+package com.example.projectmanagementapp.ui.home.projects;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -16,13 +16,14 @@ import com.example.projectmanagementapp.models.Project;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.ProjectViewHolder> {
 
     private final Context context;
-    private final ArrayList<Project> projects;
+    private final List<Project> projects;
 
-    public ProjectsAdapter(Context context, ArrayList<Project> projects) {
+    public ProjectsAdapter(Context context, List<Project> projects) {
         this.context = context;
         this.projects = projects;
     }
