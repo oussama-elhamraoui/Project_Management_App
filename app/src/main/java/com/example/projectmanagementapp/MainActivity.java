@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
                 final String email = EmailEditText.getText().toString().trim();
                 final String password = passwordEditText.getText().toString().trim();
 
-                //plz just comment this code don't remove it
+                //plz just comment this code don't remove it d
                 //final Intent homeIntent = new Intent(MainActivity.this, NavigationActivity.class);
                 //startActivity(homeIntent);
 
