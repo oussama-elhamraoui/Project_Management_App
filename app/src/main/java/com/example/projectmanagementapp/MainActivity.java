@@ -69,8 +69,8 @@ public class MainActivity extends AppCompatActivity {
                 final String password = passwordEditText.getText().toString().trim();
 
                 // plz just comment this code don't remove it
-                // final Intent homeIntent = new Intent(MainActivity.this, NavigationActivity.class);
-                // startActivity(homeIntent);
+//                 final Intent homeIntent = new Intent(MainActivity.this, NavigationActivity.class);
+//                 startActivity(homeIntent);
 
 
                 authRepository.login(email, password).enqueue(new Callback<AuthResponse>() {

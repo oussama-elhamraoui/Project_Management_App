@@ -1,6 +1,7 @@
 package com.example.projectmanagementapp.ui.profile;
 
 import android.annotation.SuppressLint;
+
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -12,13 +13,12 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 
 import com.example.projectmanagementapp.R;
-import com.example.projectmanagementapp.utils.TokenManager;
+import com.example.projectmanagementapp.state.UserState;
 import com.google.android.material.imageview.ShapeableImageView;
-import com.example.projectmanagementapp.data.remote.model.UserProfile;
+
+import java.util.Random;
 
 public class ProfileFragment extends Fragment {
-    private TextView fullnameTextView;
-    private TextView emailTextView;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -31,7 +31,7 @@ public class ProfileFragment extends Fragment {
         ShapeableImageView profileImage = view.findViewById(R.id.profile_image);
 
         // Generate initials drawable
-        String userName = "YJohn"; // Replace with dynamic user name
+        String userName = UserState.getInstance().getUsername(); // Replace with dynamic user name
         int size = 96; // Example size in dp
         BitmapDrawable drawable = ProfileImageGenerator.generateInitialsDrawable(
                 requireContext(), // Use the fragment's context
@@ -42,28 +42,34 @@ public class ProfileFragment extends Fragment {
         // Set drawable to the ShareableImageView
         profileImage.setImageDrawable(drawable);
 
+        final TextView fullnameTextView = view.findViewById(R.id.UserFullName);
+        final TextView emailTextView = view.findViewById(R.id.EmailName);
+        final TextView mobileNumber = view.findViewById(R.id.mobile_numbre);
+        final TextView usernameTextView = view.findViewById(R.id.username);
 
-        fullnameTextView = view.findViewById(R.id.UserFullName);
-        emailTextView = view.findViewById(R.id.EmailName);
-
-        loadProfileData();
-
+        //fetch the user name form Local state and display it here:
+        fullnameTextView.setText(userName);
+        usernameTextView.setText(userName);
+        //fetch the user name and adding @gmail.com to the end form Local state and display it here:
+        String emailText = userName+"@gmail.com";
+        emailTextView.setText(emailText);
+        //working random for mobile numbre
+        mobileNumber.setText(RandomPhoneNumberGenerator());
         return view;
     }
 
-    private void loadProfileData() {
-        // Retrieve saved profile from local storage or shared preferences
-        UserProfile profile = TokenManager.getUserProfileFromStorage(); //we have a problem here cause the profile is null !!!!!!!
+    public static String RandomPhoneNumberGenerator() {
+        String countryCode = "+212";
+        String prefix = "609";
 
-        if (profile != null) {
-            String fullName = (profile.getFirstname() + " " + profile.getLastname()).trim();
-            fullnameTextView.setText(TextUtils.isEmpty(fullName) ? "No Name" : fullName);
-            emailTextView.setText(TextUtils.isEmpty(profile.getEmail()) ? "No Email" : profile.getEmail());
-        }
-        else {
-            // Handle case when no profile is found
-            fullnameTextView.setText("No Profile");
-            emailTextView.setText("Please log in");
-        }
+        // Generate random numbers for the last six digits
+        Random random = new Random();
+        @SuppressLint("DefaultLocale") String middlePart = String.format("%03d", random.nextInt(1000)); // Random 3-digit number
+        @SuppressLint("DefaultLocale") String lastPart = String.format("%03d", random.nextInt(1000));   // Random 3-digit number
+
+        // Concatenate the parts
+
+        // Print the phone number
+        return String.format("%s %s %s %s", countryCode, prefix, middlePart, lastPart);
     }
 }
