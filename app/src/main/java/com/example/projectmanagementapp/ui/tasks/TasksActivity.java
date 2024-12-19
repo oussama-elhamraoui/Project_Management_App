@@ -9,6 +9,7 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -60,7 +61,7 @@ import retrofit2.Response;
 
 public class TasksActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
-    private List<Task> tasksList ;
+    private List<Task> tasksList = ProjectState.getInstance().getProject().tasks ;
     private List<Task> filteredTasks = new ArrayList<>();
     private TasksAdapter tasksAdapter;
     private Dialog addTaskDialog;
@@ -173,7 +174,8 @@ public class TasksActivity extends AppCompatActivity {
 
         int id = 0; // this is a temp solution plz delete it you need to get the id from the backend
         recyclerView = findViewById(R.id.task_recycler_view);
-        tasksAdapter = new TasksAdapter(new ArrayList<>()); // Initialize adapter with empty list
+        filteredTasks = filterTasks(tasksList, "Pending");
+        tasksAdapter = new TasksAdapter(filteredTasks); // Initialize adapter with empty list
 //        fetchTasksFromBackend();
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(tasksAdapter);
@@ -233,16 +235,18 @@ public class TasksActivity extends AppCompatActivity {
         });
     }
     private void addTaskToProject(Task newTask){
+
         // Add the task to the project
         ProjectState.getInstance().addTask(newTask);
 
 
+
         // Update UI (e.g., refresh adapter, close dialog)
         tasksList.add(newTask);
-        String currentFilter = getCurrentFilter();  // Get the current filter type
-        filteredTasks = filterTasks(filteredTasks, currentFilter);
-        tasksAdapter.setTasksList(tasksList); // Assuming your adapter supports this
-        tasksAdapter.notifyDataSetChanged();
+        String currentFilter = getCurrentFilter();
+        Log.d("TasksActivity", "Current filter: "+currentFilter);// Get the current filter type
+        filteredTasks = filterTasks(tasksList, currentFilter);
+        updateRecyclerView(filteredTasks);
         updateTaskCount();
     }
     private void updateTaskCount() {
@@ -270,7 +274,7 @@ public class TasksActivity extends AppCompatActivity {
         try {
             Date dueDate = dateFormat.parse(dateString);
             int uniqueId = taskIdCounter++;
-            return new Task(uniqueId,title, description, PRIORITY_HIGH, STATUS_TODO, dueDate);
+            return new Task(uniqueId,title, description, STATUS_TODO, PRIORITY_HIGH,  dueDate);
         } catch (ParseException e) {
             Toast.makeText(this, "Invalid date format", Toast.LENGTH_SHORT).show();
             return null;
@@ -351,15 +355,15 @@ public class TasksActivity extends AppCompatActivity {
         // Activate the selected button
         switch (selectedButton) {
             case "pending":
-//                filteredTasks = filterTasks(tasksList, "Pending");
+                filteredTasks = filterTasks(tasksList, "pending");
                 activateButton(pendingButton, pendingTextView, countPendingTextView, primaryColor,"#FFFFFF" , "#FFFFFF"); // White background, red text
                 break;
             case "finished":
-//                filteredTasks = filterTasks(tasksList, "Finished");
+                filteredTasks = filterTasks(tasksList, "finished");
                 activateButton(finishedButton, finishedTextView, countFinishedTextView, primaryColor,"#FFFFFF" , "#FFFFFF"); // Red background, white text
                 break;
             case "your_tasks":
-//                filteredTasks = filterTasks(tasksList, "YourTasks");
+                filteredTasks = filterTasks(tasksList, "your_tasks");
                 activateButton(yourTasksButton, yourTasksTextView, countYourTasksTextView, primaryColor,"#FFFFFF" , "#FFFFFF"); // Red background, white text
                 break;
         }
@@ -370,23 +374,24 @@ public class TasksActivity extends AppCompatActivity {
         List<Task> filteredTasks = new ArrayList<>();
         for (Task task : allTasks) {
             switch (status) {
-                case "Pending":
+                case "pending":
                     if (task.getStatus().equals("TO_DO") || task.getStatus().equals("IN_PROGRESS")) {
                         filteredTasks.add(task);
                     }
                     break;
-                case "Finished":
+                case "finished":
                     if (task.getStatus().equals("COMPLETED") ) {
                         filteredTasks.add(task);
                     }
                     break;
-                case "YourTasks":
+                case "your_tasks":
 //                    if (task.getAssignedTo().equals(currentUser)) {
 //                        filteredTasks.add(task);
 //                    }
                     break;
             }
         }
+        Log.d("TasksActivity", "Filtered tasks size: " + filteredTasks.size());
         return filteredTasks;
     }
     private void updateRecyclerView(List<Task> tasks) {
@@ -395,6 +400,7 @@ public class TasksActivity extends AppCompatActivity {
     }
     private String getCurrentFilter() {
         if (pendingButton.getBackgroundTintList().getDefaultColor() == primaryColor) {
+            Log.d("TasksActivity", ""+pendingButton.getBackgroundTintList().getDefaultColor()+" "+primaryColor);
             return "pending";
         } else if (finishedButton.getBackgroundTintList().getDefaultColor() == primaryColor) {
             return "finished";
