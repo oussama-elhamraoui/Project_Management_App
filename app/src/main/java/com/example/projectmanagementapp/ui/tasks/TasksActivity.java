@@ -163,7 +163,7 @@ public class TasksActivity extends AppCompatActivity {
         int id = 0; // this is a temp solution plz delete it you need to get the id from the backend
         recyclerView = findViewById(R.id.task_recycler_view);
         tasksAdapter = new TasksAdapter(new ArrayList<>()); // Initialize adapter with empty list
-        fetchTasksFromBackend();
+//        fetchTasksFromBackend();
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(tasksAdapter);
 
@@ -272,30 +272,30 @@ public class TasksActivity extends AppCompatActivity {
         });
 
     }
-    private void fetchTasksFromBackend() {
-        ApiService taskApi = ApiClient.getInstance().create(ApiService.class);
-        Project project = ProjectState.getInstance().getProject();
-        int projectId = project.id;
-        String token = TokenManager.getToken();
-        Call<List<TaskResponse>> call = taskApi.getTasksByProject(token, projectId);
-
-        call.enqueue(new Callback<List<TaskResponse>>() {
-            @Override
-            public void onResponse(Call<List<TaskResponse>> call, Response<List<TaskResponse>> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    taskList = response.body();
-                    updateTasksAdapter(taskList);
-                } else {
-                    Toast.makeText(TasksActivity.this, "Failed to fetch tasks", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<TaskResponse>> call, Throwable t) {
-                Toast.makeText(TasksActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
+//    private void fetchTasksFromBackend() {
+//        ApiService taskApi = ApiClient.getInstance().create(ApiService.class);
+//        Project project = ProjectState.getInstance().getProject();
+//        int projectId = project.id;
+//        String token = TokenManager.getToken();
+//        Call<List<TaskResponse>> call = taskApi.getTasksByProject(token, projectId);
+//
+//        call.enqueue(new Callback<List<TaskResponse>>() {
+//            @Override
+//            public void onResponse(Call<List<TaskResponse>> call, Response<List<TaskResponse>> response) {
+//                if (response.isSuccessful() && response.body() != null) {
+//                    taskList = response.body();
+//                    updateTasksAdapter(taskList);
+//                } else {
+//                    Toast.makeText(TasksActivity.this, "Failed to fetch tasks", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<List<TaskResponse>> call, Throwable t) {
+//                Toast.makeText(TasksActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//    }
     private void updateTasksAdapter(List<TaskResponse> tasks) {
         List<TaskResponse> taskModels = new ArrayList<>();
         for (TaskResponse response : tasks) {
