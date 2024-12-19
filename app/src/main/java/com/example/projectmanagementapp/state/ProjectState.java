@@ -62,7 +62,7 @@ public class ProjectState {
     }
 
     public void addTask(Task task){
-        final Project updatedProject= new Project(Objects.requireNonNull(project.getValue()));
+        Project updatedProject= new Project(Objects.requireNonNull(project.getValue()));
         updatedProject.addTask(task);
         project.setValue(updatedProject);
     }

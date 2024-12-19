@@ -21,7 +21,7 @@ public class Project {
             List<User> members
         ) {
         this.id = id;
-        this.tasks = tasks;
+        this.tasks = (tasks != null) ? new ArrayList<>(tasks) : new ArrayList<>();
         this.name = name;
         this.description = description;
         this.theme = theme;
