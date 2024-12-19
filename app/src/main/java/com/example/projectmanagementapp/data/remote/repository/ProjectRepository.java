@@ -90,10 +90,10 @@ public class ProjectRepository {
         void onSyncCompleted(List<ProjectsResponse> projects);
         void onSyncFailed(Exception e);
     }
-    public void getAllProjects(List<ProjectRequest> projectRequestList, Callback<List<ProjectsResponse>> callback){
+    public void getAllProjects(Callback<List<ProjectsResponse>> callback){
         apiService.getAllProjects("Bearer " + TOKEN).enqueue(new Callback<List<ProjectsResponse>>() {
             @Override
-            public void onResponse(@NonNull Call<List<ProjectsResponse>> call, Response<List<ProjectsResponse>> response) {
+            public void onResponse(@NonNull Call<List<ProjectsResponse>> call, @NonNull Response<List<ProjectsResponse>> response) {
                 callback.onResponse(call, response);
             }
 

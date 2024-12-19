@@ -25,18 +25,18 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_profile, container, false);
+        final View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
         // Find the ShareableImageView
-        ShapeableImageView profileImage = view.findViewById(R.id.profile_image);
+        final ShapeableImageView profileImage = view.findViewById(R.id.profile_image);
 
         // Generate initials drawable
-        String userName = UserState.getInstance().getUsername(); // Replace with dynamic user name
-        int size = 96; // Example size in dp
+        final String userName = UserState.getInstance().getUsername(); // Replace with dynamic user name
+        final int size = 96; // Example size in dp
         BitmapDrawable drawable = ProfileImageGenerator.generateInitialsDrawable(
-                requireContext(), // Use the fragment's context
-                userName,
-                size
+            requireContext(), // Use the fragment's context
+            userName,
+            size
         );
 
         // Set drawable to the ShareableImageView
@@ -50,10 +50,10 @@ public class ProfileFragment extends Fragment {
         //fetch the user name form Local state and display it here:
         fullnameTextView.setText(userName);
         usernameTextView.setText(userName);
-        //fetch the user name and adding @gmail.com to the end form Local state and display it here:
-        String emailText = userName+"@gmail.com";
+
+        final String emailText = UserState.getInstance().getEmail();
         emailTextView.setText(emailText);
-        //working random for mobile numbre
+        //working random for mobile number
         mobileNumber.setText(RandomPhoneNumberGenerator());
         return view;
     }
@@ -66,7 +66,6 @@ public class ProfileFragment extends Fragment {
         Random random = new Random();
         @SuppressLint("DefaultLocale") String middlePart = String.format("%03d", random.nextInt(1000)); // Random 3-digit number
         @SuppressLint("DefaultLocale") String lastPart = String.format("%03d", random.nextInt(1000));   // Random 3-digit number
-
         // Concatenate the parts
 
         // Print the phone number

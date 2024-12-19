@@ -25,6 +25,9 @@ public class UserState {
     public String getUsername(){
         return user.getUsername();
     }
+    public String getEmail(){
+        return user.email;
+    }
     public int getColor(){
         return user.getColor();
     }

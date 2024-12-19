@@ -6,7 +6,8 @@ public class User {
     private final int userId;
     String firstName;
     String lastName;
-    final private String email;
+
+    final public String email;
     final UserTheme theme;
 
     public User(final int id, final String firstName, final String lastName, final String email, final UserTheme theme) {

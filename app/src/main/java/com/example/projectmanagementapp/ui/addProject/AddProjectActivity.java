@@ -111,7 +111,6 @@ public class AddProjectActivity  extends AppCompatActivity {
             }
         }
     }
-
     // Utility method to get safe area insets
     private WindowInsetsCompat getSafeAreaInsets() {
         final View rootView = findViewById(android.R.id.content);

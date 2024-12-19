@@ -1,15 +1,10 @@
 package com.example.projectmanagementapp;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-
-import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
-
-import android.content.Intent;
 import android.text.InputType;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -18,16 +13,25 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-
+import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.content.res.ResourcesCompat;
 
 import com.example.projectmanagementapp.data.remote.model.AuthResponse;
+import com.example.projectmanagementapp.data.remote.model.ProjectsResponse;
 import com.example.projectmanagementapp.data.remote.repository.AuthRepository;
+import com.example.projectmanagementapp.data.remote.repository.ProjectRepository;
+import com.example.projectmanagementapp.models.Project;
+import com.example.projectmanagementapp.state.UserProjectsState;
 import com.example.projectmanagementapp.state.UserState;
 import com.example.projectmanagementapp.ui.NavigationActivity;
 import com.example.projectmanagementapp.ui.auth.SignUpActivity;
 import com.example.projectmanagementapp.utils.TokenManager;
 
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -49,7 +53,6 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_login);
 
-
         // Retrieving the email, password, loginButton and signUpButton from the UI
         final EditText EmailEditText =  findViewById(R.id.email_edit_text);
         final EditText passwordEditText = findViewById(R.id.password_edit_text);
@@ -59,19 +62,12 @@ public class MainActivity extends AppCompatActivity {
         final TokenManager tokenManager = new TokenManager(this);
         final AuthRepository authRepository = new AuthRepository();
 
-
-
-
+        final Context context = this;
 
         loginButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(final View v) {
                 final String email = EmailEditText.getText().toString().trim();
                 final String password = passwordEditText.getText().toString().trim();
-
-                //plz just comment this code don't remove it d
-                //final Intent homeIntent = new Intent(MainActivity.this, NavigationActivity.class);
-                //startActivity(homeIntent);
-
 
                 authRepository.login(email, password).enqueue(new Callback<AuthResponse>() {
                     @Override
@@ -87,13 +83,35 @@ public class MainActivity extends AppCompatActivity {
                                 final Intent homeIntent = new Intent(MainActivity.this, NavigationActivity.class);
                                 startActivity(homeIntent);
                                 Toast.makeText(MainActivity.this, "Login Successful!", Toast.LENGTH_SHORT).show();
+
+                                // Logic for fetching projects:
+                                ProjectRepository.getInstance(context).getAllProjects(new Callback<List<ProjectsResponse>>() {
+                                    @Override
+                                    public void onResponse(@NonNull Call<List<ProjectsResponse>> call, @NonNull Response<List<ProjectsResponse>> response) {
+                                        final List<Project> projects = new ArrayList<>();
+                                        assert response.body() != null;
+                                        for(final ProjectsResponse project : response.body()){
+                                            projects.add(project.getProject());
+                                        }
+                                        UserProjectsState.getInstance().setProjects(projects);
+                                    }
+
+                                    @Override
+                                    public void onFailure(@NonNull Call<List<ProjectsResponse>> call, @NonNull Throwable t) {
+                                        Toast.makeText(MainActivity.this, "Failed to fetch Projects", Toast.LENGTH_SHORT).show();
+                                        Log.e("LoginActivity", "Failed to fetch projects error: " + t.getMessage(), t);
+
+                                    }
+
+                                });
+
                             } else {
                                 Log.e("LoginActivity", "Token missing in successful response");
                                 Toast.makeText(MainActivity.this, "Unexpected server response", Toast.LENGTH_SHORT).show();
                             }
                         } else {
                             try {
-                                assert response.errorBody() != null;
+                                assert null != response.errorBody();
                                 String errorBody = response.errorBody().string();
                                 Log.e("LoginActivity", "Login Failed - Error Body: " + errorBody);
                             } catch (Exception e) {

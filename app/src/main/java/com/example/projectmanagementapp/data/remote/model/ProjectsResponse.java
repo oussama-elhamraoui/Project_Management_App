@@ -18,7 +18,7 @@ public class ProjectsResponse {
     private List<User> members;
 
     public Project getProject(){
-        Project project = new Project(
+        return new Project(
                 id,
                 title,
                 description,
@@ -26,7 +26,6 @@ public class ProjectsResponse {
                 ProjectTheme.getColor(color),
                 members
         );
-        return project;
     }
 
     public int getId() {
