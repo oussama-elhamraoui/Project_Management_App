@@ -119,7 +119,9 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TasksViewHol
                     showEditTaskDialog(view,task, position);
                     return true;
                 } else if (item.getItemId()==R.id.delete_task_menu) {
-                    Toast.makeText(itemView.getContext(), "Delete Task Selected", Toast.LENGTH_SHORT).show();
+                    adapter.tasksList.remove(position);
+                    ProjectState.getInstance().deleteTask(task);
+                    adapter.notifyItemChanged(position);
                     return true;
                 }else {
                     return false;
@@ -145,12 +147,12 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TasksViewHol
             TextView datePickerTextView = editTaskDialog.findViewById(R.id.date_picker_text_view);
             taskNameEditText.setText(task.getName());
             taskDescriptionEditText.setText(task.getDescription());
-            // Assuming dateFormat is already defined like this:
+
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd", Locale.getDefault());
 
 // Format the due date and set it in the TextView
-            String datePickerformattedDate = dateFormat.format(task.getDueDate()); // Convert Date to String
-            datePickerTextView.setText(datePickerformattedDate); // Set the formatted string into the TextView
+            String datePickerformattedDate = dateFormat.format(task.getDueDate());
+            datePickerTextView.setText(datePickerformattedDate);
 
             ImageButton datePickerButton = editTaskDialog.findViewById(R.id.date_picker_image_button);
             Drawable drawable = datePickerButton.getDrawable();
@@ -204,9 +206,9 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TasksViewHol
                     }
 
                     adapter.tasksList.set(position, task);
-                    ProjectState.getInstance().updateTask(task);// Update the task
-                    adapter.notifyItemChanged(position);  // Notify adapter
-                    editTaskDialog.dismiss();  // Dismiss dialog
+                    ProjectState.getInstance().updateTask(task);
+                    adapter.notifyItemChanged(position);
+                    editTaskDialog.dismiss();
                 });
                 editTaskDialog.show();
             } else {
