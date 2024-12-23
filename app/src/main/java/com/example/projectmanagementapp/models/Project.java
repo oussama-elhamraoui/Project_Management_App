@@ -69,6 +69,9 @@ public class Project {
         this.members = members;
     }
     public int getProgress() {
+        if (tasks.isEmpty()) {
+            return 0; // Default progress when there are no tasks
+        }
         return (int)(getTasksByStatus("Completed").size() / tasks.size() * 100);
     }
 

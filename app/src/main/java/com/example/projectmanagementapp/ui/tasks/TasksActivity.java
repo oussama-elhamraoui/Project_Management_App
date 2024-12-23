@@ -3,6 +3,7 @@ package com.example.projectmanagementapp.ui.tasks;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -42,6 +43,8 @@ import com.example.projectmanagementapp.models.Task;
 import com.example.projectmanagementapp.models.User;
 import com.example.projectmanagementapp.state.ProjectState;
 import com.example.projectmanagementapp.state.UserState;
+import com.example.projectmanagementapp.ui.NavigationActivity;
+import com.example.projectmanagementapp.ui.home.HomeFragment;
 import com.example.projectmanagementapp.utils.TokenManager;
 
 import org.w3c.dom.Text;
@@ -70,12 +73,17 @@ public class TasksActivity extends AppCompatActivity {
     private TextView datePickerTextView;
     private Button addTaskButtonDialog;
 
+
     private static final String STATUS_TODO = "TO_DO";
     private static final String PRIORITY_HIGH = "HIGH";
+    private  TextView tasksNumberTextView;
     private LinearLayout pendingButton, finishedButton, yourTasksButton;
     private TextView pendingTextView, finishedTextView, yourTasksTextView;
     private TextView countPendingTextView, countFinishedTextView, countYourTasksTextView;
-    private  TextView tasksNumberTextView;
+    private int pendingCount = 0;
+    private int finishedCount = 0;
+    private int yourTasksCount = 0;
+    private LinearLayout saveButton;
     final int primaryColor = ProjectState.getInstance().getTheme().primaryColor;
     final int secondaryColor = ProjectState.getInstance().getTheme().secondaryColor;
 
@@ -112,12 +120,24 @@ public class TasksActivity extends AppCompatActivity {
         finishedButton = findViewById(R.id.finished_button);
         yourTasksButton = findViewById(R.id.your_tasks_button);
 
+        saveButton = findViewById(R.id.save_button);
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(),NavigationActivity.class);
+                intent.putExtra("navigate_to", "home_fragment");
+                startActivity(intent);
+            }
+        });
+
+
         pendingTextView = findViewById(R.id.pending_text_view);
         finishedTextView = findViewById(R.id.finished_text_view);
         yourTasksTextView = findViewById(R.id.your_tasks_text_view);
         countPendingTextView = findViewById(R.id.count_pending_text_view);
         countFinishedTextView = findViewById(R.id.count_finished_text_view);
         countYourTasksTextView = findViewById(R.id.count_your_tasks_text_view);
+        countTaskStatus();
 
         activateButton(pendingButton, pendingTextView, countPendingTextView, primaryColor,"#FFFFFF" , "#FFFFFF");
         resetButton(finishedButton, finishedTextView , countFinishedTextView, "#FFFFFF", "#000000" ,primaryColor); // White background, black text
@@ -227,6 +247,7 @@ public class TasksActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Task task = createTaskRequest();
+                countTaskStatus();
                 if (task != null) {
                     addTaskToProject(task);
                     addTaskDialog.dismiss();
@@ -247,6 +268,7 @@ public class TasksActivity extends AppCompatActivity {
         Log.d("TasksActivity", "Current filter: "+currentFilter);// Get the current filter type
         filteredTasks = filterTasks(tasksList, currentFilter);
         updateRecyclerView(filteredTasks);
+        countTaskStatus();
         updateTaskCount();
     }
     private void updateTaskCount() {
@@ -409,6 +431,29 @@ public class TasksActivity extends AppCompatActivity {
         }
         return "all"; // Default filter if no button is selected
     }
+    private void countTaskStatus() {
+        pendingCount = 0;
+        finishedCount = 0;
+        yourTasksCount = 0;
+        for (Task task : tasksList) {
+            if ("TO_DO".equals(task.getStatus()) || "IN_PROGRESS".equals(task.getStatus())) {
+                pendingCount++;
+            } else if ("COMPLETED".equals(task.getStatus())) {
+                finishedCount++;
+            }
+
+            countPendingTextView.setText(String.valueOf(pendingCount));
+            countFinishedTextView.setText(String.valueOf(finishedCount));
+            countYourTasksTextView.setText(String.valueOf(yourTasksCount));
+
+        }
+
+        // Update the UI with the counts
+        countPendingTextView.setText(String.valueOf(pendingCount));
+        countFinishedTextView.setText(String.valueOf(finishedCount));
+        countYourTasksTextView.setText(String.valueOf(yourTasksCount));
+    }
+
     private void resetButton(LinearLayout button,TextView textView, TextView countTextView, String bgColor, String textColor,int textBgColor) {
         button.setBackgroundTintList(android.content.res.ColorStateList.valueOf(android.graphics.Color.parseColor(bgColor)));
         textView.setTextColor(android.graphics.Color.parseColor(textColor));
