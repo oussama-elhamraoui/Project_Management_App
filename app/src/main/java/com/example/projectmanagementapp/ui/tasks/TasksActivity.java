@@ -247,7 +247,7 @@ public class TasksActivity extends AppCompatActivity {
             return;
         }
         int projectId = project.id;
-        int userId = user.getUserId();
+        int userId = user.getId();
         String token = TokenManager.getToken();
         Call<TaskResponse> call = taskApi.createTask(token,projectId, userId, task);
 

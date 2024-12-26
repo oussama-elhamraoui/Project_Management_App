@@ -26,6 +26,7 @@ public class MemberRepository {
     }
 
     public Call<ContributorResponse> addMember(String email) {
+
         return apiService.addContributorByEmail(token, ProjectState.getInstance().getProject().id, email);
     }
 
