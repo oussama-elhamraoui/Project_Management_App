@@ -72,7 +72,7 @@ public class Project {
         if (tasks.isEmpty()) {
             return 0; // Default progress when there are no tasks
         }
-        return (int)(getTasksByStatus("Completed").size() / tasks.size() * 100);
+        return (int)(getTasksByStatus("COMPLETED").size() / tasks.size() * 100);
     }
 
     public int getId() {
