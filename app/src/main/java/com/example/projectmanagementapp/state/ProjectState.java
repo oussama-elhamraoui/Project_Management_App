@@ -98,6 +98,10 @@ public class ProjectState {
         }
         return pendingTasks;
     }
+
+    public int getId(){
+        return Objects.requireNonNull(project.getValue()).id;
+    }
     public List<Task> getYourTasks(){
         return Objects.requireNonNull(project.getValue()).tasks;
     }
