@@ -50,7 +50,12 @@ public class NavigationActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
+        Intent intent = getIntent();
+        if (intent != null && "home_fragment".equals(intent.getStringExtra("navigate_to"))) {
+            // Correct navigation based on current fragment
+            navController.popBackStack();  // Pop the back stack to ensure we're at the start
+            navController.navigate(R.id.home); // Navigate to HomeFragment
+        }
 
     }
 

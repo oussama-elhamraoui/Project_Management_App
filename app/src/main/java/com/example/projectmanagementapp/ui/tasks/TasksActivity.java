@@ -3,11 +3,14 @@ package com.example.projectmanagementapp.ui.tasks;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -36,10 +39,15 @@ import com.example.projectmanagementapp.data.remote.api.ApiService;
 import com.example.projectmanagementapp.data.remote.model.TaskRequest;
 import com.example.projectmanagementapp.data.remote.model.TaskResponse;
 import com.example.projectmanagementapp.models.Project;
+import com.example.projectmanagementapp.models.Task;
 import com.example.projectmanagementapp.models.User;
 import com.example.projectmanagementapp.state.ProjectState;
 import com.example.projectmanagementapp.state.UserState;
+import com.example.projectmanagementapp.ui.NavigationActivity;
+import com.example.projectmanagementapp.ui.home.HomeFragment;
 import com.example.projectmanagementapp.utils.TokenManager;
+
+import org.w3c.dom.Text;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -48,6 +56,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -55,7 +64,8 @@ import retrofit2.Response;
 
 public class TasksActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
-    private List<TaskResponse> taskList;
+    private List<Task> tasksList = ProjectState.getInstance().getProject().tasks ;
+    private List<Task> filteredTasks = new ArrayList<>();
     private TasksAdapter tasksAdapter;
     private Dialog addTaskDialog;
     private Button addTaskButton;
@@ -63,13 +73,21 @@ public class TasksActivity extends AppCompatActivity {
     private TextView datePickerTextView;
     private Button addTaskButtonDialog;
 
+
     private static final String STATUS_TODO = "TO_DO";
     private static final String PRIORITY_HIGH = "HIGH";
+    private  TextView tasksNumberTextView;
     private LinearLayout pendingButton, finishedButton, yourTasksButton;
     private TextView pendingTextView, finishedTextView, yourTasksTextView;
     private TextView countPendingTextView, countFinishedTextView, countYourTasksTextView;
+    private int pendingCount = 0;
+    private int finishedCount = 0;
+    private int yourTasksCount = 0;
+    private LinearLayout saveButton;
     final int primaryColor = ProjectState.getInstance().getTheme().primaryColor;
     final int secondaryColor = ProjectState.getInstance().getTheme().secondaryColor;
+
+    private static int taskIdCounter = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +104,8 @@ public class TasksActivity extends AppCompatActivity {
 
         final CardView projectNameBackground = findViewById(R.id.cv_project_name_bg);
         projectNameBackground.setCardBackgroundColor(primaryColor);
+        TextView project_name_text_view = findViewById(R.id.project_name_text_view);
+        project_name_text_view.setText(ProjectState.getInstance().getProject().name);
 
         final Button addTaskButton =  findViewById(R.id.add_task_button);
         addTaskButton.setTextColor(primaryColor);
@@ -93,12 +113,23 @@ public class TasksActivity extends AppCompatActivity {
         final CardView taskCountBackground = findViewById(R.id.cv_tasks_count_bg);
         taskCountBackground.setCardBackgroundColor(secondaryColor);
 
-        final TextView textView = findViewById(R.id.tasks_number_text_view);
-        textView.setTextColor(primaryColor);
+        tasksNumberTextView = findViewById(R.id.tasks_number_text_view);
+        tasksNumberTextView.setTextColor(primaryColor);
 
         pendingButton = findViewById(R.id.pending_button);
         finishedButton = findViewById(R.id.finished_button);
         yourTasksButton = findViewById(R.id.your_tasks_button);
+
+        saveButton = findViewById(R.id.save_button);
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(),NavigationActivity.class);
+                intent.putExtra("navigate_to", "home_fragment");
+                startActivity(intent);
+            }
+        });
+
 
         pendingTextView = findViewById(R.id.pending_text_view);
         finishedTextView = findViewById(R.id.finished_text_view);
@@ -106,6 +137,7 @@ public class TasksActivity extends AppCompatActivity {
         countPendingTextView = findViewById(R.id.count_pending_text_view);
         countFinishedTextView = findViewById(R.id.count_finished_text_view);
         countYourTasksTextView = findViewById(R.id.count_your_tasks_text_view);
+        countTaskStatus();
 
         activateButton(pendingButton, pendingTextView, countPendingTextView, primaryColor,"#FFFFFF" , "#FFFFFF");
         resetButton(finishedButton, finishedTextView , countFinishedTextView, "#FFFFFF", "#000000" ,primaryColor); // White background, black text
@@ -162,8 +194,9 @@ public class TasksActivity extends AppCompatActivity {
 
         int id = 0; // this is a temp solution plz delete it you need to get the id from the backend
         recyclerView = findViewById(R.id.task_recycler_view);
-        tasksAdapter = new TasksAdapter(new ArrayList<>()); // Initialize adapter with empty list
-        fetchTasksFromBackend();
+        filteredTasks = filterTasks(tasksList, "Pending");
+        tasksAdapter = new TasksAdapter(filteredTasks); // Initialize adapter with empty list
+//        fetchTasksFromBackend();
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(tasksAdapter);
 
@@ -178,6 +211,12 @@ public class TasksActivity extends AppCompatActivity {
             drawable.setColorFilter(primaryColor, PorterDuff.Mode.SRC_IN);
         }
         datePickerTextView = addTaskDialog.findViewById(R.id.date_picker_text_view);
+        Calendar defaultCalendar = Calendar.getInstance();
+        int defaultYear = defaultCalendar.get(Calendar.YEAR);
+        int defaultMonth = defaultCalendar.get(Calendar.MONTH);
+        int defaultDayOfMonth = defaultCalendar.get(Calendar.DAY_OF_MONTH);
+        String defaultDate = defaultYear + "/" + (defaultMonth + 1) + "/" +  defaultDayOfMonth;
+        datePickerTextView.setText(defaultDate);
         addTaskButtonDialog = addTaskDialog.findViewById(R.id.add_task_button_dialog);
         addTaskButtonDialog.setBackgroundColor(primaryColor);
 
@@ -207,21 +246,45 @@ public class TasksActivity extends AppCompatActivity {
         addTaskButtonDialog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TaskRequest taskRequest = createTaskRequest();
-                if (taskRequest != null) {
-                    addTaskToProject(taskRequest);
+                Task task = createTaskRequest();
+                countTaskStatus();
+                if (task != null) {
+                    addTaskToProject(task);
                     addTaskDialog.dismiss();
                 }
             }
         });
     }
+    private void addTaskToProject(Task newTask){
 
-    private TaskRequest createTaskRequest() {
+        // Add the task to the project
+        ProjectState.getInstance().addTask(newTask);
+
+
+
+        // Update UI (e.g., refresh adapter, close dialog)
+        tasksList.add(newTask);
+        String currentFilter = getCurrentFilter();
+        Log.d("TasksActivity", "Current filter: "+currentFilter);// Get the current filter type
+        filteredTasks = filterTasks(tasksList, currentFilter);
+        updateRecyclerView(filteredTasks);
+        countTaskStatus();
+        updateTaskCount();
+    }
+    private void updateTaskCount() {
+        // Assuming ProjectState holds the list of tasks, you can count them and set the value
+        int taskCount = ProjectState.getInstance().getProject().getTasks().size();
+        tasksNumberTextView.setText(String.valueOf(taskCount));
+    }
+
+    private Task createTaskRequest() {
         EditText taskNameEditText = addTaskDialog.findViewById(R.id.task_name_edit_text);
         EditText taskDescriptionEditText = addTaskDialog.findViewById(R.id.task_description_edit_text);
 
         String title = taskNameEditText.getText().toString().trim();
+        taskNameEditText.setText("");
         String description = taskDescriptionEditText.getText().toString().trim();
+        taskDescriptionEditText.setText("");
         String dateString = datePickerTextView.getText().toString().trim();
 
         if (title.isEmpty() || description.isEmpty() || dateString.isEmpty()) {
@@ -232,74 +295,75 @@ public class TasksActivity extends AppCompatActivity {
         final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
         try {
             Date dueDate = dateFormat.parse(dateString);
-            return new TaskRequest(title, description, PRIORITY_HIGH, STATUS_TODO, dueDate);
+            int uniqueId = taskIdCounter++;
+            return new Task(uniqueId,title, description, STATUS_TODO, PRIORITY_HIGH,  dueDate);
         } catch (ParseException e) {
             Toast.makeText(this, "Invalid date format", Toast.LENGTH_SHORT).show();
             return null;
         }
     }
-    private void addTaskToProject(TaskRequest task) {
-        ApiService taskApi = ApiClient.getInstance().create(ApiService.class);
-        Project project = ProjectState.getInstance().getProject();
-        User user= UserState.getInstance().getUser();
-        if (project == null || user == null) {
-            Toast.makeText(this, "Project or User not available", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        int projectId = project.id;
-        int userId = user.getId();
-        String token = TokenManager.getToken();
-        Call<TaskResponse> call = taskApi.createTask(token,projectId, userId, task);
-
-        call.enqueue(new Callback<TaskResponse>() {
-            @SuppressLint("NotifyDataSetChanged")
-            @Override
-            public void onResponse(@NonNull Call<TaskResponse> call, @NonNull Response<TaskResponse> response) {
-                if (response.isSuccessful()) {
-                    Toast.makeText(TasksActivity.this, "Task added successfully", Toast.LENGTH_SHORT).show();
-//                    taskList.add(response.body()); // Add the new task to the list
-                    tasksAdapter.addTask(response.body());
-                    tasksAdapter.notifyDataSetChanged();
-                } else {
-                    Toast.makeText(TasksActivity.this, "Failed to add task", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<TaskResponse> call, @NonNull Throwable t) {
-                Toast.makeText(TasksActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-
-    }
-    private void fetchTasksFromBackend() {
-        ApiService taskApi = ApiClient.getInstance().create(ApiService.class);
-        Project project = ProjectState.getInstance().getProject();
-        int projectId = project.id;
-        String token = TokenManager.getToken();
-        Call<List<TaskResponse>> call = taskApi.getTasksByProject(token, projectId);
-
-        call.enqueue(new Callback<List<TaskResponse>>() {
-            @Override
-            public void onResponse(Call<List<TaskResponse>> call, Response<List<TaskResponse>> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    taskList = response.body();
-                    updateTasksAdapter(taskList);
-                } else {
-                    Toast.makeText(TasksActivity.this, "Failed to fetch tasks", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<TaskResponse>> call, Throwable t) {
-                Toast.makeText(TasksActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-    private void updateTasksAdapter(List<TaskResponse> tasks) {
-        List<TaskResponse> taskModels = new ArrayList<>();
-        for (TaskResponse response : tasks) {
-            TaskResponse task = new TaskResponse(response.getId(), response.getName(), response.getDescription(), response.getDueDate());
+//    private void addTaskToProject(TaskRequest task) {
+//        ApiService taskApi = ApiClient.getInstance().create(ApiService.class);
+//        Project project = ProjectState.getInstance().getProject();
+//        User user= UserState.getInstance().getUser();
+//        if (project == null || user == null) {
+//            Toast.makeText(this, "Project or User not available", Toast.LENGTH_SHORT).show();
+//            return;
+//        }
+//        int projectId = project.id;
+//        int userId = user.getUserId();
+//        String token = TokenManager.getToken();
+//        Call<TaskResponse> call = taskApi.createTask(token,projectId, userId, task);
+//
+//        call.enqueue(new Callback<TaskResponse>() {
+//            @SuppressLint("NotifyDataSetChanged")
+//            @Override
+//            public void onResponse(@NonNull Call<TaskResponse> call, @NonNull Response<TaskResponse> response) {
+//                if (response.isSuccessful()) {
+//                    Toast.makeText(TasksActivity.this, "Task added successfully", Toast.LENGTH_SHORT).show();
+////                    taskList.add(response.body()); // Add the new task to the list
+//                    tasksAdapter.addTask(response.body());
+//                    tasksAdapter.notifyDataSetChanged();
+//                } else {
+//                    Toast.makeText(TasksActivity.this, "Failed to add task", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(@NonNull Call<TaskResponse> call, @NonNull Throwable t) {
+//                Toast.makeText(TasksActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//
+//    }
+//    private void fetchTasksFromBackend() {
+//        ApiService taskApi = ApiClient.getInstance().create(ApiService.class);
+//        Project project = ProjectState.getInstance().getProject();
+//        int projectId = project.id;
+//        String token = TokenManager.getToken();
+//        Call<List<TaskResponse>> call = taskApi.getTasksByProject(token, projectId);
+//
+//        call.enqueue(new Callback<List<TaskResponse>>() {
+//            @Override
+//            public void onResponse(Call<List<TaskResponse>> call, Response<List<TaskResponse>> response) {
+//                if (response.isSuccessful() && response.body() != null) {
+//                    taskList = response.body();
+//                    updateTasksAdapter(taskList);
+//                } else {
+//                    Toast.makeText(TasksActivity.this, "Failed to fetch tasks", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<List<TaskResponse>> call, Throwable t) {
+//                Toast.makeText(TasksActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//    }
+    private void updateTasksAdapter(List<Task> tasks) {
+        List<Task> taskModels = new ArrayList<>();
+        for (Task task : tasks) {
+            Task updatedTask = new Task(task.getId(), task.getName(), task.getDescription(), task.getDueDate());
             taskModels.add(task);
         }
         tasksAdapter.updateTasks(taskModels); // Use a method in adapter to update data
@@ -313,16 +377,83 @@ public class TasksActivity extends AppCompatActivity {
         // Activate the selected button
         switch (selectedButton) {
             case "pending":
+                filteredTasks = filterTasks(tasksList, "pending");
                 activateButton(pendingButton, pendingTextView, countPendingTextView, primaryColor,"#FFFFFF" , "#FFFFFF"); // White background, red text
                 break;
             case "finished":
+                filteredTasks = filterTasks(tasksList, "finished");
                 activateButton(finishedButton, finishedTextView, countFinishedTextView, primaryColor,"#FFFFFF" , "#FFFFFF"); // Red background, white text
                 break;
             case "your_tasks":
+                filteredTasks = filterTasks(tasksList, "your_tasks");
                 activateButton(yourTasksButton, yourTasksTextView, countYourTasksTextView, primaryColor,"#FFFFFF" , "#FFFFFF"); // Red background, white text
                 break;
         }
+        updateRecyclerView(filteredTasks);
     }
+    // Method to filter tasks based on status
+    public List<Task> filterTasks(List<Task> allTasks,String status) {
+        List<Task> filteredTasks = new ArrayList<>();
+        for (Task task : allTasks) {
+            switch (status) {
+                case "pending":
+                    if (task.getStatus().equals("TO_DO") || task.getStatus().equals("IN_PROGRESS")) {
+                        filteredTasks.add(task);
+                    }
+                    break;
+                case "finished":
+                    if (task.getStatus().equals("COMPLETED") ) {
+                        filteredTasks.add(task);
+                    }
+                    break;
+                case "your_tasks":
+//                    if (task.getAssignedTo().equals(currentUser)) {
+//                        filteredTasks.add(task);
+//                    }
+                    break;
+            }
+        }
+        Log.d("TasksActivity", "Filtered tasks size: " + filteredTasks.size());
+        return filteredTasks;
+    }
+    private void updateRecyclerView(List<Task> tasks) {
+        tasksAdapter.setTasksList(tasks);
+        tasksAdapter.notifyDataSetChanged();
+    }
+    private String getCurrentFilter() {
+        if (pendingButton.getBackgroundTintList().getDefaultColor() == primaryColor) {
+            Log.d("TasksActivity", ""+pendingButton.getBackgroundTintList().getDefaultColor()+" "+primaryColor);
+            return "pending";
+        } else if (finishedButton.getBackgroundTintList().getDefaultColor() == primaryColor) {
+            return "finished";
+        } else if (yourTasksButton.getBackgroundTintList().getDefaultColor() == primaryColor) {
+            return "your_tasks";
+        }
+        return "all"; // Default filter if no button is selected
+    }
+    private void countTaskStatus() {
+        pendingCount = 0;
+        finishedCount = 0;
+        yourTasksCount = 0;
+        for (Task task : tasksList) {
+            if ("TO_DO".equals(task.getStatus()) || "IN_PROGRESS".equals(task.getStatus())) {
+                pendingCount++;
+            } else if ("COMPLETED".equals(task.getStatus())) {
+                finishedCount++;
+            }
+
+            countPendingTextView.setText(String.valueOf(pendingCount));
+            countFinishedTextView.setText(String.valueOf(finishedCount));
+            countYourTasksTextView.setText(String.valueOf(yourTasksCount));
+
+        }
+
+        // Update the UI with the counts
+        countPendingTextView.setText(String.valueOf(pendingCount));
+        countFinishedTextView.setText(String.valueOf(finishedCount));
+        countYourTasksTextView.setText(String.valueOf(yourTasksCount));
+    }
+
     private void resetButton(LinearLayout button,TextView textView, TextView countTextView, String bgColor, String textColor,int textBgColor) {
         button.setBackgroundTintList(android.content.res.ColorStateList.valueOf(android.graphics.Color.parseColor(bgColor)));
         textView.setTextColor(android.graphics.Color.parseColor(textColor));
@@ -336,4 +467,5 @@ public class TasksActivity extends AppCompatActivity {
         countTextView.setBackgroundTintList(android.content.res.ColorStateList.valueOf(android.graphics.Color.parseColor(textBgColor)));
         countTextView.setTextColor(bgColor);
     }
+
 }

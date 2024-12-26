@@ -23,7 +23,7 @@ import java.util.List;
 
 public class TasksFragment extends Fragment {
     private RecyclerView recyclerView;
-    private List<TaskResponse> tasksList;
+    private List<Task> tasksList;
     private TasksAdapter tasksAdapter;
 
     @Override

@@ -31,6 +31,7 @@ public class Task {
         this.dueDate = dueDate;
     }
 
+
     public String getName() {
         return name;
     }
@@ -79,5 +80,7 @@ public class Task {
     }
 
 
-
+    public int getId() {
+        return this.id;
+    }
 }
