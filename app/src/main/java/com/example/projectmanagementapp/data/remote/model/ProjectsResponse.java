@@ -15,6 +15,16 @@ public class ProjectsResponse {
     private List<Task> tasks;
     private int color;
 
+
+
+
+    private Integer creatorId; // Nullable Integer for creatorId
+    private String startDate;  // Nullable startDate as a String (consider using LocalDateTime if needed)
+    private String endDate;    // Nullable endDate as a String (consider using LocalDateTime if needed)
+    private String createdAt;  // ISO-8601 timestamp format
+    private String updatedAt;  // ISO-8601 timestamp format
+    private String status;
+
     private List<User> members;
 
     public Project getProject(){

@@ -88,12 +88,17 @@ public class MainActivity extends AppCompatActivity {
                                 ProjectRepository.getInstance(context).getAllProjects(new Callback<List<ProjectsResponse>>() {
                                     @Override
                                     public void onResponse(@NonNull Call<List<ProjectsResponse>> call, @NonNull Response<List<ProjectsResponse>> response) {
-                                        final List<Project> projects = new ArrayList<>();
-                                        assert response.body() != null;
-                                        for(final ProjectsResponse project : response.body()){
-                                            projects.add(project.getProject());
+                                        if (response.isSuccessful() && response.body() != null) {
+                                            final List<Project> projects = new ArrayList<>();
+                                            for (final ProjectsResponse project : response.body()) {
+                                                projects.add(project.getProject());
+                                            }
+                                            UserProjectsState.getInstance().setProjects(projects);
+                                        } else {
+                                            // Handle cases where the response is not successful or body is null
+                                            Toast.makeText(MainActivity.this, "Failed to fetch projects. Response error.", Toast.LENGTH_SHORT).show();
+                                            Log.e("MainActivity", "Response unsuccessful or body is null. Code: " + response.code());
                                         }
-                                        UserProjectsState.getInstance().setProjects(projects);
                                     }
 
                                     @Override
