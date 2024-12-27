@@ -89,7 +89,9 @@ public class MainActivity extends AppCompatActivity {
                                     @Override
                                     public void onResponse(@NonNull Call<List<ProjectsResponse>> call, @NonNull Response<List<ProjectsResponse>> response) {
                                         final List<Project> projects = new ArrayList<>();
-                                        assert response.body() != null;
+                                        if(response.body() == null){
+                                            return;
+                                        }
                                         for(final ProjectsResponse project : response.body()){
                                             projects.add(project.getProject());
                                         }
