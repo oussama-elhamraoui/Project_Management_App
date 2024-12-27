@@ -114,14 +114,22 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TasksViewHol
 
             // Set a listener for menu item clicks
             popupMenu.setOnMenuItemClickListener(item -> {
-                if(item.getItemId()==R.id.edit_task_menu){
+                if(item.getItemId()==R.id.finished_task_menu){
+                    task.setStatus("COMPLETED");
+                    adapter.tasksList.set(position, task);
+                    ProjectState.getInstance().updateTask(task);
+                    adapter.notifyItemChanged(position);
+                    return true;
+                } else if(item.getItemId()==R.id.edit_task_menu){
 
                     showEditTaskDialog(view,task, position);
+
                     return true;
                 } else if (item.getItemId()==R.id.delete_task_menu) {
                     adapter.tasksList.remove(position);
                     ProjectState.getInstance().deleteTask(task);
                     adapter.notifyItemChanged(position);
+                    Toast.makeText(view.getContext(), "Task Deleted", Toast.LENGTH_SHORT).show();
                     return true;
                 }else {
                     return false;
@@ -131,6 +139,7 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TasksViewHol
             // Show the popup menu
             popupMenu.show();
         }
+
         public void showEditTaskDialog(View view, Task task, int position) {
             Dialog editTaskDialog = new Dialog(view.getContext());
             editTaskDialog.setContentView(R.layout.dialog_edit_task);
@@ -209,6 +218,7 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TasksViewHol
                     ProjectState.getInstance().updateTask(task);
                     adapter.notifyItemChanged(position);
                     editTaskDialog.dismiss();
+                    Toast.makeText(view.getContext(), "Task Edited", Toast.LENGTH_SHORT).show();
                 });
                 editTaskDialog.show();
             } else {

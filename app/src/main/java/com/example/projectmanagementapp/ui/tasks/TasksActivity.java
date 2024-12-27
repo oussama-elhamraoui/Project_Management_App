@@ -120,6 +120,7 @@ public class TasksActivity extends AppCompatActivity {
         finishedButton = findViewById(R.id.finished_button);
         yourTasksButton = findViewById(R.id.your_tasks_button);
 
+//        save Button intent to home fragment
         saveButton = findViewById(R.id.save_button);
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -138,7 +139,7 @@ public class TasksActivity extends AppCompatActivity {
         countFinishedTextView = findViewById(R.id.count_finished_text_view);
         countYourTasksTextView = findViewById(R.id.count_your_tasks_text_view);
         countTaskStatus();
-
+        // setting up the filter buttons
         activateButton(pendingButton, pendingTextView, countPendingTextView, primaryColor,"#FFFFFF" , "#FFFFFF");
         resetButton(finishedButton, finishedTextView , countFinishedTextView, "#FFFFFF", "#000000" ,primaryColor); // White background, black text
         resetButton(yourTasksButton, yourTasksTextView, countYourTasksTextView, "#FFFFFF", "#000000", primaryColor);
@@ -202,7 +203,7 @@ public class TasksActivity extends AppCompatActivity {
 
 
     }
-
+    //this function to handle the dialog
     private void handleDialog(int primaryColor) {
         datePickerButton = addTaskDialog.findViewById(R.id.date_picker_image_button);
         Drawable drawable = datePickerButton.getDrawable();
@@ -210,6 +211,7 @@ public class TasksActivity extends AppCompatActivity {
         if (drawable != null) {
             drawable.setColorFilter(primaryColor, PorterDuff.Mode.SRC_IN);
         }
+        //initialize the datePicker to today's date
         datePickerTextView = addTaskDialog.findViewById(R.id.date_picker_text_view);
         Calendar defaultCalendar = Calendar.getInstance();
         int defaultYear = defaultCalendar.get(Calendar.YEAR);
@@ -225,7 +227,7 @@ public class TasksActivity extends AppCompatActivity {
         addButtonBackground.setCardBackgroundColor(primaryColor);
 
 
-
+        // clickListener on the datePicker for the datePicker Pop up
         datePickerButton.setOnClickListener(v -> {
             Calendar calendar = Calendar.getInstance();
             int year = calendar.get(Calendar.YEAR);
@@ -255,6 +257,7 @@ public class TasksActivity extends AppCompatActivity {
             }
         });
     }
+    // adding task to project function
     private void addTaskToProject(Task newTask){
 
         // Add the task to the project
@@ -271,6 +274,7 @@ public class TasksActivity extends AppCompatActivity {
         countTaskStatus();
         updateTaskCount();
     }
+    //this function to update the task count
     private void updateTaskCount() {
         // Assuming ProjectState holds the list of tasks, you can count them and set the value
         int taskCount = ProjectState.getInstance().getProject().getTasks().size();
@@ -368,6 +372,7 @@ public class TasksActivity extends AppCompatActivity {
         }
         tasksAdapter.updateTasks(taskModels); // Use a method in adapter to update data
     }
+    //this is a function to handle the filter buttons
     private void updateButtonColors(String selectedButton) {
         // Reset all buttons to the inactive state
         resetButton(pendingButton, pendingTextView, countPendingTextView, "#FFFFFF", "#000000",primaryColor); // Red background, white text
