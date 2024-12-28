@@ -45,6 +45,7 @@ import com.example.projectmanagementapp.state.ProjectState;
 import com.example.projectmanagementapp.state.UserState;
 import com.example.projectmanagementapp.ui.NavigationActivity;
 import com.example.projectmanagementapp.ui.home.HomeFragment;
+import com.example.projectmanagementapp.utils.TaskUtils;
 import com.example.projectmanagementapp.utils.TokenManager;
 
 import org.w3c.dom.Text;
@@ -55,6 +56,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -62,7 +64,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class TasksActivity extends AppCompatActivity {
+public class TasksActivity extends AppCompatActivity implements TaskCountsListener,TasksAdapter.OnTaskStatusChangeListener {
     private RecyclerView recyclerView;
     private List<Task> tasksList = ProjectState.getInstance().getProject().tasks ;
     private List<Task> filteredTasks = new ArrayList<>();
@@ -80,9 +82,6 @@ public class TasksActivity extends AppCompatActivity {
     private LinearLayout pendingButton, finishedButton, yourTasksButton;
     private TextView pendingTextView, finishedTextView, yourTasksTextView;
     private TextView countPendingTextView, countFinishedTextView, countYourTasksTextView;
-    private int pendingCount = 0;
-    private int finishedCount = 0;
-    private int yourTasksCount = 0;
     private LinearLayout saveButton;
     final int primaryColor = ProjectState.getInstance().getTheme().primaryColor;
     final int secondaryColor = ProjectState.getInstance().getTheme().secondaryColor;
@@ -138,7 +137,7 @@ public class TasksActivity extends AppCompatActivity {
         countPendingTextView = findViewById(R.id.count_pending_text_view);
         countFinishedTextView = findViewById(R.id.count_finished_text_view);
         countYourTasksTextView = findViewById(R.id.count_your_tasks_text_view);
-        countTaskStatus();
+        updateTaskCounts();
         // setting up the filter buttons
         activateButton(pendingButton, pendingTextView, countPendingTextView, primaryColor,"#FFFFFF" , "#FFFFFF");
         resetButton(finishedButton, finishedTextView , countFinishedTextView, "#FFFFFF", "#000000" ,primaryColor); // White background, black text
@@ -196,7 +195,7 @@ public class TasksActivity extends AppCompatActivity {
         int id = 0; // this is a temp solution plz delete it you need to get the id from the backend
         recyclerView = findViewById(R.id.task_recycler_view);
         filteredTasks = filterTasks(tasksList, "Pending");
-        tasksAdapter = new TasksAdapter(filteredTasks); // Initialize adapter with empty list
+        tasksAdapter = new TasksAdapter(filteredTasks,this,this); // Initialize adapter with empty list
 //        fetchTasksFromBackend();
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(tasksAdapter);
@@ -249,7 +248,7 @@ public class TasksActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Task task = createTaskRequest();
-                countTaskStatus();
+                updateTaskCounts();
                 if (task != null) {
                     addTaskToProject(task);
                     addTaskDialog.dismiss();
@@ -269,9 +268,10 @@ public class TasksActivity extends AppCompatActivity {
         tasksList.add(newTask);
         String currentFilter = getCurrentFilter();
         Log.d("TasksActivity", "Current filter: "+currentFilter);// Get the current filter type
+        filteredTasks.clear();
         filteredTasks = filterTasks(tasksList, currentFilter);
         updateRecyclerView(filteredTasks);
-        countTaskStatus();
+        updateTaskCounts();
         updateTaskCount();
     }
     //this function to update the task count
@@ -378,7 +378,7 @@ public class TasksActivity extends AppCompatActivity {
         resetButton(pendingButton, pendingTextView, countPendingTextView, "#FFFFFF", "#000000",primaryColor); // Red background, white text
         resetButton(finishedButton, finishedTextView , countFinishedTextView, "#FFFFFF", "#000000" ,primaryColor); // White background, black text
         resetButton(yourTasksButton, yourTasksTextView, countYourTasksTextView, "#FFFFFF", "#000000", primaryColor); // White background, black text
-
+        filteredTasks.clear();
         // Activate the selected button
         switch (selectedButton) {
             case "pending":
@@ -425,6 +425,7 @@ public class TasksActivity extends AppCompatActivity {
         tasksAdapter.setTasksList(tasks);
         tasksAdapter.notifyDataSetChanged();
     }
+//    this method gets the current active filter
     private String getCurrentFilter() {
         if (pendingButton.getBackgroundTintList().getDefaultColor() == primaryColor) {
             Log.d("TasksActivity", ""+pendingButton.getBackgroundTintList().getDefaultColor()+" "+primaryColor);
@@ -436,27 +437,31 @@ public class TasksActivity extends AppCompatActivity {
         }
         return "all"; // Default filter if no button is selected
     }
-    private void countTaskStatus() {
-        pendingCount = 0;
-        finishedCount = 0;
-        yourTasksCount = 0;
-        for (Task task : tasksList) {
-            if ("TO_DO".equals(task.getStatus()) || "IN_PROGRESS".equals(task.getStatus())) {
-                pendingCount++;
-            } else if ("COMPLETED".equals(task.getStatus())) {
-                finishedCount++;
-            }
+//    this method update filter counts
+    private void updateTaskCounts() {
+        Map<String, Integer> counts = TaskUtils.countTaskStatus(tasksList);
 
-            countPendingTextView.setText(String.valueOf(pendingCount));
-            countFinishedTextView.setText(String.valueOf(finishedCount));
-            countYourTasksTextView.setText(String.valueOf(yourTasksCount));
-
-        }
-
-        // Update the UI with the counts
-        countPendingTextView.setText(String.valueOf(pendingCount));
-        countFinishedTextView.setText(String.valueOf(finishedCount));
-        countYourTasksTextView.setText(String.valueOf(yourTasksCount));
+        countPendingTextView.setText(String.valueOf(counts.get("pending")));
+        countFinishedTextView.setText(String.valueOf(counts.get("finished")));
+        countYourTasksTextView.setText(String.valueOf(counts.get("yourTasks")));
+    }
+//    this method overrides the the interface taskCountsListener
+    @Override
+    public void onTaskCountsUpdated(Map<String, Integer> counts) {
+        countPendingTextView.setText(String.valueOf(counts.get("pending")));
+        countFinishedTextView.setText(String.valueOf(counts.get("finished")));
+        countYourTasksTextView.setText(String.valueOf(counts.get("yourTasks")));
+    }
+//    this method updates the tasks according to filter selected
+    @Override
+    public void onTaskStatusChanged(Task task) {
+        updateFilteredTasks();
+        updateRecyclerView(filteredTasks);
+    }
+    private void updateFilteredTasks() {
+        filteredTasks.clear();
+        // Apply the filter based on the current filter type
+        filteredTasks.addAll(filterTasks(tasksList, getCurrentFilter()));
     }
 
     private void resetButton(LinearLayout button,TextView textView, TextView countTextView, String bgColor, String textColor,int textBgColor) {

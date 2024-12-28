@@ -29,6 +29,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.projectmanagementapp.R;
 import com.example.projectmanagementapp.models.Task;
 import com.example.projectmanagementapp.state.ProjectState;
+import com.example.projectmanagementapp.utils.TaskUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -36,20 +37,29 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 
 public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TasksViewHolder> {
     static final int primaryColor = ProjectState.getInstance().getTheme().primaryColor;
 
     private List<Task> tasksList;
+    private TaskCountsListener taskCountsListener;
+    private OnTaskStatusChangeListener onTaskStatusChangeListener;
 
 
     public int getNumberOfTasks() {
         return tasksList.size();
     }
 
-    public TasksAdapter(List<Task> tasksList) {
+    public TasksAdapter(List<Task> tasksList, TaskCountsListener countslistener, OnTaskStatusChangeListener statuslistener) {
+        this.taskCountsListener = countslistener;
         this.tasksList = tasksList;
+        this.onTaskStatusChangeListener = statuslistener;
+    }
+    //this interface is  used to update the taskList according to filters
+    public interface OnTaskStatusChangeListener {
+        void onTaskStatusChanged(Task task);
     }
     public void setTasksList(List<Task> tasksList) {
         this.tasksList = tasksList;
@@ -118,6 +128,8 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TasksViewHol
                     task.setStatus("COMPLETED");
                     adapter.tasksList.set(position, task);
                     ProjectState.getInstance().updateTask(task);
+                    adapter.onTaskStatusChangeListener.onTaskStatusChanged(task);
+                    adapter.updateTaskCounts();
                     adapter.notifyItemChanged(position);
                     return true;
                 } else if(item.getItemId()==R.id.edit_task_menu){
@@ -128,7 +140,8 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TasksViewHol
                 } else if (item.getItemId()==R.id.delete_task_menu) {
                     adapter.tasksList.remove(position);
                     ProjectState.getInstance().deleteTask(task);
-                    adapter.notifyItemChanged(position);
+                    adapter.updateTaskCounts();
+                    adapter.notifyItemRemoved(position);
                     Toast.makeText(view.getContext(), "Task Deleted", Toast.LENGTH_SHORT).show();
                     return true;
                 }else {
@@ -226,7 +239,13 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TasksViewHol
             }
         }
 
-
+    }
+    //        this method updates filter counts
+    private void updateTaskCounts() {
+        if (taskCountsListener != null) {
+            Map<String, Integer> counts = TaskUtils.countTaskStatus(tasksList);
+            taskCountsListener.onTaskCountsUpdated(counts);
+        }
     }
 
 
