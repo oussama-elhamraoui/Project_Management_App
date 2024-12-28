@@ -20,7 +20,7 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.content.res.ResourcesCompat;
 
 import com.example.projectmanagementapp.data.remote.model.AuthResponse;
-import com.example.projectmanagementapp.data.remote.model.ProjectsResponse;
+import com.example.projectmanagementapp.data.remote.model.ProjectResponse;
 import com.example.projectmanagementapp.data.remote.repository.AuthRepository;
 import com.example.projectmanagementapp.data.remote.repository.ProjectRepository;
 import com.example.projectmanagementapp.models.Project;
@@ -83,23 +83,22 @@ public class MainActivity extends AppCompatActivity {
                                 final Intent homeIntent = new Intent(MainActivity.this, NavigationActivity.class);
                                 startActivity(homeIntent);
                                 Toast.makeText(MainActivity.this, "Login Successful!", Toast.LENGTH_SHORT).show();
-
                                 // Logic for fetching projects:
-                                ProjectRepository.getInstance(context).getAllProjects(new Callback<List<ProjectsResponse>>() {
+                                ProjectRepository.getInstance(context).getAllProjects(new Callback<List<ProjectResponse>>() {
                                     @Override
-                                    public void onResponse(@NonNull Call<List<ProjectsResponse>> call, @NonNull Response<List<ProjectsResponse>> response) {
+                                    public void onResponse(@NonNull Call<List<ProjectResponse>> call, @NonNull Response<List<ProjectResponse>> response) {
                                         final List<Project> projects = new ArrayList<>();
                                         if(response.body() == null){
                                             return;
                                         }
-                                        for(final ProjectsResponse project : response.body()){
+                                        for(final ProjectResponse project : response.body()){
                                             projects.add(project.getProject());
                                         }
                                         UserProjectsState.getInstance().setProjects(projects);
                                     }
 
                                     @Override
-                                    public void onFailure(@NonNull Call<List<ProjectsResponse>> call, @NonNull Throwable t) {
+                                    public void onFailure(@NonNull Call<List<ProjectResponse>> call, @NonNull Throwable t) {
                                         Toast.makeText(MainActivity.this, "Failed to fetch Projects", Toast.LENGTH_SHORT).show();
                                         Log.e("LoginActivity", "Failed to fetch projects error: " + t.getMessage(), t);
 

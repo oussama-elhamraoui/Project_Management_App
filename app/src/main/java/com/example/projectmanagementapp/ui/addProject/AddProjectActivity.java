@@ -20,11 +20,11 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.projectmanagementapp.R;
 import com.example.projectmanagementapp.data.remote.model.ProjectRequest;
-import com.example.projectmanagementapp.data.remote.model.ProjectsResponse;
+import com.example.projectmanagementapp.data.remote.model.ProjectResponse;
 import com.example.projectmanagementapp.data.remote.repository.ProjectRepository;
+import com.example.projectmanagementapp.models.Member;
 import com.example.projectmanagementapp.models.Project;
 import com.example.projectmanagementapp.models.ProjectTheme;
-import com.example.projectmanagementapp.models.User;
 import com.example.projectmanagementapp.state.ProjectState;
 import com.example.projectmanagementapp.state.UserProjectsState;
 import com.example.projectmanagementapp.ui.tasks.TasksActivity;
@@ -54,7 +54,7 @@ public class AddProjectActivity  extends AppCompatActivity {
                 final String name = projectName.getText().toString().trim();
                 final String description = projectDescription.getText().toString().trim();
                 final ProjectTheme theme = ProjectState.getInstance().getTheme();
-                final List<User> members = ProjectState.getInstance().getProject().getMembers();
+                final List<Member> members = ProjectState.getInstance().getProject().getMembers();
 
                 if (name.isEmpty()) {
                     Toast.makeText(AddProjectActivity.this, "Project name cannot be empty. Please provide a name.", Toast.LENGTH_SHORT).show();
@@ -63,9 +63,9 @@ public class AddProjectActivity  extends AppCompatActivity {
 
 
                 final ProjectRequest projectRequest = new ProjectRequest(name, description, theme.primaryColor, members);
-                ProjectRepository.getInstance(context).addProject(projectRequest, new Callback<ProjectsResponse>() {
+                ProjectRepository.getInstance(context).addProject(projectRequest, new Callback<ProjectResponse>() {
                     @Override
-                    public void onResponse(@NonNull Call<ProjectsResponse> call, @NonNull Response<ProjectsResponse> response) {
+                    public void onResponse(@NonNull Call<ProjectResponse> call, @NonNull Response<ProjectResponse> response) {
                         assert response.body() != null;
                         final Project createdProject = response.body().getProject();
                         assert (theme.primaryColor == createdProject.theme.primaryColor);
@@ -76,7 +76,7 @@ public class AddProjectActivity  extends AppCompatActivity {
                         startActivity(tasksIntent);
                     }
                     @Override
-                    public void onFailure(@NonNull Call<ProjectsResponse> call, @NonNull Throwable t) {
+                    public void onFailure(@NonNull Call<ProjectResponse> call, @NonNull Throwable t) {
                         Log.d("AddProjectActivity onFailure", "Something went wrong" + t.toString());
                         Toast.makeText(AddProjectActivity.this, "Unexpected server response", Toast.LENGTH_SHORT).show();
                     }

@@ -41,29 +41,29 @@ public interface ApiService {
     /**
      * Fetches all projects accessible to the authenticated user.
      * @param token Authorization token.
-     * @return A list of ProjectsResponse objects.
+     * @return A list of ProjectResponse objects.
      */
     @GET("/api/projects")
-    Call<List<ProjectsResponse>> getAllProjects(@Header("Authorization") String token);
+    Call<List<ProjectResponse>> getAllProjects(@Header("Authorization") String token);
 
     /**
      * Fetches details of a specific project by its ID.
      * @param token Authorization token.
      * @param projectId The ID of the project.
-     * @return A ProjectsResponse containing project details.
+     * @return A ProjectResponse containing project details.
      */
     @GET("/api/projects/{projectId}")
-    Call<ProjectsResponse> getProjectById(@Header("Authorization") String token,
+    Call<ProjectResponse> getProjectById(@Header("Authorization") String token,
                                          @Path("projectId") int projectId);
 
     /**
      * Creates a new project.
      * @param token Authorization token.
      * @param projectRequest Contains the project details to be created.
-     * @return A ProjectsResponse containing the created project details.
+     * @return A ProjectResponse containing the created project details.
      */
     @POST("/api/projects")
-    Call<ProjectsResponse> createProject(@Header("Authorization") String token,
+    Call<ProjectResponse> createProject(@Header("Authorization") String token,
                                         @Body ProjectRequest projectRequest);
 
     /**
@@ -71,10 +71,10 @@ public interface ApiService {
      * @param token Authorization token.
      * @param projectId The ID of the project to be updated.
      * @param projectDetails The updated project details.
-     * @return A ProjectsResponse containing the updated project details.
+     * @return A ProjectResponse containing the updated project details.
      */
     @PUT("/api/projects/{projectId}")
-    Call<ProjectsResponse> updateProject(@Header("Authorization") String token,
+    Call<ProjectResponse> updateProject(@Header("Authorization") String token,
                                         @Path("projectId") int projectId,
                                         @Body ProjectRequest projectDetails);
 
@@ -147,35 +147,35 @@ public interface ApiService {
      * Fetches all contributors for a specific project.
      * @param token Authorization token.
      * @param projectId The ID of the project.
-     * @return A list of ContributorResponse objects.
+     * @return A list of MemberResponse objects.
      */
     @GET("/api/contributors/project/{projectId}")
-    Call<List<ContributorResponse>> getContributorsByProject(@Header("Authorization") String token,
-                                                             @Path("projectId") int projectId);
+    Call<List<MemberResponse>> getContributorsByProject(@Header("Authorization") String token,
+                                                        @Path("projectId") int projectId);
 
     /**
      * Adds a contributor to a project by user ID.
      * @param token Authorization token.
      * @param projectId The ID of the project.
      * @param userId The ID of the user to be added.
-     * @return A ContributorResponse containing the added contributor details.
+     * @return A MemberResponse containing the added contributor details.
      */
     @POST("/api/contributors/project/{projectId}/user/{userId}")
-    Call<ContributorResponse> addContributorById(@Header("Authorization") String token,
-                                                 @Path("projectId") int projectId,
-                                                 @Path("userId") int userId);
+    Call<MemberResponse> addContributorById(@Header("Authorization") String token,
+                                            @Path("projectId") int projectId,
+                                            @Path("userId") int userId);
 
     /**
      * Adds a contributor to a project by email.
      * @param token Authorization token.
      * @param projectId The ID of the project.
      * @param email The email of the user to be added.
-     * @return A ContributorResponse containing the added contributor details.
+     * @return A MemberResponse containing the added contributor details.
      */
     @POST("/api/contributors/project/{projectId}")
-    Call<ContributorResponse> addContributorByEmail(@Header("Authorization") String token,
-                                                    @Path("projectId") int projectId,
-                                                    @Query("email") String email);
+    Call<MemberResponse> addContributorByEmail(@Header("Authorization") String token,
+                                               @Path("projectId") int projectId,
+                                               @Query("email") String email);
 
     /**
      * Removes a contributor from a project by user ID.

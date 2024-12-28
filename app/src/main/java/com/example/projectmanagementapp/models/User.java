@@ -5,11 +5,11 @@ import androidx.annotation.NonNull;
 public class User {
     public static final String SEPARATOR = ",";
     private final int id;
-    String firstName;
-    String lastName;
+    public String firstName;
+    public String lastName;
 
     final public String email;
-    final UserTheme theme;
+    public final UserTheme theme;
 
     public User(final int id, final String firstName, final String lastName, final String email, final UserTheme theme) {
         this.id = id;

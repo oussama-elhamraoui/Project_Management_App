@@ -6,7 +6,6 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
-import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
@@ -16,7 +15,7 @@ import com.example.projectmanagementapp.data.local.entities.Project;
 import com.example.projectmanagementapp.data.remote.api.ApiClient;
 import com.example.projectmanagementapp.data.remote.api.ApiService;
 import com.example.projectmanagementapp.data.remote.model.ProjectRequest;
-import com.example.projectmanagementapp.data.remote.model.ProjectsResponse;
+import com.example.projectmanagementapp.data.remote.model.ProjectResponse;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -58,9 +57,9 @@ public class ProjectRepository {
     public void syncProjects(String token, SyncProjectsCallback callback) {
         executor.execute(() -> {
             try {
-                List<ProjectsResponse> remoteProjects = apiService.getAllProjects("Bearer " + token).execute().body();
+                List<ProjectResponse> remoteProjects = apiService.getAllProjects("Bearer " + token).execute().body();
                 if (remoteProjects != null) {
-                    for (ProjectsResponse project : remoteProjects) {
+                    for (ProjectResponse project : remoteProjects) {
                         Project localProject = new Project();
                         localProject.setId(project.getId());
                         localProject.setDescription(project.getDescription());
@@ -87,30 +86,30 @@ public class ProjectRepository {
 
     // Callback interface for project sync
     public interface SyncProjectsCallback {
-        void onSyncCompleted(List<ProjectsResponse> projects);
+        void onSyncCompleted(List<ProjectResponse> projects);
         void onSyncFailed(Exception e);
     }
-    public void getAllProjects(Callback<List<ProjectsResponse>> callback){
-        apiService.getAllProjects("Bearer " + TOKEN).enqueue(new Callback<List<ProjectsResponse>>() {
+    public void getAllProjects(Callback<List<ProjectResponse>> callback){
+        apiService.getAllProjects("Bearer " + TOKEN).enqueue(new Callback<List<ProjectResponse>>() {
             @Override
-            public void onResponse(@NonNull Call<List<ProjectsResponse>> call, @NonNull Response<List<ProjectsResponse>> response) {
+            public void onResponse(@NonNull Call<List<ProjectResponse>> call, @NonNull Response<List<ProjectResponse>> response) {
                 callback.onResponse(call, response);
             }
 
             @Override
-            public void onFailure(@NonNull Call<List<ProjectsResponse>> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<List<ProjectResponse>> call, @NonNull Throwable t) {
                 callback.onFailure(call, t);
             }
         });
     }
     // Add a new project through the API and save it locally
-    public void addProject(ProjectRequest projectRequest, Callback<ProjectsResponse> callback) {
+    public void addProject(ProjectRequest projectRequest, Callback<ProjectResponse> callback) {
 
-        apiService.createProject("Bearer " + TOKEN, projectRequest).enqueue(new Callback<ProjectsResponse>() {
+        apiService.createProject("Bearer " + TOKEN, projectRequest).enqueue(new Callback<ProjectResponse>() {
             @Override
-            public void onResponse(@NonNull Call<ProjectsResponse> call, @NonNull Response<ProjectsResponse> response) {
+            public void onResponse(@NonNull Call<ProjectResponse> call, @NonNull Response<ProjectResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    ProjectsResponse remoteProject = response.body();
+                    ProjectResponse remoteProject = response.body();
                     Project localProject = new Project();
                     localProject.setId(remoteProject.getId());
                     localProject.setName(remoteProject.getTitle());
@@ -130,7 +129,7 @@ public class ProjectRepository {
             }
 
             @Override
-            public void onFailure(@NonNull Call<ProjectsResponse> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<ProjectResponse> call, @NonNull Throwable t) {
                 Log.e(TAG, "Error adding project: ", t);
                 callback.onFailure(call, t);
             }

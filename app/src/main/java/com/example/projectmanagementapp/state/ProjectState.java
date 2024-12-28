@@ -2,6 +2,7 @@ package com.example.projectmanagementapp.state;
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.projectmanagementapp.models.Member;
 import com.example.projectmanagementapp.models.Project;
 import com.example.projectmanagementapp.models.ProjectTheme;
 import com.example.projectmanagementapp.models.Task;
@@ -20,7 +21,7 @@ public class ProjectState {
     }
 
     private Project getDefaultProject(){
-        return new Project(-1, null, null, new ArrayList<Task>(), ProjectTheme.BLUE, new ArrayList<User>());
+        return new Project(-1, null, null, new ArrayList<Task>(), ProjectTheme.BLUE, new ArrayList<Member>());
     }
 
     public static ProjectState getInstance(){
@@ -39,13 +40,13 @@ public class ProjectState {
         return project.getValue();
     }
 
-    public void addMember(final User member) {
+    public void addMember(final Member member) {
         final Project updatedProject= new Project(Objects.requireNonNull(project.getValue()));
         updatedProject.addMember(member);
         project.setValue(updatedProject);
 
     }
-    public void deleteMember(final User member) {
+    public void deleteMember(final Member member) {
         final Project updatedProject= new Project(Objects.requireNonNull(project.getValue()));
         updatedProject.deleteMember(member);
         project.setValue(updatedProject);

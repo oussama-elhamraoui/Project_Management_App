@@ -10,7 +10,7 @@ public class Project {
     public List<Task> tasks;
     public ProjectTheme theme;
     public String description;
-    public List<User> members;
+    public List<Member> members;
 
     public Project(
             int id,
@@ -18,7 +18,7 @@ public class Project {
             String description,
             List<Task> tasks,
             ProjectTheme theme,
-            List<User> members
+            List<Member> members
         ) {
         this.id = id;
         this.tasks = (tasks != null) ? new ArrayList<>(tasks) : new ArrayList<>();
@@ -35,10 +35,10 @@ public class Project {
         this.theme = existingProject.theme;
         this.members = new ArrayList<>(existingProject.members);
     }
-    public void addMember(User member){
+    public void addMember(Member member){
         members.add(member);
     }
-    public void deleteMember(User member){
+    public void deleteMember(Member member){
         members.remove(member);
     }
     public int getTasksLeft() {
@@ -62,10 +62,10 @@ public class Project {
     public void setName(String name) {
         this.name = name;
     }
-    public List<User> getMembers() {
+    public List<Member> getMembers() {
         return members;
     }
-    public void setMembers(List<User> members) {
+    public void setMembers(List<Member> members) {
         this.members = members;
     }
     public int getProgress() {

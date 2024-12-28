@@ -3,7 +3,7 @@ package com.example.projectmanagementapp.models;
 import java.util.Random;
 
 public class UserTheme {
-    final int color;
+    public final int color;
 
     private UserTheme(final int color) {
         this.color = color;

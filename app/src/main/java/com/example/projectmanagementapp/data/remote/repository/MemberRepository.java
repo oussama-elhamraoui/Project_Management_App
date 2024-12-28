@@ -1,16 +1,11 @@
 package com.example.projectmanagementapp.data.remote.repository;
 
-import static android.content.Context.MODE_PRIVATE;
-import static android.content.Context.PRINT_SERVICE;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.example.projectmanagementapp.data.remote.api.ApiClient;
 import com.example.projectmanagementapp.data.remote.api.ApiService;
-import com.example.projectmanagementapp.data.remote.model.AuthResponse;
-import com.example.projectmanagementapp.data.remote.model.ContributorResponse;
-import com.example.projectmanagementapp.data.remote.model.LoginRequest;
+import com.example.projectmanagementapp.data.remote.model.MemberResponse;
 import com.example.projectmanagementapp.state.ProjectState;
 import com.example.projectmanagementapp.utils.TokenManager;
 
@@ -32,7 +27,7 @@ public class MemberRepository {
         return instance;
     }
 
-    public Call<ContributorResponse> addMember(String email, Context context) {
+    public Call<MemberResponse> addMember(String email, Context context) {
         final SharedPreferences preferences = context.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
         String members = preferences.getString("members", "");
         final String userValue = ProjectState.getInstance().getId()+":" +"user"; // add logic later
