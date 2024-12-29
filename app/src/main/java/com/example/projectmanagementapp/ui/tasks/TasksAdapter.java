@@ -44,22 +44,30 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TasksViewHol
     static final int primaryColor = ProjectState.getInstance().getTheme().primaryColor;
 
     private List<Task> tasksList;
+    private List<Task> originalList;
     private TaskCountsListener taskCountsListener;
     private OnTaskStatusChangeListener onTaskStatusChangeListener;
+    private OnTaskRemovedListener onTaskRemovedListener;
 
 
     public int getNumberOfTasks() {
         return tasksList.size();
     }
 
-    public TasksAdapter(List<Task> tasksList, TaskCountsListener countslistener, OnTaskStatusChangeListener statuslistener) {
+    public TasksAdapter(List<Task> originalList,List<Task> tasksList, TaskCountsListener countslistener, OnTaskStatusChangeListener statuslistener, OnTaskRemovedListener removedListener) {
+        this.originalList=originalList;
         this.taskCountsListener = countslistener;
         this.tasksList = tasksList;
         this.onTaskStatusChangeListener = statuslistener;
+        this.onTaskRemovedListener = removedListener;
     }
     //this interface is  used to update the taskList according to filters
     public interface OnTaskStatusChangeListener {
         void onTaskStatusChanged(Task task);
+    }
+    //This interface will have a method to notify the activity when an item is removed.
+    public interface OnTaskRemovedListener {
+        void onTaskRemoved(Task task);
     }
     public void setTasksList(List<Task> tasksList) {
         this.tasksList = tasksList;
@@ -140,7 +148,11 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TasksViewHol
                 } else if (item.getItemId()==R.id.delete_task_menu) {
                     adapter.tasksList.remove(position);
                     ProjectState.getInstance().deleteTask(task);
+                    adapter.originalList.remove(task);
                     adapter.updateTaskCounts();
+                    if (adapter.onTaskRemovedListener != null) {
+                        adapter.onTaskRemovedListener.onTaskRemoved(task); // Notify the activity
+                    }
                     adapter.notifyItemRemoved(position);
                     Toast.makeText(view.getContext(), "Task Deleted", Toast.LENGTH_SHORT).show();
                     return true;
@@ -243,7 +255,7 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TasksViewHol
     //        this method updates filter counts
     private void updateTaskCounts() {
         if (taskCountsListener != null) {
-            Map<String, Integer> counts = TaskUtils.countTaskStatus(tasksList);
+            Map<String, Integer> counts = TaskUtils.countTaskStatus(originalList);
             taskCountsListener.onTaskCountsUpdated(counts);
         }
     }

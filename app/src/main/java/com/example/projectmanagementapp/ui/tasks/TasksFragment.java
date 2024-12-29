@@ -40,7 +40,7 @@ public class TasksFragment extends Fragment {
 //            tasksList.add(task1);
         }
         id++;
-        tasksAdapter = new TasksAdapter(tasksList, (TaskCountsListener) this, (TasksAdapter.OnTaskStatusChangeListener) this);
+        tasksAdapter = new TasksAdapter(tasksList,tasksList, (TaskCountsListener) this, (TasksAdapter.OnTaskStatusChangeListener) this, (TasksAdapter.OnTaskRemovedListener) this);
         recyclerView.setLayoutManager(new LinearLayoutManager(container.getContext()));
         recyclerView.setAdapter(tasksAdapter);
         return inflater.inflate(R.layout.fragment_tasks, container, false);

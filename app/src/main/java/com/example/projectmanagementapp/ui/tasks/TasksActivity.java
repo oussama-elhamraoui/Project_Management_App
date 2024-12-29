@@ -64,7 +64,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class TasksActivity extends AppCompatActivity implements TaskCountsListener,TasksAdapter.OnTaskStatusChangeListener {
+public class TasksActivity extends AppCompatActivity implements TaskCountsListener, TasksAdapter.OnTaskStatusChangeListener, TasksAdapter.OnTaskRemovedListener {
     private RecyclerView recyclerView;
     private List<Task> tasksList = ProjectState.getInstance().getProject().tasks ;
     private List<Task> filteredTasks = new ArrayList<>();
@@ -195,7 +195,7 @@ public class TasksActivity extends AppCompatActivity implements TaskCountsListen
         int id = 0; // this is a temp solution plz delete it you need to get the id from the backend
         recyclerView = findViewById(R.id.task_recycler_view);
         filteredTasks = filterTasks(tasksList, "Pending");
-        tasksAdapter = new TasksAdapter(filteredTasks,this,this); // Initialize adapter with empty list
+        tasksAdapter = new TasksAdapter(tasksList,filteredTasks,this,this,this); // Initialize adapter with empty list
 //        fetchTasksFromBackend();
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(tasksAdapter);
@@ -456,6 +456,13 @@ public class TasksActivity extends AppCompatActivity implements TaskCountsListen
     @Override
     public void onTaskStatusChanged(Task task) {
         updateFilteredTasks();
+        updateRecyclerView(filteredTasks);
+    }
+
+    @Override
+    public void onTaskRemoved(Task task) {
+        tasksList.remove(task);
+        updateTaskCount();
         updateRecyclerView(filteredTasks);
     }
     private void updateFilteredTasks() {
