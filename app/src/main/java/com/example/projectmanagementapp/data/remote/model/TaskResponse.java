@@ -10,7 +10,7 @@ public class TaskResponse {
     private int id;
 
 
-    private Project project;
+//    private Project project;
 
 
     private String name;
@@ -30,7 +30,7 @@ public class TaskResponse {
 
     public TaskResponse(int id, Project project, String name, String description, String status, String priority, Date dueDate, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
-        this.project = project;
+//        this.project = project;
         this.name = name;
         this.description = description;
         this.status = status;
@@ -59,9 +59,9 @@ public class TaskResponse {
         return id;
     }
 
-    public Project getProject() {
-        return project;
-    }
+//    public Project getProject() {
+//        return project;
+//    }
 
     public String getName() {
         return name;

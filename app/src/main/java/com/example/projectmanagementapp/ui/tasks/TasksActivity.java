@@ -381,7 +381,6 @@ private void saveTaskInDB(String token, int projectId, int userId, TaskRequest t
                     if (response.isSuccessful() && response.body() != null) {
                         TaskResponse taskResponse = response.body();
                         Toast.makeText(TasksActivity.this, "Task created successfully", Toast.LENGTH_SHORT).show();
-                        finish();
                     } else {
                         Toast.makeText(TasksActivity.this, "Failed to create task", Toast.LENGTH_SHORT).show();
                     }

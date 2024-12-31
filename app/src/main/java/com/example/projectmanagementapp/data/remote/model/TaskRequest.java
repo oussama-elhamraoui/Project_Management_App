@@ -12,8 +12,8 @@ public class TaskRequest {
     public TaskRequest(String name, String description, String priority, String status, Date dueDate) {
         this.name = name;
         this.description = description;
-//        this.priority = priority;
-//        this.status = status;
+        this.priority = priority;
+        this.status = status;
         this.dueDate = dueDate;
     }
 
