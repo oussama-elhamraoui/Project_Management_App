@@ -251,6 +251,14 @@ public class TasksActivity extends AppCompatActivity implements TaskCountsListen
                 updateTaskCounts();
                 if (task != null) {
                     addTaskToProject(task);
+                    TaskRequest taskRequest = new TaskRequest(task.name,task.description,task.priority,task.status,task.dueDate);
+                    String token = TokenManager.getToken();
+                    Log.d("Token", token);
+                    int projectId=ProjectState.getInstance().getProject().getId();
+                    Log.d("Project Id", ""+projectId);
+                    int userId = UserState.getInstance().getUser().getId();
+                    Log.d("User Id", ""+userId);
+                    saveTaskInDB(token,projectId,userId,taskRequest);
                     addTaskDialog.dismiss();
                 }
             }
@@ -364,6 +372,30 @@ public class TasksActivity extends AppCompatActivity implements TaskCountsListen
 //            }
 //        });
 //    }
+private void saveTaskInDB(String token, int projectId, int userId, TaskRequest taskRequest) {
+    ApiService taskApiService = ApiClient.getInstance().create(ApiService.class);
+    taskApiService.createTask(token, projectId, userId, taskRequest)
+            .enqueue(new Callback<TaskResponse>() {
+                @Override
+                public void onResponse(@NonNull Call<TaskResponse> call, @NonNull Response<TaskResponse> response) {
+                    if (response.isSuccessful() && response.body() != null) {
+                        TaskResponse taskResponse = response.body();
+                        Toast.makeText(TasksActivity.this, "Task created successfully", Toast.LENGTH_SHORT).show();
+                        // Optionally update UI or state
+                        finish(); // Close the activity
+                    } else {
+                        Toast.makeText(TasksActivity.this, "Failed to create task", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(@NonNull Call<TaskResponse> call, @NonNull Throwable t) {
+                    Log.e("AddTaskActivity", "Error: " + t.getMessage(), t);
+                    Toast.makeText(TasksActivity.this, "An error occurred", Toast.LENGTH_SHORT).show();
+                }
+            });
+}
+
     private void updateTasksAdapter(List<Task> tasks) {
         List<Task> taskModels = new ArrayList<>();
         for (Task task : tasks) {

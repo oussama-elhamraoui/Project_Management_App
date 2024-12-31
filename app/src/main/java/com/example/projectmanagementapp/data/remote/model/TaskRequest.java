@@ -3,22 +3,22 @@ package com.example.projectmanagementapp.data.remote.model;
 import java.util.Date;
 
 public class TaskRequest {
-    private String title;
+    private String name;
     private String description;
     private String priority; // set a default value if not to be used
     private String status;
     private Date dueDate;
 
-    public TaskRequest(String title, String description, String priority, String status, Date dueDate) {
-        this.title = title;
+    public TaskRequest(String name, String description, String priority, String status, Date dueDate) {
+        this.name = name;
         this.description = description;
 //        this.priority = priority;
 //        this.status = status;
         this.dueDate = dueDate;
     }
 
-    public TaskRequest(String title, String description, String status, Date dueDate) {
-        this.title = title;
+    public TaskRequest(String name, String description, String status, Date dueDate) {
+        this.name = name;
         this.description = description;
         this.status = status;
         this.dueDate = dueDate;
@@ -28,12 +28,12 @@ public class TaskRequest {
 
     }
 
-    public String getTitle() {
-        return title;
+    public String getName() {
+        return name;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDescription() {
