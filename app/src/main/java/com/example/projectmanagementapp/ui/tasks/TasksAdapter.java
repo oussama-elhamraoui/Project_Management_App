@@ -27,9 +27,14 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.projectmanagementapp.R;
+import com.example.projectmanagementapp.data.remote.api.ApiClient;
+import com.example.projectmanagementapp.data.remote.api.ApiService;
+import com.example.projectmanagementapp.data.remote.model.TaskRequest;
+import com.example.projectmanagementapp.data.remote.model.TaskResponse;
 import com.example.projectmanagementapp.models.Task;
 import com.example.projectmanagementapp.state.ProjectState;
 import com.example.projectmanagementapp.utils.TaskUtils;
+import com.example.projectmanagementapp.utils.TokenManager;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -39,6 +44,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TasksViewHolder> {
     static final int primaryColor = ProjectState.getInstance().getTheme().primaryColor;
@@ -96,7 +105,7 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TasksViewHol
     public void onBindViewHolder(@NonNull TasksViewHolder holder, int position) {
         Task task= tasksList.get(position);
         holder.taskNameTextView.setText(task.getName());
-//        holder.durationLeftTextView.setText(task.getTimeLeft()+" Left");
+        holder.durationLeftTextView.setText(task.getDurationLeft());
 
         holder.moreOptionsButton.setOnClickListener(view -> holder.showPopupMenu(view, task,position));
     }
@@ -114,7 +123,7 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TasksViewHol
         TextView durationLeftTextView;
         ImageButton moreOptionsButton;
         Button editButton;
-
+        String token = TokenManager.getToken();
         public TasksViewHolder(@NonNull View itemView, TasksAdapter tasksAdapter) {
             super(itemView);
             this.adapter = tasksAdapter;
@@ -136,6 +145,7 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TasksViewHol
                     task.setStatus("COMPLETED");
                     adapter.tasksList.set(position, task);
                     ProjectState.getInstance().updateTask(task);
+                    adapter.updateTaskInDB(token,task.id,new TaskRequest(task.name,task.description, task.priority, "COMPLETED",task.dueDate),view);
                     adapter.onTaskStatusChangeListener.onTaskStatusChanged(task);
                     adapter.updateTaskCounts();
                     adapter.notifyItemChanged(position);
@@ -154,7 +164,8 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TasksViewHol
                         adapter.onTaskRemovedListener.onTaskRemoved(task); // Notify the activity
                     }
                     adapter.notifyItemRemoved(position);
-                    Toast.makeText(view.getContext(), "Task Deleted", Toast.LENGTH_SHORT).show();
+                    adapter.removeTaskFromDB(token, task.id, view);
+//                    Toast.makeText(view.getContext(), "Task Deleted", Toast.LENGTH_SHORT).show();
                     return true;
                 }else {
                     return false;
@@ -242,6 +253,7 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TasksViewHol
                     adapter.tasksList.set(position, task);
                     ProjectState.getInstance().updateTask(task);
                     adapter.notifyItemChanged(position);
+                    adapter.updateTaskInDB(token,task.id,new TaskRequest(task.name,task.description, task.priority, task.status,task.dueDate),view);
                     editTaskDialog.dismiss();
                     Toast.makeText(view.getContext(), "Task Edited", Toast.LENGTH_SHORT).show();
                 });
@@ -258,6 +270,49 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TasksViewHol
             Map<String, Integer> counts = TaskUtils.countTaskStatus(originalList);
             taskCountsListener.onTaskCountsUpdated(counts);
         }
+    }
+//    update task in the dataBase
+    private void updateTaskInDB(String token, int taskId, TaskRequest taskRequest, View view) {
+        ApiService taskApiService = ApiClient.getInstance().create(ApiService.class);
+        taskApiService.updateTask(token,taskId, taskRequest)
+                .enqueue(new Callback<TaskResponse>() {
+                    @Override
+                    public void onResponse(@NonNull Call<TaskResponse> call, @NonNull Response<TaskResponse> response) {
+                        if (response.isSuccessful() && response.body() != null) {
+                            TaskResponse taskResponse = response.body();
+                            Toast.makeText(view.getContext(), "Task updated successfully", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(view.getContext(), "Failed to update task", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<TaskResponse> call, @NonNull Throwable t) {
+                        Log.e("UpdateTask", "Error: " + t.getMessage(), t);
+                        Toast.makeText(view.getContext(), "An error occurred", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+//    Remove task from the dataBase
+    private void removeTaskFromDB(String token, int taskId,View view) {
+        ApiService taskApiService = ApiClient.getInstance().create(ApiService.class);
+        taskApiService.deleteTask(token,taskId)
+                .enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                        if (response.isSuccessful()) {
+                            Toast.makeText(view.getContext(), "Task Deleted successfully", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(view.getContext(), "Failed to delete task", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+                        Log.e("UpdateTask", "Error: " + t.getMessage(), t);
+                        Toast.makeText(view.getContext(), "An error occurred", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
 
