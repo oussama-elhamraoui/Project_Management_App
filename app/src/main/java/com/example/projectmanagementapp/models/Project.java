@@ -21,7 +21,7 @@ public class Project {
             List<Member> members
         ) {
         this.id = id;
-        this.tasks = (tasks != null) ? new ArrayList<>(tasks) : new ArrayList<>();
+        this.tasks = (tasks != null) ? tasks : new ArrayList<>();
         this.name = name;
         this.description = description;
         this.theme = theme;
@@ -42,7 +42,7 @@ public class Project {
         members.remove(member);
     }
     public int getTasksLeft() {
-        return getTasksByStatus("To Do").size() + getTasksByStatus("In Progress").size();
+        return getTasksByStatus("TO_DO").size() + getTasksByStatus("IN_PROGRESS").size();
     }
     public List<Task> getTasksByStatus(String status) {
          ArrayList<Task> newTasks = new ArrayList<>();
@@ -72,7 +72,13 @@ public class Project {
         if (tasks.isEmpty()) {
             return 0; // Default progress when there are no tasks
         }
-        return (int)(getTasksByStatus("COMPLETED").size() / tasks.size() * 100);
+        double percentage = (double) (tasks.size() - getTasksLeft()) / tasks.size();
+        final int progress = (int) (percentage * 100);
+        assert (progress >= 0 && progress <= 100);
+        if (progress > 100 || progress < 0) {
+            System.out.println("The progress is " + progress);
+        }
+        return progress;
     }
 
     public int getId() {

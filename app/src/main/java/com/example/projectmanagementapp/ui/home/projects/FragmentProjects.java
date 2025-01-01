@@ -28,8 +28,6 @@ public class FragmentProjects extends Fragment {
     private ProjectsAdapter projectsAdapter;
     private TextView projectsCount;
 
-    // Sample data
-
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -44,13 +42,18 @@ public class FragmentProjects extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
 
         // Display the number of projects
-        UserProjectsState.getInstance().projects.observe(getViewLifecycleOwner(), updatedProjects ->{
+        UserProjectsState.getInstance().projects.observe(getViewLifecycleOwner(), updatedProjects -> {
+            System.out.println("Updated projects");
+            // Update the TextView with the number of projects
             projectsCount.setText(String.valueOf(updatedProjects.size()));
-            projectsAdapter = new ProjectsAdapter(requireContext(), updatedProjects);
-            recyclerView.setAdapter(projectsAdapter);
+
+            if (projectsAdapter == null) {
+                projectsAdapter = new ProjectsAdapter(requireContext(), new ArrayList<>(updatedProjects));
+                recyclerView.setAdapter(projectsAdapter);
+            } else {
+                projectsAdapter.updateProjects(new ArrayList<>(updatedProjects));
+            }
         });
-
-
         return view;
     }
 

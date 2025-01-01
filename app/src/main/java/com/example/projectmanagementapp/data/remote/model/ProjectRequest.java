@@ -1,7 +1,6 @@
 package com.example.projectmanagementapp.data.remote.model;
 
 import com.example.projectmanagementapp.models.Member;
-import com.example.projectmanagementapp.models.User;
 
 import java.util.List;
 import java.util.stream.Collectors;

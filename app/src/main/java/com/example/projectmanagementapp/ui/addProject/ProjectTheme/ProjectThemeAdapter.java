@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.projectmanagementapp.R;
 import com.example.projectmanagementapp.models.ProjectTheme;
-import com.example.projectmanagementapp.models.UserTheme;
 import com.example.projectmanagementapp.state.ProjectState;
 
 public class ProjectThemeAdapter extends RecyclerView.Adapter<ProjectThemeAdapter.ProjectThemeViewHolder> {

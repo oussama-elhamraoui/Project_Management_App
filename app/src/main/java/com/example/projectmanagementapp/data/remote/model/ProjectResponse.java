@@ -1,5 +1,7 @@
 package com.example.projectmanagementapp.data.remote.model;
 
+import androidx.annotation.NonNull;
+
 import com.example.projectmanagementapp.models.Member;
 import com.example.projectmanagementapp.models.Project;
 import com.example.projectmanagementapp.models.ProjectTheme;
@@ -13,19 +15,26 @@ public class ProjectResponse {
     private int id;
     private String title;
     private String description;
-    private List<Task> tasks;
     private int color;
+    private List<TaskResponse> tasks;
     private List<MemberResponse> members;
 
-    public Project getProject(){
 
+    public Project getProject(){
         final List<Member> serializedMembers = members == null ? new ArrayList<>() : members.stream().map(MemberResponse::getMember).collect(Collectors.toList());
+        final List<Task> serializedTasks = tasks == null ? new ArrayList<>() : tasks.stream().map(TaskResponse::getTask).collect(Collectors.toList());
+        System.out.println("Inside getProject");
+        if(tasks != null){
+            System.out.println(tasks);
+        } else{
+            System.out.println("Tasks are null");
+        }
 
         return new Project(
                 id,
                 title,
                 description,
-                tasks,
+                serializedTasks,
                 ProjectTheme.getColor(color),
                 serializedMembers
         );
@@ -48,8 +57,18 @@ public class ProjectResponse {
         return description;
     }
 
-    public void setMembers(List<MemberResponse> members) {
-        this.members = members;
+    @NonNull
+    @Override
+    public String toString() {
+        return "ClassName{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", color=" + color +
+                ", tasks=" + tasks +
+                ", members=" + members +
+                '}';
     }
+
 
 }

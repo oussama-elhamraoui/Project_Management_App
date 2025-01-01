@@ -6,6 +6,7 @@ import com.example.projectmanagementapp.models.Project;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class UserProjectsState {
     private static UserProjectsState instance;
@@ -27,6 +28,7 @@ public class UserProjectsState {
         return projects.getValue();
     }
 
+
     public void addProject(Project project){
         final List<Project> updatedProjects = projects.getValue();
         assert updatedProjects != null;
@@ -39,7 +41,13 @@ public class UserProjectsState {
         updatedProjects.remove(project);
         projects.setValue(updatedProjects);
     }
-
+    public void updateProject(Project project) {
+        List<Project> currentProjects = projects.getValue();
+        List<Project> updatedProjects = currentProjects.stream()
+                .map(p -> p.id == project.id ? project : p)
+                .collect(Collectors.toList());
+        projects.setValue(updatedProjects);
+    }
     public void setProjects(List<Project> projects){
         this.projects.setValue(projects);
     }

@@ -93,7 +93,9 @@ public class MainActivity extends AppCompatActivity {
                                         }
                                         for(final ProjectResponse project : response.body()){
                                             projects.add(project.getProject());
+
                                         }
+
                                         UserProjectsState.getInstance().setProjects(projects);
                                     }
 
