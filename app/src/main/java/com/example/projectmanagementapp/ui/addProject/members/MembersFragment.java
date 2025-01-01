@@ -1,16 +1,9 @@
 package com.example.projectmanagementapp.ui.addProject.members;
 
 
-
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
-
-import androidx.cardview.widget.CardView;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +17,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.projectmanagementapp.R;
-import com.example.projectmanagementapp.data.remote.repository.MemberRepository;
 import com.example.projectmanagementapp.models.User;
 import com.example.projectmanagementapp.models.UserTheme;
 import com.example.projectmanagementapp.state.MemberState;
@@ -56,14 +48,12 @@ public class MembersFragment extends Fragment {
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(layoutManager);
 
-        // Example data
-        final List<User> members = new ArrayList<>();
-        members.add(new User(1, "Alice", "Project Manager","", UserTheme.values[0]));
-        members.add(new User(1, "Bob", "Developer","", UserTheme.values[1]));
-        members.add(new User(1, "Carol", "Designer","", UserTheme.values[2]));
 
-        final MembersAdapter adapter = new MembersAdapter(members);
-        recyclerView.setAdapter(adapter);
+        ProjectState.getInstance().project.observe(getViewLifecycleOwner(), project -> {
+            final MembersAdapter adapter = new MembersAdapter(project.members);
+            recyclerView.setAdapter(adapter);
+        });
+
 
         return view;
 
@@ -87,7 +77,8 @@ public class MembersFragment extends Fragment {
             cardViewContent.setVisibility(isAdmin ? View.VISIBLE : View.INVISIBLE);
         });
 
-        final CardView addMemberButton = dialogView.findViewById(R.id.cv_add_member);
+        dialogView.show();
+        final CardView addMemberButton = dialogView.findViewById(R.id.btn_invite);
         addMemberButton.setOnClickListener(v -> {
             final EditText emailEditView = dialogView.findViewById(R.id.et_member_email);
             final String email = emailEditView.getText().toString().trim();
@@ -97,7 +88,6 @@ public class MembersFragment extends Fragment {
 
         });
         // Show the dialog
-        dialogView.show();
     }
 
 

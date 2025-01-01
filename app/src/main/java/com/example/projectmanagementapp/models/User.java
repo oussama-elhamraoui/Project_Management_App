@@ -32,6 +32,7 @@ public class User {
                 + this.lastName.toUpperCase().charAt(0);
     }
 
+
     public int getId() {
         return id;
     }

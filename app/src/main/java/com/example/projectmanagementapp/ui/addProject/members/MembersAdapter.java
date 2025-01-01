@@ -10,15 +10,15 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.projectmanagementapp.R;
-import com.example.projectmanagementapp.models.User;
+import com.example.projectmanagementapp.models.Member;
 
 import java.util.List;
 
 public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.MemberViewHolder> {
 
-    private final List<User> memberList;
+    private final List<Member> memberList;
 
-    public MembersAdapter(List<User> memberList) {
+    public MembersAdapter(List<Member> memberList) {
         this.memberList = memberList;
     }
 
@@ -31,9 +31,9 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.MemberVi
 
     @Override
     public void onBindViewHolder(@NonNull MemberViewHolder holder, int position) {
-        User member = memberList.get(position);
-        holder.memberBackground.setCardBackgroundColor(member.getColor());
-        holder.memberAbbreviation.setText(member.getProfile());
+        final Member member = memberList.get(position);
+        holder.memberBackground.setCardBackgroundColor(member.user.getColor());
+        holder.memberAbbreviation.setText(member.user.getProfile());
     }
 
     @Override

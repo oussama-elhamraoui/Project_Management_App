@@ -13,7 +13,7 @@ import java.util.Objects;
 
 public class ProjectState {
     private static ProjectState instance;
-    private final MutableLiveData<Project> project;
+    public final MutableLiveData<Project> project;
 
     private ProjectState() {
         project = new MutableLiveData<Project>(getDefaultProject());
