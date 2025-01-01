@@ -71,12 +71,38 @@ public class Task {
     public void setDueDate(Date dueDate) {
         this.dueDate = dueDate;
     }
-    public Duration getTimeLeft() {
+    public String getDurationLeft() {
+        // Calculate the time left
         Instant dueDateInstant = dueDate.toInstant();
-
         Instant now = Instant.now();
 
-        return Duration.between(now, dueDateInstant);
+        if (now.isAfter(dueDateInstant)) {
+            return "Task is overdue";
+        }
+
+        Duration duration = Duration.between(now, dueDateInstant);
+
+        long minutesLeft = duration.toMinutes();
+
+        if (minutesLeft == 1) {
+            return "1 minute left";
+        } else if (minutesLeft < 60) {
+            return minutesLeft + " minutes left";
+        } else if (minutesLeft < 1440) { // 1440 minutes in a day
+            long hoursLeft = duration.toHours();
+            if (hoursLeft == 1) {
+                return "1 hour left";
+            } else {
+                return hoursLeft + " hours left";
+            }
+        } else {
+            long daysLeft = duration.toDays();
+            if (daysLeft == 1) {
+                return "1 day left";
+            } else {
+                return daysLeft + " days left";
+            }
+        }
     }
 
 
