@@ -5,9 +5,7 @@ public class SignUpRequest {
     private String password;
     private String firstname;
     private String lastname;
-
     private int color;
-
     public SignUpRequest(String email, String password, String firstname, String lastname, int color) {
         this.email = email;
         this.password = password;

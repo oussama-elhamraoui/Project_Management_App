@@ -1,9 +1,7 @@
 package com.example.projectmanagementapp.data.remote.model;
-
 import com.example.projectmanagementapp.models.Member;
 import com.example.projectmanagementapp.models.User;
 import com.example.projectmanagementapp.models.UserTheme;
-
 public class MemberResponse {
     private int userId;
     private String firstName;

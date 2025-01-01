@@ -1,18 +1,21 @@
 package com.example.projectmanagementapp.data.remote.repository;
 
 import android.content.Context;
-import android.content.SharedPreferences;
+
+import androidx.annotation.NonNull;
 
 import com.example.projectmanagementapp.data.remote.api.ApiClient;
 import com.example.projectmanagementapp.data.remote.api.ApiService;
-import com.example.projectmanagementapp.data.remote.model.MemberResponse;
-import com.example.projectmanagementapp.state.ProjectState;
+import com.example.projectmanagementapp.data.remote.model.ProjectResponse;
+import com.example.projectmanagementapp.data.remote.model.UserRequest;
+import com.example.projectmanagementapp.data.remote.model.UserResponse;
 import com.example.projectmanagementapp.utils.TokenManager;
 
 import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MemberRepository {
-    public static final String SEPERATOR = ";";
     private static MemberRepository instance;
     final static private String token = TokenManager.getToken();
     private static ApiService apiService;
@@ -27,14 +30,21 @@ public class MemberRepository {
         return instance;
     }
 
-    public Call<MemberResponse> addMember(String email, Context context) {
-        final SharedPreferences preferences = context.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
-        String members = preferences.getString("members", "");
-        final String userValue = ProjectState.getInstance().getId()+":" +"user"; // add logic later
-        members += members + SEPERATOR + userValue;
+    public void addMember(String email, String username, Callback<UserResponse> callback) {
 
+        apiService.getUser(token, new UserRequest(email = email, username = username)).enqueue(new Callback<UserResponse>() {
+            @Override
+            public void onFailure(@NonNull Call<UserResponse> call, @NonNull Throwable t) {
+                callback.onFailure(call, t);
+            }
+
+            @Override
+            public void onResponse(@NonNull Call<UserResponse> call, @NonNull Response<UserResponse> response) {
+                callback.onResponse(call, response);
+
+            }
+        });
         // Set the value later
-        return apiService.addContributorByEmail(token, ProjectState.getInstance().getProject().id, email);
     }
 
 }

@@ -6,12 +6,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class ProjectRequest {
-
     final private String title;
     final private String description;
     final private int color;
     private final List<MemberResponse> members;
-
     public ProjectRequest(String title, String description, int color, List<Member> members) {
         final List<MemberResponse> memberResponses = members.stream().map(MemberResponse::new).collect(Collectors.toList());
         this.title = title;
@@ -19,7 +17,6 @@ public class ProjectRequest {
         this.color = color;
         this.members = memberResponses;
     }
-
     public String getDescription() {
         return description;
     }
@@ -27,7 +24,5 @@ public class ProjectRequest {
         return title;
     }
     public int getColor() { return color; }
-
-
 
 }

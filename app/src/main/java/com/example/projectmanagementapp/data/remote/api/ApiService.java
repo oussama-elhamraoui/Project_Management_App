@@ -128,6 +128,10 @@ public interface ApiService {
                                   @Path("taskId") int taskId,
                                   @Body TaskRequest taskDetails);
 
+    @POST("/api/contributors/user")
+    Call<UserResponse> getUser(@Header("Authorization") String token,
+                                  @Body UserRequest userRequest);
+
     /**
      * Deletes a task by its ID.
      * @param token Authorization token.

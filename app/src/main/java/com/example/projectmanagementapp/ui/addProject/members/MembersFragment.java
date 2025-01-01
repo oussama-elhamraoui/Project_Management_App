@@ -10,20 +10,26 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.projectmanagementapp.R;
-import com.example.projectmanagementapp.models.User;
-import com.example.projectmanagementapp.models.UserTheme;
+import com.example.projectmanagementapp.data.remote.model.UserResponse;
+import com.example.projectmanagementapp.data.remote.repository.MemberRepository;
+
 import com.example.projectmanagementapp.state.MemberState;
 import com.example.projectmanagementapp.state.ProjectState;
+import com.example.projectmanagementapp.ui.addProject.AddProjectActivity;
 
-import java.util.ArrayList;
-import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class MembersFragment extends Fragment {
@@ -81,10 +87,27 @@ public class MembersFragment extends Fragment {
         final CardView addMemberButton = dialogView.findViewById(R.id.btn_invite);
         addMemberButton.setOnClickListener(v -> {
             final EditText emailEditView = dialogView.findViewById(R.id.et_member_email);
-            final String email = emailEditView.getText().toString().trim();
-            // need new api to get the member id by email
+            final EditText userNameEditView = dialogView.findViewById(R.id.et_member_name);
 
-//            MemberRepository.getInstance().addMember(email); only on edit
+            final String email = emailEditView.getText().toString().trim();
+            final String username = userNameEditView.getText().toString().trim();
+            // need new api to get the member id by email
+            MemberRepository.getInstance().addMember(email, username, new Callback<UserResponse>() {
+                @Override
+                public void onResponse(@NonNull Call<UserResponse> call, @NonNull Response<UserResponse> response) {
+                    if(response.body() != null){
+                        ProjectState.getInstance().addMember(response.body().getUser(), MemberState.getInstance().isAdmin.getValue());
+                    }
+
+                }
+
+                @Override
+                public void onFailure(@NonNull Call<UserResponse> call, @NonNull Throwable t) {
+                        Toast.makeText(requireContext(), "Failed to fetch User", Toast.LENGTH_SHORT).show();
+
+
+                }
+            });
 
         });
         // Show the dialog

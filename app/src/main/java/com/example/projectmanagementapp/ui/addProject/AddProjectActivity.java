@@ -44,7 +44,7 @@ public class AddProjectActivity  extends AppCompatActivity {
         setContentView(R.layout.activity_add_project);
 
         final AddProjectActivity context = this;
-        ProjectState.getInstance().addMember(new Member(UserState.getInstance().getUser(), true));
+        ProjectState.getInstance().addMember(UserState.getInstance().getUser(), true);
         final LinearLayout btnNext = findViewById(R.id.btn_next);
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override

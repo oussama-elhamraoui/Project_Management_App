@@ -6,6 +6,7 @@ import com.example.projectmanagementapp.models.Member;
 import com.example.projectmanagementapp.models.Project;
 import com.example.projectmanagementapp.models.ProjectTheme;
 import com.example.projectmanagementapp.models.Task;
+import com.example.projectmanagementapp.models.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,9 +40,9 @@ public class ProjectState {
         return project.getValue();
     }
 
-    public void addMember(final Member member) {
+    public void addMember(final User user, boolean isAdmin) {
         final Project updatedProject= new Project(Objects.requireNonNull(project.getValue()));
-        updatedProject.addMember(member);
+        updatedProject.addMember(new Member(user, isAdmin));
         project.setValue(updatedProject);
 
     }
