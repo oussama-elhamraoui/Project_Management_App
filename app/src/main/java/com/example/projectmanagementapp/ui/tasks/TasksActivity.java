@@ -258,7 +258,7 @@ public class TasksActivity extends AppCompatActivity implements TaskCountsListen
                     Log.d("Project Id", ""+projectId);
                     int userId = UserState.getInstance().getUser().getId();
                     Log.d("User Id", ""+userId);
-                    saveTaskInDB(token,projectId,userId,taskRequest);
+                    saveTaskInDB(token,projectId,userId,taskRequest,task);
                     addTaskDialog.dismiss();
                 }
             }
@@ -372,7 +372,7 @@ public class TasksActivity extends AppCompatActivity implements TaskCountsListen
 //            }
 //        });
 //    }
-private void saveTaskInDB(String token, int projectId, int userId, TaskRequest taskRequest) {
+private void saveTaskInDB(String token, int projectId, int userId, TaskRequest taskRequest,Task task) {
     ApiService taskApiService = ApiClient.getInstance().create(ApiService.class);
     taskApiService.createTask(token, projectId, userId, taskRequest)
             .enqueue(new Callback<TaskResponse>() {
@@ -380,6 +380,7 @@ private void saveTaskInDB(String token, int projectId, int userId, TaskRequest t
                 public void onResponse(@NonNull Call<TaskResponse> call, @NonNull Response<TaskResponse> response) {
                     if (response.isSuccessful() && response.body() != null) {
                         TaskResponse taskResponse = response.body();
+                        task.setId(taskResponse.getId()) ;
                         Toast.makeText(TasksActivity.this, "Task created successfully", Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(TasksActivity.this, "Failed to create task", Toast.LENGTH_SHORT).show();

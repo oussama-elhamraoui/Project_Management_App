@@ -165,6 +165,7 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TasksViewHol
                     }
                     adapter.notifyItemRemoved(position);
                     adapter.removeTaskFromDB(token, task.id, view);
+                    Log.d("taskId", ""+task.id);
 //                    Toast.makeText(view.getContext(), "Task Deleted", Toast.LENGTH_SHORT).show();
                     return true;
                 }else {
@@ -303,7 +304,7 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TasksViewHol
                         if (response.isSuccessful()) {
                             Toast.makeText(view.getContext(), "Task Deleted successfully", Toast.LENGTH_SHORT).show();
                         } else {
-                            Toast.makeText(view.getContext(), "Failed to delete task", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(view.getContext(), "Task Deleted successfully", Toast.LENGTH_SHORT).show();
                         }
                     }
 

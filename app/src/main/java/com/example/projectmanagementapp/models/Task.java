@@ -13,6 +13,7 @@ public class Task {
     public String priority;
     public Date dueDate;
 
+
     public Task(int id, String name, String description, String status, String priority, Date dueDate) {
         this.id = id;
         this.name = name;
@@ -54,6 +55,10 @@ public class Task {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getPriority() {
