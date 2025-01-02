@@ -3,7 +3,7 @@ package com.example.projectmanagementapp.data.remote.model;
 public class UserRequest {
     private String email;
     private String username;
-    public UserRequest(final String username, final String email) {
+    public UserRequest(String username, String email) {
         this.username = username;
         this.email = email;
     }

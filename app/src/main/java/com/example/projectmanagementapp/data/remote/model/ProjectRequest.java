@@ -2,6 +2,7 @@ package com.example.projectmanagementapp.data.remote.model;
 
 import com.example.projectmanagementapp.models.Member;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -15,7 +16,7 @@ public class ProjectRequest {
         this.title = title;
         this.description = description;
         this.color = color;
-        this.members = memberResponses;
+        this.members = new ArrayList<>(); // just for now in order for it to work
     }
     public String getDescription() {
         return description;
